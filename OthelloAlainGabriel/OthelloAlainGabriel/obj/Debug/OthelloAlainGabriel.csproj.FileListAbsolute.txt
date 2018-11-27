@@ -1,0 +1,15 @@
+C:\Users\gabriel.griesser\Documents\HE-ARC\3eme_Annee\3257_Langages_Frameworks\3257 DOTNET\Projet\OthelloCSharp\OthelloAlainGabriel\OthelloAlainGabriel\bin\Debug\OthelloAlainGabriel.exe.config
+C:\Users\gabriel.griesser\Documents\HE-ARC\3eme_Annee\3257_Langages_Frameworks\3257 DOTNET\Projet\OthelloCSharp\OthelloAlainGabriel\OthelloAlainGabriel\bin\Debug\OthelloAlainGabriel.exe
+C:\Users\gabriel.griesser\Documents\HE-ARC\3eme_Annee\3257_Langages_Frameworks\3257 DOTNET\Projet\OthelloCSharp\OthelloAlainGabriel\OthelloAlainGabriel\bin\Debug\OthelloAlainGabriel.pdb
+C:\Users\gabriel.griesser\Documents\HE-ARC\3eme_Annee\3257_Langages_Frameworks\3257 DOTNET\Projet\OthelloCSharp\OthelloAlainGabriel\OthelloAlainGabriel\obj\Debug\OthelloAlainGabriel.csprojResolveAssemblyReference.cache
+C:\Users\gabriel.griesser\Documents\HE-ARC\3eme_Annee\3257_Langages_Frameworks\3257 DOTNET\Projet\OthelloCSharp\OthelloAlainGabriel\OthelloAlainGabriel\obj\Debug\MainWindow.g.cs
+C:\Users\gabriel.griesser\Documents\HE-ARC\3eme_Annee\3257_Langages_Frameworks\3257 DOTNET\Projet\OthelloCSharp\OthelloAlainGabriel\OthelloAlainGabriel\obj\Debug\App.g.cs
+C:\Users\gabriel.griesser\Documents\HE-ARC\3eme_Annee\3257_Langages_Frameworks\3257 DOTNET\Projet\OthelloCSharp\OthelloAlainGabriel\OthelloAlainGabriel\obj\Debug\OthelloAlainGabriel_MarkupCompile.cache
+C:\Users\gabriel.griesser\Documents\HE-ARC\3eme_Annee\3257_Langages_Frameworks\3257 DOTNET\Projet\OthelloCSharp\OthelloAlainGabriel\OthelloAlainGabriel\obj\Debug\OthelloAlainGabriel_MarkupCompile.lref
+C:\Users\gabriel.griesser\Documents\HE-ARC\3eme_Annee\3257_Langages_Frameworks\3257 DOTNET\Projet\OthelloCSharp\OthelloAlainGabriel\OthelloAlainGabriel\obj\Debug\MainWindow.baml
+C:\Users\gabriel.griesser\Documents\HE-ARC\3eme_Annee\3257_Langages_Frameworks\3257 DOTNET\Projet\OthelloCSharp\OthelloAlainGabriel\OthelloAlainGabriel\obj\Debug\OthelloAlainGabriel.g.resources
+C:\Users\gabriel.griesser\Documents\HE-ARC\3eme_Annee\3257_Langages_Frameworks\3257 DOTNET\Projet\OthelloCSharp\OthelloAlainGabriel\OthelloAlainGabriel\obj\Debug\OthelloAlainGabriel.Properties.Resources.resources
+C:\Users\gabriel.griesser\Documents\HE-ARC\3eme_Annee\3257_Langages_Frameworks\3257 DOTNET\Projet\OthelloCSharp\OthelloAlainGabriel\OthelloAlainGabriel\obj\Debug\OthelloAlainGabriel.csproj.GenerateResource.Cache
+C:\Users\gabriel.griesser\Documents\HE-ARC\3eme_Annee\3257_Langages_Frameworks\3257 DOTNET\Projet\OthelloCSharp\OthelloAlainGabriel\OthelloAlainGabriel\obj\Debug\OthelloAlainGabriel.csproj.CoreCompileInputs.cache
+C:\Users\gabriel.griesser\Documents\HE-ARC\3eme_Annee\3257_Langages_Frameworks\3257 DOTNET\Projet\OthelloCSharp\OthelloAlainGabriel\OthelloAlainGabriel\obj\Debug\OthelloAlainGabriel.exe
+C:\Users\gabriel.griesser\Documents\HE-ARC\3eme_Annee\3257_Langages_Frameworks\3257 DOTNET\Projet\OthelloCSharp\OthelloAlainGabriel\OthelloAlainGabriel\obj\Debug\OthelloAlainGabriel.pdb

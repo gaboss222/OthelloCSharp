@@ -7,16 +7,16 @@
         mc:Ignorable="d"
         Title="Othello de BG" Height="600" Width="800">
     <Grid>
-        <Canvas HorizontalAlignment="Left" Height="479" Width="613" Margin="20,20,0,0" VerticalAlignment="Top"  Background="Black">
-            <Button x:Name="A1" Content="" Canvas.Left="5" Canvas.Top="5" Width="67" Height="67" Background="#FF039E19"/>
-            <Button x:Name="B1" Content="" Canvas.Left="72" Canvas.Top="5" Width="67" Height="67" Background="#FF039E19"/>
-            <Button x:Name="C1" Content="" Canvas.Left="139" Canvas.Top="5" Width="67" Height="67" Background="#FF039E19"/>
-            <Button x:Name="D1" Content="" Canvas.Left="206" Canvas.Top="5" Width="67" Height="67" Background="#FF039E19"/>
-            <Button x:Name="E1" Content="" Canvas.Left="273" Canvas.Top="5" Width="67" Height="67" Background="#FF039E19"/>
-            <Button x:Name="F1" Content="" Canvas.Left="340" Canvas.Top="5" Width="67" Height="67" Background="#FF039E19"/>
-            <Button x:Name="G1" Content="" Canvas.Left="407" Canvas.Top="5" Width="67" Height="67" Background="#FF039E19"/>
-            <Button x:Name="H1" Content="" Canvas.Left="474" Canvas.Top="5" Width="67" Height="67" Background="#FF039E19"/>
-            <Button x:Name="I1" Content="" Canvas.Left="541" Canvas.Top="5" Width="67" Height="67" Background="#FF039E19"/>
+        <Canvas HorizontalAlignment="Left" Height="480" Width="613" Margin="20,20,0,0" VerticalAlignment="Top"  Background="Black">
+            <Button x:Name="A1" Content="" Canvas.Left="5" Canvas.Top="5" Width="67" Height="67" Background="#FF039E19" ToolTip="A1"/>
+            <Button x:Name="B1" Content="" Canvas.Left="72" Canvas.Top="5" Width="67" Height="67" Background="#FF039E19" ToolTip="B1"/>
+            <Button x:Name="C1" Content="" Canvas.Left="139" Canvas.Top="5" Width="67" Height="67" Background="#FF039E19" ToolTip="C1"/>
+            <Button x:Name="D1" Content="" Canvas.Left="206" Canvas.Top="5" Width="67" Height="67" Background="#FF039E19" ToolTip="D1"/>
+            <Button x:Name="E1" Content="" Canvas.Left="273" Canvas.Top="5" Width="67" Height="67" Background="#FF039E19" ToolTip="E1"/>
+            <Button x:Name="F1" Content="" Canvas.Left="340" Canvas.Top="5" Width="67" Height="67" Background="#FF039E19" ToolTip="F1"/>
+            <Button x:Name="G1" Content="" Canvas.Left="407" Canvas.Top="5" Width="67" Height="67" Background="#FF039E19" ToolTip="G1"/>
+            <Button x:Name="H1" Content="" Canvas.Left="474" Canvas.Top="5" Width="67" Height="67" Background="#FF039E19" ToolTip="H1"/>
+            <Button x:Name="I1" Content="" Canvas.Left="541" Canvas.Top="5" Width="67" Height="67" Background="#FF039E19" ToolTip="I1"/>
 
             <Button x:Name="A2" Content="" Canvas.Left="5" Canvas.Top="72" Width="67" Height="67" Background="#FF039E19"/>
             <Button x:Name="B2" Content="" Canvas.Left="72" Canvas.Top="72" Width="67" Height="67" Background="#FF039E19"/>
@@ -30,8 +30,8 @@
 
             <Button x:Name="A3" Content="" Canvas.Left="5" Canvas.Top="139" Width="67" Height="67" Background="#FF039E19"/>
             <Button x:Name="B3" Content="" Canvas.Left="72" Canvas.Top="139" Width="67" Height="67" Background="#FF039E19"/>
-            <Button x:Name="C3" Content="" Canvas.Left="139" Canvas.Top="139" Width="67" Height="67" Background="#FF039E19"/>
-            <Button x:Name="D3" Content="" Canvas.Left="206" Canvas.Top="139" Width="67" Height="67" Background="#FF039E19" Click="D3_Click"/>
+            <Button x:Name="C3" Content="" Canvas.Left="139" Canvas.Top="139" Width="67" Height="67" Background="#FF039E19" ToolTip="C3"/>
+            <Button x:Name="D3" Content="" Canvas.Left="206" Canvas.Top="139" Width="67" Height="67" Background="#FF039E19"/>
             <Button x:Name="E3" Content="" Canvas.Left="273" Canvas.Top="139" Width="67" Height="67" Background="#FF039E19"/>
             <Button x:Name="F3" Content="" Canvas.Left="340" Canvas.Top="139" Width="67" Height="67" Background="#FF039E19"/>
             <Button x:Name="G3" Content="" Canvas.Left="407" Canvas.Top="139" Width="67" Height="67" Background="#FF039E19"/>

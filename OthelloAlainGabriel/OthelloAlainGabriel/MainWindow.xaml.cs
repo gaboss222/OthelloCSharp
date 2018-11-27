@@ -24,5 +24,15 @@ namespace OthelloAlainGabriel
         {
             InitializeComponent();
         }
+
+        private void Button_mousehover(object sender, EventArgs e)
+        {
+
+        }
+
+        private void C3_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
