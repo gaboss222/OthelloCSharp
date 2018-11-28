@@ -6,82 +6,105 @@
         xmlns:local="clr-namespace:OthelloAlainGabriel"
         mc:Ignorable="d"
         Title="Othello de BG" Height="600" Width="800">
-    <Grid>
-        <Canvas HorizontalAlignment="Left" Height="480" Width="613" Margin="20,20,0,0" VerticalAlignment="Top"  Background="Black">
-            <Button x:Name="A1" Content="" Canvas.Left="5" Canvas.Top="5" Width="67" Height="67" Background="#FF039E19" ToolTip="A1"/>
-            <Button x:Name="B1" Content="" Canvas.Left="72" Canvas.Top="5" Width="67" Height="67" Background="#FF039E19" ToolTip="B1"/>
-            <Button x:Name="C1" Content="" Canvas.Left="139" Canvas.Top="5" Width="67" Height="67" Background="#FF039E19" ToolTip="C1"/>
-            <Button x:Name="D1" Content="" Canvas.Left="206" Canvas.Top="5" Width="67" Height="67" Background="#FF039E19" ToolTip="D1"/>
-            <Button x:Name="E1" Content="" Canvas.Left="273" Canvas.Top="5" Width="67" Height="67" Background="#FF039E19" ToolTip="E1"/>
-            <Button x:Name="F1" Content="" Canvas.Left="340" Canvas.Top="5" Width="67" Height="67" Background="#FF039E19" ToolTip="F1"/>
-            <Button x:Name="G1" Content="" Canvas.Left="407" Canvas.Top="5" Width="67" Height="67" Background="#FF039E19" ToolTip="G1"/>
-            <Button x:Name="H1" Content="" Canvas.Left="474" Canvas.Top="5" Width="67" Height="67" Background="#FF039E19" ToolTip="H1"/>
-            <Button x:Name="I1" Content="" Canvas.Left="541" Canvas.Top="5" Width="67" Height="67" Background="#FF039E19" ToolTip="I1"/>
 
-            <Button x:Name="A2" Content="" Canvas.Left="5" Canvas.Top="72" Width="67" Height="67" Background="#FF039E19"/>
-            <Button x:Name="B2" Content="" Canvas.Left="72" Canvas.Top="72" Width="67" Height="67" Background="#FF039E19"/>
-            <Button x:Name="C2" Content="" Canvas.Left="139" Canvas.Top="72" Width="67" Height="67" Background="#FF039E19"/>
-            <Button x:Name="D2" Content="" Canvas.Left="206" Canvas.Top="72" Width="67" Height="67" Background="#FF039E19"/>
-            <Button x:Name="E2" Content="" Canvas.Left="273" Canvas.Top="72" Width="67" Height="67" Background="#FF039E19"/>
-            <Button x:Name="F2" Content="" Canvas.Left="340" Canvas.Top="72" Width="67" Height="67" Background="#FF039E19"/>
-            <Button x:Name="G2" Content="" Canvas.Left="407" Canvas.Top="72" Width="67" Height="67" Background="#FF039E19"/>
-            <Button x:Name="H2" Content="" Canvas.Left="474" Canvas.Top="72" Width="67" Height="67" Background="#FF039E19"/>
-            <Button x:Name="I2" Content="" Canvas.Left="541" Canvas.Top="72" Width="67" Height="67" Background="#FF039E19"/>
+    <Window.CommandBindings>
+        <CommandBinding Command="New" CanExecute="NewCommand_CanExecute" Executed="NewCommand_Executed" />
+        <CommandBinding Command="Save" CanExecute="SaveCommand_CanExecute" Executed="SaveCommand_Executed" />
+    </Window.CommandBindings>
+    
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_File">
+                <MenuItem Header="_New" Click="MenuNew_Click"/>
+                <MenuItem Header="_Save" Click="MenuSave_Click"/>
+                <Separator />
+                <MenuItem Header="_Exit" Click="MenuQuit_Click"/>
+            </MenuItem>
+            <MenuItem Header="Edit">
+                <MenuItem Header="_Undo" Click="MenuUndo_Click"/>
+                <MenuItem Header="About" Click="MenuAbout_Click"/>
+            </MenuItem>
+        </Menu>
+        <Grid>
+            <Canvas HorizontalAlignment="Left" Height="480" Width="613" Margin="20,50,0,0" VerticalAlignment="Top"  Background="Black">
+                <Button x:Name="A1" Content="" Canvas.Left="5" Canvas.Top="5" Width="67" Height="67" Background="#FF039E19" ToolTip="A1"/>
+                <Button x:Name="B1" Content="" Canvas.Left="72" Canvas.Top="5" Width="67" Height="67" Background="#FF039E19" ToolTip="B1"/>
+                <Button x:Name="C1" Content="" Canvas.Left="139" Canvas.Top="5" Width="67" Height="67" Background="#FF039E19" ToolTip="C1"/>
+                <Button x:Name="D1" Content="" Canvas.Left="206" Canvas.Top="5" Width="67" Height="67" Background="#FF039E19" ToolTip="D1"/>
+                <Button x:Name="E1" Content="" Canvas.Left="273" Canvas.Top="5" Width="67" Height="67" Background="#FF039E19" ToolTip="E1"/>
+                <Button x:Name="F1" Content="" Canvas.Left="340" Canvas.Top="5" Width="67" Height="67" Background="#FF039E19" ToolTip="F1"/>
+                <Button x:Name="G1" Content="" Canvas.Left="407" Canvas.Top="5" Width="67" Height="67" Background="#FF039E19" ToolTip="G1"/>
+                <Button x:Name="H1" Content="" Canvas.Left="474" Canvas.Top="5" Width="67" Height="67" Background="#FF039E19" ToolTip="H1"/>
+                <Button x:Name="I1" Content="" Canvas.Left="541" Canvas.Top="5" Width="67" Height="67" Background="#FF039E19" ToolTip="I1"/>
 
-            <Button x:Name="A3" Content="" Canvas.Left="5" Canvas.Top="139" Width="67" Height="67" Background="#FF039E19"/>
-            <Button x:Name="B3" Content="" Canvas.Left="72" Canvas.Top="139" Width="67" Height="67" Background="#FF039E19"/>
-            <Button x:Name="C3" Content="" Canvas.Left="139" Canvas.Top="139" Width="67" Height="67" Background="#FF039E19" ToolTip="C3"/>
-            <Button x:Name="D3" Content="" Canvas.Left="206" Canvas.Top="139" Width="67" Height="67" Background="#FF039E19"/>
-            <Button x:Name="E3" Content="" Canvas.Left="273" Canvas.Top="139" Width="67" Height="67" Background="#FF039E19"/>
-            <Button x:Name="F3" Content="" Canvas.Left="340" Canvas.Top="139" Width="67" Height="67" Background="#FF039E19"/>
-            <Button x:Name="G3" Content="" Canvas.Left="407" Canvas.Top="139" Width="67" Height="67" Background="#FF039E19"/>
-            <Button x:Name="H3" Content="" Canvas.Left="474" Canvas.Top="139" Width="67" Height="67" Background="#FF039E19"/>
-            <Button x:Name="I3" Content="" Canvas.Left="541" Canvas.Top="139" Width="67" Height="67" Background="#FF039E19"/>
+                <Button x:Name="A2" Content="" Canvas.Left="5" Canvas.Top="72" Width="67" Height="67" Background="#FF039E19" ToolTip="A2"/>
+                <Button x:Name="B2" Content="" Canvas.Left="72" Canvas.Top="72" Width="67" Height="67" Background="#FF039E19" ToolTip="B2"/>
+                <Button x:Name="C2" Content="" Canvas.Left="139" Canvas.Top="72" Width="67" Height="67" Background="#FF039E19" ToolTip="C2"/>
+                <Button x:Name="D2" Content="" Canvas.Left="206" Canvas.Top="72" Width="67" Height="67" Background="#FF039E19" ToolTip="D2"/>
+                <Button x:Name="E2" Content="" Canvas.Left="273" Canvas.Top="72" Width="67" Height="67" Background="#FF039E19" ToolTip="E2"/>
+                <Button x:Name="F2" Content="" Canvas.Left="340" Canvas.Top="72" Width="67" Height="67" Background="#FF039E19" ToolTip="F2"/>
+                <Button x:Name="G2" Content="" Canvas.Left="407" Canvas.Top="72" Width="67" Height="67" Background="#FF039E19" ToolTip="G2"/>
+                <Button x:Name="H2" Content="" Canvas.Left="474" Canvas.Top="72" Width="67" Height="67" Background="#FF039E19" ToolTip="H2"/>
+                <Button x:Name="I2" Content="" Canvas.Left="541" Canvas.Top="72" Width="67" Height="67" Background="#FF039E19" ToolTip="I2"/>
 
-            <Button x:Name="A4" Content="" Canvas.Left="5" Canvas.Top="206" Width="67" Height="67" Background="#FF039E19"/>
-            <Button x:Name="B4" Content="" Canvas.Left="72" Canvas.Top="206" Width="67" Height="67" Background="#FF039E19"/>
-            <Button x:Name="C4" Content="" Canvas.Left="139" Canvas.Top="206" Width="67" Height="67" Background="#FF039E19"/>
-            <Button x:Name="D4" Content="" Canvas.Left="206" Canvas.Top="206" Width="67" Height="67" Background="#FF039E19"/>
-            <Button x:Name="E4" Content="" Canvas.Left="273" Canvas.Top="206" Width="67" Height="67" Background="#FF039E19"/>
-            <Button x:Name="F4" Content="" Canvas.Left="340" Canvas.Top="206" Width="67" Height="67" Background="#FF039E19"/>
-            <Button x:Name="G4" Content="" Canvas.Left="407" Canvas.Top="206" Width="67" Height="67" Background="#FF039E19"/>
-            <Button x:Name="H4" Content="" Canvas.Left="474" Canvas.Top="206" Width="67" Height="67" Background="#FF039E19"/>
-            <Button x:Name="I4" Content="" Canvas.Left="541" Canvas.Top="206" Width="67" Height="67" Background="#FF039E19"/>
+                <Button x:Name="A3" Content="" Canvas.Left="5" Canvas.Top="139" Width="67" Height="67" Background="#FF039E19" ToolTip="A3"/>
+                <Button x:Name="B3" Content="" Canvas.Left="72" Canvas.Top="139" Width="67" Height="67" Background="#FF039E19" ToolTip="B3"/>
+                <Button x:Name="C3" Content="" Canvas.Left="139" Canvas.Top="139" Width="67" Height="67" Background="#FF039E19" ToolTip="C3"/>
+                <Button x:Name="D3" Content="" Canvas.Left="206" Canvas.Top="139" Width="67" Height="67" Background="#FF039E19" ToolTip="D3"/>
+                <Button x:Name="E3" Content="" Canvas.Left="273" Canvas.Top="139" Width="67" Height="67" Background="#FF039E19" ToolTip="E3"/>
+                <Button x:Name="F3" Content="" Canvas.Left="340" Canvas.Top="139" Width="67" Height="67" Background="#FF039E19" ToolTip="F3"/>
+                <Button x:Name="G3" Content="" Canvas.Left="407" Canvas.Top="139" Width="67" Height="67" Background="#FF039E19" ToolTip="G3"/>
+                <Button x:Name="H3" Content="" Canvas.Left="474" Canvas.Top="139" Width="67" Height="67" Background="#FF039E19" ToolTip="H3"/>
+                <Button x:Name="I3" Content="" Canvas.Left="541" Canvas.Top="139" Width="67" Height="67" Background="#FF039E19" ToolTip="I3"/>
 
-            <Button x:Name="A5" Content="" Canvas.Left="5" Canvas.Top="273" Width="67" Height="67" Background="#FF039E19"/>
-            <Button x:Name="B5" Content="" Canvas.Left="72" Canvas.Top="273" Width="67" Height="67" Background="#FF039E19"/>
-            <Button x:Name="C5" Content="" Canvas.Left="139" Canvas.Top="273" Width="67" Height="67" Background="#FF039E19"/>
-            <Button x:Name="D5" Content="" Canvas.Left="206" Canvas.Top="273" Width="67" Height="67" Background="#FF039E19"/>
-            <Button x:Name="E5" Content="" Canvas.Left="273" Canvas.Top="273" Width="67" Height="67" Background="#FF039E19"/>
-            <Button x:Name="F5" Content="" Canvas.Left="340" Canvas.Top="273" Width="67" Height="67" Background="#FF039E19"/>
-            <Button x:Name="G5" Content="" Canvas.Left="407" Canvas.Top="273" Width="67" Height="67" Background="#FF039E19"/>
-            <Button x:Name="H5" Content="" Canvas.Left="474" Canvas.Top="273" Width="67" Height="67" Background="#FF039E19"/>
-            <Button x:Name="I5" Content="" Canvas.Left="541" Canvas.Top="273" Width="67" Height="67" Background="#FF039E19"/>
+                <Button x:Name="A4" Content="" Canvas.Left="5" Canvas.Top="206" Width="67" Height="67" Background="#FF039E19" ToolTip="A4"/>
+                <Button x:Name="B4" Content="" Canvas.Left="72" Canvas.Top="206" Width="67" Height="67" Background="#FF039E19" ToolTip="B4"/>
+                <Button x:Name="C4" Content="" Canvas.Left="139" Canvas.Top="206" Width="67" Height="67" Background="#FF039E19" ToolTip="C4"/>
+                <Button x:Name="D4" Content="" Canvas.Left="206" Canvas.Top="206" Width="67" Height="67" Background="#FF039E19" ToolTip="D4"/>
+                <Button x:Name="E4" Content="" Canvas.Left="273" Canvas.Top="206" Width="67" Height="67" Background="#FF039E19" ToolTip="E4"/>
+                <Button x:Name="F4" Content="" Canvas.Left="340" Canvas.Top="206" Width="67" Height="67" Background="#FF039E19" ToolTip="F4"/>
+                <Button x:Name="G4" Content="" Canvas.Left="407" Canvas.Top="206" Width="67" Height="67" Background="#FF039E19" ToolTip="G4"/>
+                <Button x:Name="H4" Content="" Canvas.Left="474" Canvas.Top="206" Width="67" Height="67" Background="#FF039E19" ToolTip="H4"/>
+                <Button x:Name="I4" Content="" Canvas.Left="541" Canvas.Top="206" Width="67" Height="67" Background="#FF039E19" ToolTip="I4"/>
 
-            <Button x:Name="A6" Content="" Canvas.Left="5" Canvas.Top="340" Width="67" Height="67" Background="#FF039E19"/>
-            <Button x:Name="B6" Content="" Canvas.Left="72" Canvas.Top="340" Width="67" Height="67" Background="#FF039E19"/>
-            <Button x:Name="C6" Content="" Canvas.Left="139" Canvas.Top="340" Width="67" Height="67" Background="#FF039E19"/>
-            <Button x:Name="D6" Content="" Canvas.Left="206" Canvas.Top="340" Width="67" Height="67" Background="#FF039E19"/>
-            <Button x:Name="E6" Content="" Canvas.Left="273" Canvas.Top="340" Width="67" Height="67" Background="#FF039E19"/>
-            <Button x:Name="F6" Content="" Canvas.Left="340" Canvas.Top="340" Width="67" Height="67" Background="#FF039E19"/>
-            <Button x:Name="G6" Content="" Canvas.Left="407" Canvas.Top="340" Width="67" Height="67" Background="#FF039E19"/>
-            <Button x:Name="H6" Content="" Canvas.Left="474" Canvas.Top="340" Width="67" Height="67" Background="#FF039E19"/>
-            <Button x:Name="I6" Content="" Canvas.Left="541" Canvas.Top="340" Width="67" Height="67" Background="#FF039E19"/>
+                <Button x:Name="A5" Content="" Canvas.Left="5" Canvas.Top="273" Width="67" Height="67" Background="#FF039E19" ToolTip="A5"/>
+                <Button x:Name="B5" Content="" Canvas.Left="72" Canvas.Top="273" Width="67" Height="67" Background="#FF039E19" ToolTip="B5"/>
+                <Button x:Name="C5" Content="" Canvas.Left="139" Canvas.Top="273" Width="67" Height="67" Background="#FF039E19" ToolTip="C5"/>
+                <Button x:Name="D5" Content="" Canvas.Left="206" Canvas.Top="273" Width="67" Height="67" Background="#FF039E19" ToolTip="D5"/>
+                <Button x:Name="E5" Content="" Canvas.Left="273" Canvas.Top="273" Width="67" Height="67" Background="#FF039E19" ToolTip="E5"/>
+                <Button x:Name="F5" Content="" Canvas.Left="340" Canvas.Top="273" Width="67" Height="67" Background="#FF039E19" ToolTip="F5"/>
+                <Button x:Name="G5" Content="" Canvas.Left="407" Canvas.Top="273" Width="67" Height="67" Background="#FF039E19" ToolTip="G5"/>
+                <Button x:Name="H5" Content="" Canvas.Left="474" Canvas.Top="273" Width="67" Height="67" Background="#FF039E19" ToolTip="H5"/>
+                <Button x:Name="I5" Content="" Canvas.Left="541" Canvas.Top="273" Width="67" Height="67" Background="#FF039E19" ToolTip="I5"/>
 
-            <Button x:Name="A7" Content="" Canvas.Left="5" Canvas.Top="407" Width="67" Height="67" Background="#FF039E19"/>
-            <Button x:Name="B7" Content="" Canvas.Left="72" Canvas.Top="407" Width="67" Height="67" Background="#FF039E19"/>
-            <Button x:Name="C7" Content="" Canvas.Left="139" Canvas.Top="407" Width="67" Height="67" Background="#FF039E19"/>
-            <Button x:Name="D7" Content="" Canvas.Left="206" Canvas.Top="407" Width="67" Height="67" Background="#FF039E19"/>
-            <Button x:Name="E7" Content="" Canvas.Left="273" Canvas.Top="407" Width="67" Height="67" Background="#FF039E19"/>
-            <Button x:Name="F7" Content="" Canvas.Left="340" Canvas.Top="407" Width="67" Height="67" Background="#FF039E19"/>
-            <Button x:Name="G7" Content="" Canvas.Left="407" Canvas.Top="407" Width="67" Height="67" Background="#FF039E19"/>
-            <Button x:Name="H7" Content="" Canvas.Left="474" Canvas.Top="407" Width="67" Height="67" Background="#FF039E19"/>
-            <Button x:Name="I7" Content="" Canvas.Left="541" Canvas.Top="407" Width="67" Height="67" Background="#FF039E19"/>
+                <Button x:Name="A6" Content="" Canvas.Left="5" Canvas.Top="340" Width="67" Height="67" Background="#FF039E19" ToolTip="A6"/>
+                <Button x:Name="B6" Content="" Canvas.Left="72" Canvas.Top="340" Width="67" Height="67" Background="#FF039E19" ToolTip="B6"/>
+                <Button x:Name="C6" Content="" Canvas.Left="139" Canvas.Top="340" Width="67" Height="67" Background="#FF039E19" ToolTip="C6"/>
+                <Button x:Name="D6" Content="" Canvas.Left="206" Canvas.Top="340" Width="67" Height="67" Background="#FF039E19" ToolTip="D6"/>
+                <Button x:Name="E6" Content="" Canvas.Left="273" Canvas.Top="340" Width="67" Height="67" Background="#FF039E19" ToolTip="E6"/>
+                <Button x:Name="F6" Content="" Canvas.Left="340" Canvas.Top="340" Width="67" Height="67" Background="#FF039E19" ToolTip="F6"/>
+                <Button x:Name="G6" Content="" Canvas.Left="407" Canvas.Top="340" Width="67" Height="67" Background="#FF039E19" ToolTip="G6"/>
+                <Button x:Name="H6" Content="" Canvas.Left="474" Canvas.Top="340" Width="67" Height="67" Background="#FF039E19" ToolTip="H6"/>
+                <Button x:Name="I6" Content="" Canvas.Left="541" Canvas.Top="340" Width="67" Height="67" Background="#FF039E19" ToolTip="I6"/>
 
-
-        </Canvas>
-        <Label x:Name="lblPlayerTurn" Content="Player's turn :" HorizontalAlignment="Center" Margin="652,46,16,0" VerticalAlignment="Top" RenderTransformOrigin="0.33,-1.164" Height="41" Width="124" FontSize="18"/>
-        <Label x:Name="lblImgPlayerTurn" Content=". . ." HorizontalAlignment="Center" Margin="652,92,16,0" VerticalAlignment="Top" RenderTransformOrigin="0.33,-1.164" Height="41" Width="124" FontSize="18"/>
-
-    </Grid>
+                <Button x:Name="A7" Content="" Canvas.Left="5" Canvas.Top="407" Width="67" Height="67" Background="#FF039E19" ToolTip="A7"/>
+                <Button x:Name="B7" Content="" Canvas.Left="72" Canvas.Top="407" Width="67" Height="67" Background="#FF039E19" ToolTip="B7"/>
+                <Button x:Name="C7" Content="" Canvas.Left="139" Canvas.Top="407" Width="67" Height="67" Background="#FF039E19" ToolTip="C7"/>
+                <Button x:Name="D7" Content="" Canvas.Left="206" Canvas.Top="407" Width="67" Height="67" Background="#FF039E19" ToolTip="D7"/>
+                <Button x:Name="E7" Content="" Canvas.Left="273" Canvas.Top="407" Width="67" Height="67" Background="#FF039E19" ToolTip="E7"/>
+                <Button x:Name="F7" Content="" Canvas.Left="340" Canvas.Top="407" Width="67" Height="67" Background="#FF039E19" ToolTip="F7"/>
+                <Button x:Name="G7" Content="" Canvas.Left="407" Canvas.Top="407" Width="67" Height="67" Background="#FF039E19" ToolTip="G7"/>
+                <Button x:Name="H7" Content="" Canvas.Left="474" Canvas.Top="407" Width="67" Height="67" Background="#FF039E19" ToolTip="H7"/>
+                <Button x:Name="I7" Content="" Canvas.Left="541" Canvas.Top="407" Width="67" Height="67" Background="#FF039E19" ToolTip="I7"/>
+            </Canvas>
+            <Label x:Name="lblPlayer1" Content="Player 1 :" HorizontalAlignment="Right" Margin="0,50,14,0" VerticalAlignment="Top" RenderTransformOrigin="0.33,-1.164" Height="41" Width="130" FontSize="18"/>
+            <Label x:Name="lblPlayer1Score" Content=". . ." HorizontalAlignment="Right" Margin="0,91,20,0" VerticalAlignment="Top" RenderTransformOrigin="0.33,-1.164" Height="41" Width="124" FontSize="18"/>
+            <Label x:Name="lblPlayer1Time" Content=". . ." HorizontalAlignment="Right" Margin="0,133,20,0" VerticalAlignment="Top" RenderTransformOrigin="0.33,-1.164" Height="41" Width="124" FontSize="18"/>
+            <Label x:Name="lblPlayerTurn" Content="Player's turn :" HorizontalAlignment="Right" Margin="0,226,20,0" VerticalAlignment="Top" RenderTransformOrigin="0.33,-1.164" Height="41" Width="124" FontSize="18"/>
+            <Label x:Name="lblImgPlayerTurn" Content=". . ." HorizontalAlignment="Right" Margin="0,267,20,0" VerticalAlignment="Top" RenderTransformOrigin="0.33,-1.164" Height="41" Width="124" FontSize="18"/>
+            <Label x:Name="lblPlayer2" Content="Player 2" HorizontalAlignment="Right" Margin="0,406,14,0" VerticalAlignment="Top" RenderTransformOrigin="0.33,-1.164" Height="40" Width="130" FontSize="18"/>
+            <Label x:Name="lblPlayer2Score" Content=". . ." HorizontalAlignment="Right" Margin="0,446,20,0" VerticalAlignment="Top" RenderTransformOrigin="0.33,-1.164" Height="40" Width="124" FontSize="18"/>
+            <Label x:Name="lblPlayer2Time" Content=". . ." HorizontalAlignment="Right" Margin="0,490,20,0" VerticalAlignment="Top" RenderTransformOrigin="0.33,-1.164" Height="40" Width="124" FontSize="18"/>
+        </Grid>
+    </DockPanel>
 </Window>
