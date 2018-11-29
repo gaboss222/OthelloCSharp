@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Media;
 
 namespace OthelloAlainGabriel
 {
@@ -16,6 +18,24 @@ namespace OthelloAlainGabriel
         public MainWindow()
         {
             InitializeComponent();
+            
+            for (int i = 0; i < 7; i ++)
+            {
+                tokenGrid.RowDefinitions.Add(new RowDefinition());
+                for (int j = 0; j < 9; j++)
+                {
+                    Button btn = new Button();
+                    btn.ToolTip = ((Char)(j + 65)) + "" + (i+1);
+                    btn.Name = btn.ToolTip.ToString();
+                    btn.Click += Btn_Click;
+                    if (tokenGrid.ColumnDefinitions.Count < 8)
+                        tokenGrid.ColumnDefinitions.Add(new ColumnDefinition());
+                    Grid.SetColumn(btn, j);
+                    Grid.SetRow(btn, i);
+                    tokenGrid.Children.Add(btn);
+                    btn.Background = Brushes.LightGreen;
+                }
+            }
         }
         #region Property
         Player player1, player2;
