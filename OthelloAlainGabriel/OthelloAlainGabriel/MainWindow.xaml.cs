@@ -15,6 +15,7 @@ namespace OthelloAlainGabriel
         public MainWindow()
         {
             InitializeComponent();
+            
         }
         #region Property
         Player player1, player2;
@@ -42,5 +43,11 @@ namespace OthelloAlainGabriel
             MessageBox.Show("About : GG and AG Othello");
         }
         #endregion
+
+
+        private void myClick(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

@@ -5,5 +5,10 @@
         string token;
         int nbToken;
 
+        public Player()
+        {
+
+        }
+
     }
 }
