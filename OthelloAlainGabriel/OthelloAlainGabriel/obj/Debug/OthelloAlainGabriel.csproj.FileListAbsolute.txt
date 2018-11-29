@@ -13,3 +13,18 @@ C:\Users\gabriel.griesser\Documents\HE-ARC\3eme_Annee\3257_Langages_Frameworks\3
 C:\Users\gabriel.griesser\Documents\HE-ARC\3eme_Annee\3257_Langages_Frameworks\3257 DOTNET\Projet\OthelloCSharp\OthelloAlainGabriel\OthelloAlainGabriel\obj\Debug\OthelloAlainGabriel.csproj.CoreCompileInputs.cache
 C:\Users\gabriel.griesser\Documents\HE-ARC\3eme_Annee\3257_Langages_Frameworks\3257 DOTNET\Projet\OthelloCSharp\OthelloAlainGabriel\OthelloAlainGabriel\obj\Debug\OthelloAlainGabriel.exe
 C:\Users\gabriel.griesser\Documents\HE-ARC\3eme_Annee\3257_Langages_Frameworks\3257 DOTNET\Projet\OthelloCSharp\OthelloAlainGabriel\OthelloAlainGabriel\obj\Debug\OthelloAlainGabriel.pdb
+C:\dev\othello\OthelloCSharp\OthelloAlainGabriel\OthelloAlainGabriel\obj\Debug\OthelloAlainGabriel.csprojAssemblyReference.cache
+C:\dev\othello\OthelloCSharp\OthelloAlainGabriel\OthelloAlainGabriel\obj\Debug\MainWindow.g.cs
+C:\dev\othello\OthelloCSharp\OthelloAlainGabriel\OthelloAlainGabriel\obj\Debug\App.g.cs
+C:\dev\othello\OthelloCSharp\OthelloAlainGabriel\OthelloAlainGabriel\obj\Debug\OthelloAlainGabriel_MarkupCompile.cache
+C:\dev\othello\OthelloCSharp\OthelloAlainGabriel\OthelloAlainGabriel\obj\Debug\OthelloAlainGabriel_MarkupCompile.lref
+C:\dev\othello\OthelloCSharp\OthelloAlainGabriel\OthelloAlainGabriel\obj\Debug\OthelloAlainGabriel.exe
+C:\dev\othello\OthelloCSharp\OthelloAlainGabriel\OthelloAlainGabriel\obj\Debug\OthelloAlainGabriel.pdb
+C:\dev\othello\OthelloCSharp\OthelloAlainGabriel\OthelloAlainGabriel\bin\Debug\OthelloAlainGabriel.exe.config
+C:\dev\othello\OthelloCSharp\OthelloAlainGabriel\OthelloAlainGabriel\bin\Debug\OthelloAlainGabriel.exe
+C:\dev\othello\OthelloCSharp\OthelloAlainGabriel\OthelloAlainGabriel\bin\Debug\OthelloAlainGabriel.pdb
+C:\dev\othello\OthelloCSharp\OthelloAlainGabriel\OthelloAlainGabriel\obj\Debug\MainWindow.baml
+C:\dev\othello\OthelloCSharp\OthelloAlainGabriel\OthelloAlainGabriel\obj\Debug\OthelloAlainGabriel.g.resources
+C:\dev\othello\OthelloCSharp\OthelloAlainGabriel\OthelloAlainGabriel\obj\Debug\OthelloAlainGabriel.Properties.Resources.resources
+C:\dev\othello\OthelloCSharp\OthelloAlainGabriel\OthelloAlainGabriel\obj\Debug\OthelloAlainGabriel.csproj.GenerateResource.cache
+C:\dev\othello\OthelloCSharp\OthelloAlainGabriel\OthelloAlainGabriel\obj\Debug\OthelloAlainGabriel.csproj.CoreCompileInputs.cache

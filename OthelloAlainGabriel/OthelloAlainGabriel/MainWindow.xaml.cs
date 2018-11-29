@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace OthelloAlainGabriel
 {
@@ -15,7 +16,6 @@ namespace OthelloAlainGabriel
         public MainWindow()
         {
             InitializeComponent();
-            
         }
         #region Property
         Player player1, player2;
@@ -38,16 +38,16 @@ namespace OthelloAlainGabriel
         {
 
         }
+
+        private void Btn_Click(object sender, RoutedEventArgs e)
+        {
+            Console.WriteLine((sender as Button).Name);
+        }
+
         private void MenuAbout_Click(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("About : GG and AG Othello");
         }
         #endregion
-
-
-        private void myClick(object sender, RoutedEventArgs e)
-        {
-
-        }
     }
 }
