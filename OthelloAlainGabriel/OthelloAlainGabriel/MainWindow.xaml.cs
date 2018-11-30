@@ -18,14 +18,22 @@ namespace OthelloAlainGabriel
         public MainWindow()
         {
             InitializeComponent();
+            InitializeButton();
             
-            for (int i = 0; i < 7; i ++)
+        }
+        #region Property
+        Player player1, player2;
+        #endregion
+
+        private void InitializeButton()
+        {
+            for (int i = 0; i < 7; i++)
             {
                 tokenGrid.RowDefinitions.Add(new RowDefinition());
                 for (int j = 0; j < 9; j++)
                 {
                     Button btn = new Button();
-                    btn.ToolTip = ((Char)(j + 65)) + "" + (i+1);
+                    btn.ToolTip = ((Char)(j + 65)) + "" + (i + 1);
                     btn.Name = btn.ToolTip.ToString();
                     btn.Click += Btn_Click;
                     if (tokenGrid.ColumnDefinitions.Count < 8)
@@ -36,10 +44,10 @@ namespace OthelloAlainGabriel
                     btn.Background = Brushes.LightGreen;
                 }
             }
+
+            //HERE --> Ajouter les tokens de base (les 4 du centre)
+            //HERE --> Gérer clic du bouton (quand on clic, ajout d'un token --> Player à update
         }
-        #region Property
-        Player player1, player2;
-        #endregion
 
         #region MenuFunction       
         private void MenuNew_Click(object sender, RoutedEventArgs e)
