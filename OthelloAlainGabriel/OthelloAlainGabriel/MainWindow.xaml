@@ -27,9 +27,11 @@
                 <ColumnDefinition Width="8*" />
                 <ColumnDefinition Width="3*" />
             </Grid.ColumnDefinitions>
-            <Grid Name="tokenGrid" >
+            <Viewbox Stretch="Uniform">
+                <Grid Name="tokenGrid" >
                 
-            </Grid>
+                </Grid>
+            </Viewbox>
             <StackPanel Grid.Column="2" Margin="10">
                 <Label x:Name="lblPlayer1" Content="Player 1 :" FontSize="18"/>
                 <Label x:Name="lblPlayer1Score" Content=". . ." FontSize="18"/>
