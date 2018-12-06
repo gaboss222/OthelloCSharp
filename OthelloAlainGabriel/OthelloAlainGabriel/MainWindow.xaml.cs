@@ -52,12 +52,6 @@ namespace OthelloAlainGabriel
                     lbl.MouseDown += Btn_Click;
                     lbl.BorderThickness = new Thickness(0.1, 0.1, 0.1, 0.1);
                     lbl.BorderBrush = Brushes.LightGray;
-
-                    System.Windows.Controls.Button btn = new System.Windows.Controls.Button();
-                    btn.ToolTip = ((Char)(j + 65)) + "" + (i + 1);
-                    btn.Name = btn.ToolTip.ToString();
-                    btn.Background = Brushes.LightGreen;
-                    btn.Click += Btn_Click;
                     if (tokenGrid.ColumnDefinitions.Count < 8)
                         tokenGrid.ColumnDefinitions.Add(new ColumnDefinition());
                     Grid.SetColumn(lbl, j);
