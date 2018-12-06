@@ -50,7 +50,8 @@ namespace OthelloAlainGabriel
                     lbl.ToolTip = ((Char)(j + 65)) + "" + (i + 1);
                     lbl.Name = lbl.ToolTip.ToString();
                     lbl.MouseDown += Btn_Click;
-
+                    lbl.BorderThickness = new Thickness(0.1, 0.1, 0.1, 0.1);
+                    lbl.BorderBrush = Brushes.LightGray;
 
                     System.Windows.Controls.Button btn = new System.Windows.Controls.Button();
                     btn.ToolTip = ((Char)(j + 65)) + "" + (i + 1);
