@@ -45,6 +45,13 @@ namespace OthelloAlainGabriel
                 tokenGrid.RowDefinitions.Add(new RowDefinition());
                 for (int j = 0; j < 9; j++)
                 {
+
+                    Label lbl = new Label();
+                    lbl.ToolTip = ((Char)(j + 65)) + "" + (i + 1);
+                    lbl.Name = lbl.ToolTip.ToString();
+                    lbl.MouseDown += Btn_Click;
+
+
                     System.Windows.Controls.Button btn = new System.Windows.Controls.Button();
                     btn.ToolTip = ((Char)(j + 65)) + "" + (i + 1);
                     btn.Name = btn.ToolTip.ToString();
@@ -52,19 +59,19 @@ namespace OthelloAlainGabriel
                     btn.Click += Btn_Click;
                     if (tokenGrid.ColumnDefinitions.Count < 8)
                         tokenGrid.ColumnDefinitions.Add(new ColumnDefinition());
-                    Grid.SetColumn(btn, j);
-                    Grid.SetRow(btn, i);
-                    tokenGrid.Children.Add(btn);
+                    Grid.SetColumn(lbl, j);
+                    Grid.SetRow(lbl, i);
+                    tokenGrid.Children.Add(lbl);
 
                     if ((i == 3 && j == 3) || (i == 4 && j == 4))
                     {
-                        btn.Background = player2.Token.ImgBrush;
-                        btn.Click -= Btn_Click;
+                        lbl.Background = player2.Token.ImgBrush;
+                        lbl.MouseDown -= Btn_Click;
                     }
                     if ((i == 3 && j == 4) || (i == 4 && j == 3))
                     {
-                        btn.Background = player1.Token.ImgBrush;
-                        btn.Click -= Btn_Click;
+                        lbl.Background = player1.Token.ImgBrush;
+                        lbl.MouseDown -= Btn_Click;
                     }
                 }
             }
@@ -76,19 +83,19 @@ namespace OthelloAlainGabriel
         #region ButtonFunction
         private void Btn_Click(object sender, RoutedEventArgs e)
         {
-            Console.WriteLine((sender as Button).Name);
-            Button b = sender as Button;
+            Label lbl = sender as Label;
+            Console.WriteLine((sender as Label).Name);
             if (isPlayer1)
             {
-                b.Background = player1.Token.ImgBrush;
+                lbl.Background = player1.Token.ImgBrush;
                 isPlayer1 = false;
             }
             else
             {
-                b.Background = player2.Token.ImgBrush;
+                lbl.Background = player2.Token.ImgBrush;
                 isPlayer1 = true;
             }
-            b.Click -= Btn_Click;
+            lbl.MouseDown -= Btn_Click;
         }
         #endregion
 
