@@ -4,6 +4,9 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Timers;
 
 namespace OthelloAlainGabriel
 {
@@ -17,6 +20,7 @@ namespace OthelloAlainGabriel
             InitializeComponent();
             InitializeGame();
             InitializeBoard();
+            
         }
         #region Property
         Player player1, player2;
@@ -25,7 +29,10 @@ namespace OthelloAlainGabriel
 
         #region Attribute
         bool isPlayer1;
+        List<String> clickableList;
         int[,] tabBoard;
+        Stopwatch timerP1, timerP2;
+        Timer timerUpdate;
         #endregion
 
         private void InitializeGame()
@@ -37,7 +44,16 @@ namespace OthelloAlainGabriel
             player2 = new Player(token2, "Alain");
 
             isPlayer1 = true;
+            clickableList = new List<string>();
 
+            //Timer pour chaque joueurs
+            timerP1 = new Stopwatch();
+            timerP2 = new Stopwatch();
+
+            ///Timer pour updater les labels
+            timerUpdate = new Timer(10);
+            timerUpdate.Elapsed += UpdateLabel;
+            timerUpdate.Start();
         }
 
         private void InitializeBoard()
@@ -82,38 +98,81 @@ namespace OthelloAlainGabriel
                 }
             }
             CheckCases();
+            timerP1.Start();
         }
 
-        #region ButtonFunction
+        #region FormsFunction
         private void Btn_Click(object sender, RoutedEventArgs e)
         {
+            
             Label lbl = sender as Label;
-            Console.WriteLine((sender as Label).Name);
 
             int col = (int)Char.GetNumericValue(lbl.Name[1]);
             int row = (int)Char.GetNumericValue(lbl.Name[3]);
 
-            if (isPlayer1)
+            if (clickableList.Contains(lbl.ToolTip.ToString()))
             {
-                lbl.Background = player1.Token.ImgBrush;
-                isPlayer1 = false;
-                lblImgPlayerTurn.Content = player2.ToString();
-                tabBoard[row, col] = 1;
+                if (isPlayer1)
+                {
+                    lbl.Background = player1.Token.ImgBrush;
+                    isPlayer1 = false;
+                    lblImgPlayerTurn.Content = player2.ToString();
+                    tabBoard[row, col] = 1;
+                    timerP1.Stop();
+                    timerP2.Start();
+                }
+                else
+                {
+                    lbl.Background = player2.Token.ImgBrush;
+                    isPlayer1 = true;
+                    lblImgPlayerTurn.Content = player1.ToString();
+                    tabBoard[row, col] = 2;
+                    timerP2.Stop();
+                    timerP1.Start();
+                }
             }
-            else
-            {
-                lbl.Background = player2.Token.ImgBrush;
-                isPlayer1 = true;
-                lblImgPlayerTurn.Content = player1.ToString();
-                tabBoard[row, col] = 2;
-            }
-            
+
             lbl.MouseDown -= Btn_Click;
+            clickableList.Clear();
             CheckCases();
+        }
+
+        /// <summary>
+        /// Update continuously labelTime
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void UpdateLabel(object sender, ElapsedEventArgs e)
+        {
+            Dispatcher.Invoke(new Action(() =>
+            {
+                lblPlayer1Time.Content = timerP1.Elapsed.ToString("mm\\:ss\\.ff");
+            }));
+            Dispatcher.Invoke(new Action(() =>
+            {
+                lblPlayer2Time.Content = timerP2.Elapsed.ToString("mm\\:ss\\.ff");
+            }));
         }
         #endregion
 
         #region gameAlgo
+
+        private void ChangeToken(int col, int row)
+        {
+            Label lbl = GetChildren(tokenGrid, col, row) as Label;
+
+            //Si joueur noir (player 2), alors on change le token en blanc (player1)
+            switch(tabBoard[col, row])
+            {
+                case 1:
+                    lbl.Background = player1.Token.ImgBrush;
+                    break;
+                case 2:
+                    lbl.Background = player2.Token.ImgBrush;
+                    break;
+            }
+        }
+
         private void CheckCases()
         {
             for (int i = 0; i < 7; i++)
@@ -121,9 +180,10 @@ namespace OthelloAlainGabriel
                 for (int j = 0; j < 9; j++)
                 {
                     Label myLabel = GetChildren(tokenGrid, i, j) as Label;
-                    if (checkLeft(j, i) || checkRight(j, i) || checkTop(j, i) || checkBot(j, i) || checkTopLeft(j, i) || checkBotRight(j, i) || checkTopRight(j, i) || checkBotLeft(j, i))
+                    if (CheckLeft(j, i) || CheckRight(j, i) || CheckTop(j, i) || CheckBottom(j, i) || CheckTopLeft(j, i) || CheckBottomRight(j, i) || CheckTopRight(j, i) || CheckBottomLeft(j, i))
                     {
                         myLabel.Background = Brushes.Green;
+                        clickableList.Add(myLabel.ToolTip.ToString());
                     }
                     else if (tabBoard[i, j] == 0)
                     {
@@ -131,16 +191,20 @@ namespace OthelloAlainGabriel
                     }
                 }
             }
+
+            Console.WriteLine("Cases clickables : ");
+            foreach (string c in clickableList)
+                Console.WriteLine(c);
         }
 
-        private bool checkLeft(int col, int row)
+        private bool CheckLeft(int col, int row)
         {
             int playerToken = 1;
             if (!isPlayer1)
                 playerToken = 2;
             if (col == 0 || tabBoard[row, col - 1] == playerToken || tabBoard[row, col - 1] == 0 || tabBoard[row, col] != 0)
                 return false;
-            for (int i = col-2; i >= 0; i--)
+            for (int i = col - 2; i >= 0; i--)
             {
                 if (tabBoard[row, i] == playerToken)
                     return true;
@@ -149,7 +213,7 @@ namespace OthelloAlainGabriel
             }
             return false;
         }
-        private bool checkRight(int col, int row)
+        private bool CheckRight(int col, int row)
         {
             int playerToken = 1;
             if (!isPlayer1)
@@ -165,8 +229,7 @@ namespace OthelloAlainGabriel
             }
             return false;
         }
-
-        private bool checkTop(int col, int row)
+        private bool CheckTop(int col, int row)
         {
             int playerToken = 1;
             if (!isPlayer1)
@@ -182,8 +245,7 @@ namespace OthelloAlainGabriel
             }
             return false;
         }
-
-        private bool checkBot(int col, int row)
+        private bool CheckBottom(int col, int row)
         {
             int playerToken = 1;
             if (!isPlayer1)
@@ -199,8 +261,7 @@ namespace OthelloAlainGabriel
             }
             return false;
         }
-
-        private bool checkTopLeft(int col, int row)
+        private bool CheckTopLeft(int col, int row)
         {
             int playerToken = 1;
             if (!isPlayer1)
@@ -218,8 +279,7 @@ namespace OthelloAlainGabriel
             }
             return false;
         }
-
-        private bool checkBotRight(int col, int row)
+        private bool CheckBottomRight(int col, int row)
         {
             int playerToken = 1;
             if (!isPlayer1)
@@ -237,8 +297,7 @@ namespace OthelloAlainGabriel
             }
             return false;
         }
-
-        private bool checkTopRight(int col, int row)
+        private bool CheckTopRight(int col, int row)
         {
             int playerToken = 1;
             if (!isPlayer1)
@@ -256,7 +315,7 @@ namespace OthelloAlainGabriel
             }
             return false;
         }
-        private bool checkBotLeft(int col, int row)
+        private bool CheckBottomLeft(int col, int row)
         {
             int playerToken = 1;
             if (!isPlayer1)
@@ -286,21 +345,48 @@ namespace OthelloAlainGabriel
                     return child;
                 }
             }
-            return null;   
+            return null;
         }
         #endregion
 
-        #region MenuFunction       
+        #region MenuFunction 
+        
+        /// <summary>
+        /// Restart a new game (1vs1)
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MenuNew_Click(object sender, RoutedEventArgs e)
         {
+            for (int i = 0; i < 7; i++)
+            {
+                for (int j = 0; j < 9; j++)
+                {
+                    Label lbl = GetChildren(tokenGrid, i, j) as Label;
+                    //DELETE LABEL HERE !!!
+                }
+            }
+                    tokenGrid.RowDefinitions.Clear();
+            tokenGrid.ColumnDefinitions.Clear();
+            clickableList = null;
+            tabBoard = null;
 
+            InitializeGame();
+            InitializeBoard();
         }
         private void MenuSave_Click(object sender, RoutedEventArgs e)
         {
 
         }
+
+        /// <summary>
+        /// Close the app
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MenuQuit_Click(object sender, RoutedEventArgs e)
         {
+            Dispatcher.InvokeShutdown();
             this.Close();
         }
         private void MenuUndo_Click(object sender, RoutedEventArgs e)

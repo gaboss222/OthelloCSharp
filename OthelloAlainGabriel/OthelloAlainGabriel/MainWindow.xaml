@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Othello de BG" Height="600" Width="800" MinWidth="800" MinHeight="600">
 
-    
+
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
@@ -29,18 +29,18 @@
             </Grid.ColumnDefinitions>
             <Viewbox Stretch="Uniform">
                 <Grid Name="tokenGrid" >
-                
+
                 </Grid>
             </Viewbox>
             <StackPanel Grid.Column="2" Margin="10">
                 <Label x:Name="lblPlayer1" Content="Player 1 :" FontSize="18"/>
                 <Label x:Name="lblPlayer1Score" Content=". . ." FontSize="18"/>
                 <Label x:Name="lblPlayer1Time" Content=". . ." FontSize="18"/>
-                <Label x:Name="lblPlayerTurn" Content="Player's turn :" FontSize="18"/>
-                <Label x:Name="lblImgPlayerTurn" Content=". . ." FontSize="18"/>
-                <Label x:Name="lblPlayer2" Content="Player 2" FontSize="18"/>
-                <Label x:Name="lblPlayer2Score" Content=". . ." FontSize="18"/>
-                <Label x:Name="lblPlayer2Time" Content=". . ." FontSize="18"/>
+                <Label x:Name="lblPlayerTurn" Content="Player's turn :" FontSize="18" Margin="0,60,0,0"/>
+                <Label x:Name="lblImgPlayerTurn" Content=". . ." FontSize="18" Margin="0,0,0,60"/>
+                <Label x:Name="lblPlayer2" Content="Player 2" FontSize="18" Padding="5,5,5,7" Margin="0"/>
+                <Label x:Name="lblPlayer2Score" Content=". . ." FontSize="18" Padding="5,5,5,7" Margin="0"/>
+                <Label x:Name="lblPlayer2Time" Content=". . ." FontSize="18" Margin="0" Padding="5,5,5,7"/>
             </StackPanel>
         </Grid>
 
