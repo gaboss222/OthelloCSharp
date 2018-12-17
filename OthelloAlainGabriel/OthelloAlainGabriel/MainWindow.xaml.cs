@@ -130,9 +130,10 @@ namespace OthelloAlainGabriel
                     timerP2.Stop();
                     timerP1.Start();
                 }
+                lbl.MouseDown -= Btn_Click;
+
             }
 
-            lbl.MouseDown -= Btn_Click;
             clickableList.Clear();
             CheckCases();
         }
