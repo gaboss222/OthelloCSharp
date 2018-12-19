@@ -53,7 +53,7 @@ namespace OthelloAlainGabriel
             ///Timer pour updater les labels
             timerUpdate = new Timer(10);
             timerUpdate.Elapsed += UpdateLabel;
-            timerUpdate.Start();
+            //timerUpdate.Start();
         }
 
         private void InitializeBoard()
@@ -112,6 +112,7 @@ namespace OthelloAlainGabriel
 
             if (clickableList.Contains(lbl.ToolTip.ToString()))
             {
+                checkCase(col, row, true);
                 if (isPlayer1)
                 {
                     lbl.Background = player1.Token.ImgBrush;
@@ -119,7 +120,7 @@ namespace OthelloAlainGabriel
                     lblImgPlayerTurn.Content = player2.ToString();
                     tabBoard[row, col] = 1;
                     timerP1.Stop();
-                    timerP2.Start();
+                    //timerP2.Start();
                 }
                 else
                 {
@@ -128,7 +129,7 @@ namespace OthelloAlainGabriel
                     lblImgPlayerTurn.Content = player1.ToString();
                     tabBoard[row, col] = 2;
                     timerP2.Stop();
-                    timerP1.Start();
+                    //timerP1.Start();
                 }
                 lbl.MouseDown -= Btn_Click;
 
@@ -163,13 +164,13 @@ namespace OthelloAlainGabriel
             Label lbl = GetChildren(tokenGrid, col, row) as Label;
 
             //Si joueur noir (player 2), alors on change le token en blanc (player1)
-            switch(tabBoard[col, row])
+            switch(tabBoard[row, col])
             {
                 case 1:
-                    lbl.Background = player1.Token.ImgBrush;
+                    lbl.Background = player2.Token.ImgBrush;
                     break;
                 case 2:
-                    lbl.Background = player2.Token.ImgBrush;
+                    lbl.Background = player1.Token.ImgBrush;
                     break;
             }
         }
@@ -181,7 +182,7 @@ namespace OthelloAlainGabriel
                 for (int j = 0; j < 9; j++)
                 {
                     Label myLabel = GetChildren(tokenGrid, i, j) as Label;
-                    if (CheckLeft(j, i) || CheckRight(j, i) || CheckTop(j, i) || CheckBottom(j, i) || CheckTopLeft(j, i) || CheckBottomRight(j, i) || CheckTopRight(j, i) || CheckBottomLeft(j, i))
+                    if (checkCase(j, i, false))
                     {
                         myLabel.Background = Brushes.Green;
                         clickableList.Add(myLabel.ToolTip.ToString());
@@ -192,34 +193,67 @@ namespace OthelloAlainGabriel
                     }
                 }
             }
-
+            /*
             Console.WriteLine("Cases clickables : ");
             foreach (string c in clickableList)
                 Console.WriteLine(c);
+            */
+        }
+        private bool checkCase(int col, int row, bool switchTokens)
+        {
+            if (tabBoard[row, col] != 0)
+                return false;
+            return CheckLeft(col, row, switchTokens) || CheckRight(col, row) || CheckTop(col, row) || CheckBottom(col, row) || CheckTopLeft(col, row) || CheckBottomRight(col, row) || CheckTopRight(col, row) || CheckBottomLeft(col, row);
         }
 
-        private bool CheckLeft(int col, int row)
+        private bool CheckLeft(int col, int row, bool switchTokens)
         {
             int playerToken = 1;
             if (!isPlayer1)
                 playerToken = 2;
-            if (col == 0 || tabBoard[row, col - 1] == playerToken || tabBoard[row, col - 1] == 0 || tabBoard[row, col] != 0)
+            if (col == 0 || tabBoard[row, col - 1] == playerToken || tabBoard[row, col - 1] == 0)
                 return false;
-            for (int i = col - 2; i >= 0; i--)
+            int i;
+            bool retour = false;
+            for (i = col - 2; i >= 0; i--)
             {
                 if (tabBoard[row, i] == playerToken)
-                    return true;
+                {
+                    retour = true;
+                    break;
+                }
                 if (tabBoard[row, i] == 0)
-                    return false;
+                {
+                    retour = false;
+                    break;
+                }
             }
-            return false;
+            if (switchTokens && retour)
+            {
+                for (int j = i + 1; j < col; j++)
+                {
+                    Label lbl = GetChildren(tokenGrid, row, j) as Label;
+                    if (tabBoard[row, j] == 1)
+                    {
+                        tabBoard[row, j] = 2;
+                        lbl.Background = player2.Token.ImgBrush;
+                    }
+                    else
+                    {
+                        tabBoard[row, j] = 1;
+                        lbl.Background = player1.Token.ImgBrush;
+                    }
+                }
+                Console.WriteLine(i + " " + col);
+            }
+            return retour;
         }
         private bool CheckRight(int col, int row)
         {
             int playerToken = 1;
             if (!isPlayer1)
                 playerToken = 2;
-            if (col == 8 || tabBoard[row, col + 1] == playerToken || tabBoard[row, col + 1] == 0 || tabBoard[row, col] != 0)
+            if (col == 8 || tabBoard[row, col + 1] == playerToken || tabBoard[row, col + 1] == 0)
                 return false;
             for (int i = col + 2; i < 9; i++)
             {
@@ -235,7 +269,7 @@ namespace OthelloAlainGabriel
             int playerToken = 1;
             if (!isPlayer1)
                 playerToken = 2;
-            if (row == 0 || tabBoard[row - 1, col] == playerToken || tabBoard[row - 1, col] == 0 || tabBoard[row, col] != 0)
+            if (row == 0 || tabBoard[row - 1, col] == playerToken || tabBoard[row - 1, col] == 0)
                 return false;
             for (int i = row - 2; i >= 0; i--)
             {
@@ -251,7 +285,7 @@ namespace OthelloAlainGabriel
             int playerToken = 1;
             if (!isPlayer1)
                 playerToken = 2;
-            if (row == 6 || tabBoard[row + 1, col] == playerToken || tabBoard[row + 1, col] == 0 || tabBoard[row, col] != 0)
+            if (row == 6 || tabBoard[row + 1, col] == playerToken || tabBoard[row + 1, col] == 0)
                 return false;
             for (int i = row + 2; i < 7; i++)
             {
@@ -267,7 +301,7 @@ namespace OthelloAlainGabriel
             int playerToken = 1;
             if (!isPlayer1)
                 playerToken = 2;
-            if (row == 0 || col == 0 || tabBoard[row - 1, col - 1] == playerToken || tabBoard[row - 1, col - 1] == 0 || tabBoard[row, col] != 0)
+            if (row == 0 || col == 0 || tabBoard[row - 1, col - 1] == playerToken || tabBoard[row - 1, col - 1] == 0)
                 return false;
             while (row > 0 && col > 0)
             {
@@ -285,7 +319,7 @@ namespace OthelloAlainGabriel
             int playerToken = 1;
             if (!isPlayer1)
                 playerToken = 2;
-            if (row == 6 || col == 8 || tabBoard[row + 1, col + 1] == playerToken || tabBoard[row + 1, col + 1] == 0 || tabBoard[row, col] != 0)
+            if (row == 6 || col == 8 || tabBoard[row + 1, col + 1] == playerToken || tabBoard[row + 1, col + 1] == 0)
                 return false;
             while (row < 6 && col < 8)
             {
@@ -303,7 +337,7 @@ namespace OthelloAlainGabriel
             int playerToken = 1;
             if (!isPlayer1)
                 playerToken = 2;
-            if (row == 0 || col == 8 || tabBoard[row - 1, col + 1] == playerToken || tabBoard[row - 1, col + 1] == 0 || tabBoard[row, col] != 0)
+            if (row == 0 || col == 8 || tabBoard[row - 1, col + 1] == playerToken || tabBoard[row - 1, col + 1] == 0)
                 return false;
             while (row > 0 && col < 8)
             {
@@ -321,7 +355,7 @@ namespace OthelloAlainGabriel
             int playerToken = 1;
             if (!isPlayer1)
                 playerToken = 2;
-            if (row == 6 || col == 0 || tabBoard[row + 1, col - 1] == playerToken || tabBoard[row + 1, col - 1] == 0 || tabBoard[row, col] != 0)
+            if (row == 6 || col == 0 || tabBoard[row + 1, col - 1] == playerToken || tabBoard[row + 1, col - 1] == 0)
                 return false;
             while (row < 6 && col > 0)
             {
