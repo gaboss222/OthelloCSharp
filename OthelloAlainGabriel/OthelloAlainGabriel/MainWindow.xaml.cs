@@ -164,14 +164,29 @@ namespace OthelloAlainGabriel
             Label lbl = GetChildren(tokenGrid, col, row) as Label;
 
             //Si joueur noir (player 2), alors on change le token en blanc (player1)
-            switch(tabBoard[row, col])
+            switch (tabBoard[col, row])
             {
                 case 1:
-                    lbl.Background = player2.Token.ImgBrush;
-                    break;
-                case 2:
                     lbl.Background = player1.Token.ImgBrush;
                     break;
+                case 2:
+                    lbl.Background = player2.Token.ImgBrush;
+                    break;
+            }
+        }
+
+        private void SwitchToken(int col, int row)
+        {
+            Label lbl = GetChildren(tokenGrid, row, col) as Label;
+            if (tabBoard[row, col] == 1)
+            {
+                tabBoard[row, col] = 2;
+                lbl.Background = player2.Token.ImgBrush;
+            }
+            else
+            {
+                tabBoard[row, col] = 1;
+                lbl.Background = player1.Token.ImgBrush;
             }
         }
 
@@ -232,17 +247,7 @@ namespace OthelloAlainGabriel
             {
                 for (int j = i + 1; j < col; j++)
                 {
-                    Label lbl = GetChildren(tokenGrid, row, j) as Label;
-                    if (tabBoard[row, j] == 1)
-                    {
-                        tabBoard[row, j] = 2;
-                        lbl.Background = player2.Token.ImgBrush;
-                    }
-                    else
-                    {
-                        tabBoard[row, j] = 1;
-                        lbl.Background = player1.Token.ImgBrush;
-                    }
+                    SwitchToken(j, row);
                 }
                 Console.WriteLine(i + " " + col);
             }
