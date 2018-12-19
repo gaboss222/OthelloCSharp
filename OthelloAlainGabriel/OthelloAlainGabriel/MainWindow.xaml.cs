@@ -112,7 +112,7 @@ namespace OthelloAlainGabriel
 
             if (clickableList.Contains(lbl.ToolTip.ToString()))
             {
-                checkCase(col, row, true);
+                CheckCase(col, row, true);
                 if (isPlayer1)
                 {
                     lbl.Background = player1.Token.ImgBrush;
@@ -197,7 +197,7 @@ namespace OthelloAlainGabriel
                 for (int j = 0; j < 9; j++)
                 {
                     Label myLabel = GetChildren(tokenGrid, i, j) as Label;
-                    if (checkCase(j, i, false))
+                    if (CheckCase(j, i, false))
                     {
                         myLabel.Background = Brushes.Green;
                         clickableList.Add(myLabel.ToolTip.ToString());
@@ -214,7 +214,7 @@ namespace OthelloAlainGabriel
                 Console.WriteLine(c);
             */
         }
-        private bool checkCase(int col, int row, bool switchTokens)
+        private bool CheckCase(int col, int row, bool switchTokens)
         {
             if (tabBoard[row, col] != 0)
                 return false;
