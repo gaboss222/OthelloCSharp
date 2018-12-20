@@ -1,4 +1,5 @@
-- Score
+- Score //DONE
+- Représenter joueur par leur TOKEN et pas par leur nom
 - Sauvegarde
 - Charger sauvegarde
 - Fin de partie
@@ -8,6 +9,6 @@
 	- Affichage de fin de jeu
 
 - Améliorations (si le temps)
-- New game (voir le TODO pour new game)
-- UNDO 
+	- New game (voir le TODO pour new game)
+	- UNDO 
 - Menu de jeu

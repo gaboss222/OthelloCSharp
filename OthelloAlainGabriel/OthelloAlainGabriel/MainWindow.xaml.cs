@@ -31,6 +31,7 @@ namespace OthelloAlainGabriel
         #region Attribute
         bool isPlayer1;
         int[,] tabBoard;
+        int scoreP1, scoreP2;
         Stopwatch timerP1, timerP2;
         Timer timerUpdate;
         #endregion
@@ -53,6 +54,8 @@ namespace OthelloAlainGabriel
             timerUpdate = new Timer(10);
             timerUpdate.Elapsed += Timer_tick;
             timerUpdate.Start();
+
+            lblPlayer1Score.Content = lblPlayer2Score.Content =  "Score : 2";
         }
 
         private void InitializeBoard()
@@ -133,8 +136,10 @@ namespace OthelloAlainGabriel
                 lbl.MouseDown -= Btn_Click;
 
             }
-            
+
+            CheckScore();
             CheckCases();
+            
         }
 
         /// <summary>
@@ -161,22 +166,6 @@ namespace OthelloAlainGabriel
 
         #region gameAlgo
 
-        private void ChangeToken(int col, int row)
-        {
-            Label lbl = GetChildren(tokenGrid, col, row) as Label;
-
-            //Si joueur noir (player 2), alors on change le token en blanc (player1)
-            switch (tabBoard[col, row])
-            {
-                case 1:
-                    lbl.Background = player1.Token.ImgBrush;
-                    break;
-                case 2:
-                    lbl.Background = player2.Token.ImgBrush;
-                    break;
-            }
-        }
-
         private void SwitchToken(int col, int row)
         {
             Label lbl = GetChildren(tokenGrid, row, col) as Label;
@@ -191,7 +180,7 @@ namespace OthelloAlainGabriel
                 lbl.Background = player1.Token.ImgBrush;
             }
         }
-
+        
         private void CheckCases()
         {
             for (int i = 0; i < 7; i++)
@@ -209,11 +198,6 @@ namespace OthelloAlainGabriel
                     }
                 }
             }
-            /*
-            Console.WriteLine("Cases clickables : ");
-            foreach (string c in clickableList)
-                Console.WriteLine(c);
-            */
         }
         private bool CheckCase(int col, int row, bool switchTokens)
         {
@@ -226,7 +210,6 @@ namespace OthelloAlainGabriel
             }
             return CheckLeft(col, row, switchTokens) || CheckRight(col, row, switchTokens) || CheckTop(col, row, switchTokens) || CheckBottom(col, row, switchTokens) || CheckTopLeft(col, row, switchTokens) || CheckBottomRight(col, row, switchTokens) || CheckTopRight(col, row, switchTokens) || CheckBottomLeft(col, row, switchTokens);
         }
-
         private bool CheckLeft(int col, int row, bool switchTokens)
         {
             int playerToken = 1;
@@ -502,6 +485,27 @@ namespace OthelloAlainGabriel
                 }
             }
             return canPlay;
+        }
+
+        private void CheckScore()
+        {
+            scoreP1 = scoreP2 = 0;
+            for (int i = 0; i < 7; i++)
+            {
+                for (int j = 0; j < 9; j++)
+                {
+                    if (tabBoard[i, j] == 1)
+                        scoreP1++;
+                    else if (tabBoard[i, j] == 2)
+                        scoreP2++;
+                }
+            }
+
+            player1.Score = scoreP1;
+            player2.Score = scoreP2;
+
+            lblPlayer1Score.Content = "Score : " + player1.Score;
+            lblPlayer2Score.Content = "Score : " + player2.Score;
         }
 
         private static UIElement GetChildren(Grid grid, int row, int column)
