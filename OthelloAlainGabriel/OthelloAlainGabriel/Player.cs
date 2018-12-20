@@ -5,6 +5,7 @@
         string Name { get; }
         public Token Token { get; set; }
         int NbTokenRestant { get; set; }
+        int Score { get; set; }
 
         public Player(Token t, string name)
         {

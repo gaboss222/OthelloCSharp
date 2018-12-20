@@ -4,9 +4,10 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Timers;
+using System.Windows.Threading;
+using System.ComponentModel;
 
 namespace OthelloAlainGabriel
 {
@@ -50,8 +51,8 @@ namespace OthelloAlainGabriel
 
             ///Timer pour updater les labels
             timerUpdate = new Timer(10);
-            timerUpdate.Elapsed += UpdateLabel;
-            //timerUpdate.Start();
+            timerUpdate.Elapsed += Timer_tick;
+            timerUpdate.Start();
         }
 
         private void InitializeBoard()
@@ -118,7 +119,7 @@ namespace OthelloAlainGabriel
                     lblImgPlayerTurn.Content = player2.ToString();
                     tabBoard[row, col] = 1;
                     timerP1.Stop();
-                    //timerP2.Start();
+                    timerP2.Start();
                 }
                 else
                 {
@@ -127,7 +128,7 @@ namespace OthelloAlainGabriel
                     lblImgPlayerTurn.Content = player1.ToString();
                     tabBoard[row, col] = 2;
                     timerP2.Stop();
-                    //timerP1.Start();
+                    timerP1.Start();
                 }
                 lbl.MouseDown -= Btn_Click;
 
@@ -141,16 +142,20 @@ namespace OthelloAlainGabriel
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void UpdateLabel(object sender, ElapsedEventArgs e)
+        private void Timer_tick(object sender, ElapsedEventArgs e)
         {
-            Dispatcher.Invoke(new Action(() =>
+            System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
-                lblPlayer1Time.Content = timerP1.Elapsed.ToString("mm\\:ss\\.ff");
-            }));
-            Dispatcher.Invoke(new Action(() =>
-            {
-                lblPlayer2Time.Content = timerP2.Elapsed.ToString("mm\\:ss\\.ff");
-            }));
+                Dispatcher.Invoke(new Action(() =>
+                {
+                    lblPlayer1Time.Content = timerP1.Elapsed.ToString("mm\\:ss\\.ff");
+                }));
+
+                Dispatcher.Invoke(new Action(() =>
+                {
+                    lblPlayer2Time.Content = timerP2.Elapsed.ToString("mm\\:ss\\.ff");
+                }));
+            });
         }
         #endregion
 
@@ -515,24 +520,26 @@ namespace OthelloAlainGabriel
         #endregion
 
         #region MenuFunction 
-        
+
         /// <summary>
         /// Restart a new game (1vs1)
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
+        // MODIFICATION ICI !!!
         private void MenuNew_Click(object sender, RoutedEventArgs e)
         {
             for (int i = 0; i < 7; i++)
             {
                 for (int j = 0; j < 9; j++)
                 {
+                    // TODO HERE CHANGE LBL BACKGROUND COLOR + RESET a ZERO LES CASES ET REMETTRES LES 4 TOKENS DU DEBUT
+                    // 1 Fonction
                     Label lbl = GetChildren(tokenGrid, i, j) as Label;
-                    //DELETE LABEL HERE !!!
+                    tokenGrid.Children.Remove(lbl);
                 }
             }
-                    tokenGrid.RowDefinitions.Clear();
-            tokenGrid.ColumnDefinitions.Clear();
+
             tabBoard = null;
 
             InitializeGame();
@@ -550,7 +557,6 @@ namespace OthelloAlainGabriel
         /// <param name="e"></param>
         private void MenuQuit_Click(object sender, RoutedEventArgs e)
         {
-            Dispatcher.InvokeShutdown();
             this.Close();
         }
         private void MenuUndo_Click(object sender, RoutedEventArgs e)
@@ -560,6 +566,11 @@ namespace OthelloAlainGabriel
         private void MenuAbout_Click(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("About : GG and AG Othello");
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            Environment.Exit(0);
         }
         #endregion
     }

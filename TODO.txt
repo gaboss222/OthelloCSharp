@@ -1,0 +1,13 @@
+- Score
+- Sauvegarde
+- Charger sauvegarde
+- Fin de partie
+	- Plus de possibilité pour 1 joueur --> Passe à l'autre
+	- Plus de possibilité pour les 2 joueurs --> Calcul du meilleur score --> Fin
+	- Si le board est rempli --> Calcul du meilleur score --> fin
+	- Affichage de fin de jeu
+
+- Améliorations (si le temps)
+- New game (voir le TODO pour new game)
+- UNDO 
+- Menu de jeu
