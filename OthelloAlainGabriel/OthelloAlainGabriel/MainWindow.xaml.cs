@@ -31,9 +31,9 @@ namespace OthelloAlainGabriel
 
         #region Attribute
         private bool isPlayer1;
-        private int scoreP1, scoreP2;
         private Stopwatch timerP1, timerP2;
         private Timer timerUpdate;
+        private int nbFreeCells;
         #endregion
 
         private void InitializeGame()
@@ -59,6 +59,9 @@ namespace OthelloAlainGabriel
             timerUpdate.Start();
 
             lblPlayer1Score.Content = lblPlayer2Score.Content = "Score : 2";
+
+            nbFreeCells = (7 * 9) - 4;
+
         }
 
         private void InitializeBoard()
@@ -102,6 +105,7 @@ namespace OthelloAlainGabriel
 
             gridPlayerTurn.Background = Brushes.LightGreen;
             lblPlayerImgTurn.Background = player1.Token.ImgBrush;
+
             CheckCases();
             timerP1.Start();
         }
@@ -122,9 +126,20 @@ namespace OthelloAlainGabriel
                     ChangeBoardPlayer(row, col, lbl, player1);
                 else
                     ChangeBoardPlayer(row, col, lbl, player2);
+
+                nbFreeCells--;
+
                 lbl.MouseDown -= OnClickLabel;
+
+                Console.WriteLine("Case libres : " + nbFreeCells);
             }
+
             CheckScore();
+            if(CheckIfFinish())
+            {
+                FinishFunction();
+                return;
+            }
             CheckCases();
         }
 
@@ -208,12 +223,11 @@ namespace OthelloAlainGabriel
                 for (int j = 0; j < 9; j++)
                 {
                     Label myLabel = GetChildren(tokenGrid, i, j) as Label;
-                    //if (CheckCase(j, i, false))
+
                     if (CheckCase(i, j, false))
                     {
                         myLabel.Background = Brushes.Green;
                     }
-                    //else if (tabBoard[i, j] == 0)
                     else if (board.CheckTokenEquals(i, j, 0))
                     {
                         myLabel.Background = Brushes.Transparent;
@@ -223,13 +237,11 @@ namespace OthelloAlainGabriel
         }
         private bool CheckCase(int row, int col, bool switchTokens)
         {
-            //if (tabBoard[row, col] != 0)
             if (!board.CheckTokenEquals(row, col, 0))
                 return false;
 
             if (switchTokens)
             {
-                //CheckLeft(col, row, switchTokens); CheckRight(col, row, switchTokens); CheckTop(col, row, switchTokens); CheckBottom(col, row, switchTokens); CheckTopLeft(col, row, switchTokens); CheckBottomRight(col, row, switchTokens); CheckTopRight(col, row, switchTokens); CheckBottomLeft(col, row, switchTokens);
                 CheckLeft(row, col, switchTokens);
                 CheckRight(row, col, switchTokens);
                 CheckTop(row, col, switchTokens);
@@ -275,7 +287,7 @@ namespace OthelloAlainGabriel
                     //SwitchToken(j, row);
                     SwitchToken(row, j);
                 }
-                Console.WriteLine(i + " " + col);
+               // Console.WriteLine(i + " " + col);
             }
             return canPlay;
         }
@@ -311,7 +323,7 @@ namespace OthelloAlainGabriel
                     //SwitchToken(j, row);
                     SwitchToken(row, j);
                 }
-                Console.WriteLine(i + " " + col);
+                //Console.WriteLine(i + " " + col);
             }
             return canPlay;
         }
@@ -346,7 +358,7 @@ namespace OthelloAlainGabriel
                     //SwitchToken(col, j);
                     SwitchToken(j, col);
                 }
-                Console.WriteLine(i + " " + row);
+                //Console.WriteLine(i + " " + row);
             }
             return canPlay;
         }
@@ -382,7 +394,7 @@ namespace OthelloAlainGabriel
                     //SwitchToken(col, j);
                     SwitchToken(j, col);
                 }
-                Console.WriteLine(i + " " + row);
+                //Console.WriteLine(i + " " + row);
             }
             return canPlay;
         }
@@ -417,7 +429,7 @@ namespace OthelloAlainGabriel
             }
             if (switchTokens && canPlay)
             {
-                Console.WriteLine(colBase + ";" + rowBase + " " + col + ";" + row);
+                //Console.WriteLine(colBase + ";" + rowBase + " " + col + ";" + row);
                 while (rowBase > row && colBase > col)
                 {
                     //SwitchToken(colBase, rowBase);
@@ -457,7 +469,7 @@ namespace OthelloAlainGabriel
             }
             if (switchTokens && canPlay)
             {
-                Console.WriteLine(colBase + ";" + rowBase + " " + col + ";" + row);
+                //Console.WriteLine(colBase + ";" + rowBase + " " + col + ";" + row);
                 while (rowBase < row && colBase < col)
                 {
                     //SwitchToken(colBase, rowBase);
@@ -499,7 +511,7 @@ namespace OthelloAlainGabriel
             }
             if (switchTokens && canPlay)
             {
-                Console.WriteLine(colBase + ";" + rowBase + " " + col + ";" + row);
+                //Console.WriteLine(colBase + ";" + rowBase + " " + col + ";" + row);
                 while (rowBase > row && colBase < col)
                 {
                     //SwitchToken(colBase, rowBase);
@@ -541,7 +553,7 @@ namespace OthelloAlainGabriel
             }
             if (switchTokens && canPlay)
             {
-                Console.WriteLine(colBase + ";" + rowBase + " " + col + ";" + row);
+                //Console.WriteLine(colBase + ";" + rowBase + " " + col + ";" + row);
                 while (rowBase < row && colBase > col)
                 {
                     //SwitchToken(colBase, rowBase);
@@ -555,29 +567,25 @@ namespace OthelloAlainGabriel
 
         private void CheckScore()
         {
-            scoreP1 = scoreP2 = 0;
+            player1.Score = player2.Score = 0;
             for (int i = 0; i < 7; i++)
             {
                 for (int j = 0; j < 9; j++)
                 {
-                    /*if (tabBoard[i, j] == 1)
-                        scoreP1++;
-                    else if (tabBoard[i, j] == 2)
-                        scoreP2++;*/
                     if (board.CheckTokenEquals(i, j, player1.Number))
-                        scoreP1++;
+                        player1.Score++;
                     else if (board.CheckTokenEquals(i, j, player2.Number))
-                        scoreP2++;
+                        player2.Score++;
                 }
             }
-
-            player1.Score = scoreP1;
-            player2.Score = scoreP2;
 
             lblPlayer1Score.Content = "Score : " + player1.Score;
             lblPlayer2Score.Content = "Score : " + player2.Score;
         }
 
+        #endregion
+
+        #region OtherFunction
         /// <summary>
         /// return number (1 or 2) of the actual player
         /// </summary>
@@ -585,6 +593,63 @@ namespace OthelloAlainGabriel
         private int GetNumberPlayer()
         {
             return (isPlayer1 ? player1.Number : player2.Number);
+        }
+
+        /// <summary>
+        /// Every time a label is clicked, check if the game is finish
+        /// </summary>
+        /// <returns></returns>
+        private bool CheckIfFinish()
+        {
+            if (nbFreeCells == 0)
+                return true;
+
+            // Ou si aucun des 2 joueurs ne peut jouer
+            //else if (nbFreeCells)
+                //return false;
+            return false;
+        }
+
+        /// <summary>
+        /// Function called when a game is finish.
+        /// Pop-up a msgBox with the winner, try again or quit ?
+        /// </summary>
+        private void FinishFunction()
+        {
+            timerP1.Stop();
+            timerP2.Stop();
+
+            /*for(int i = 0; i < 7; i++)
+            {
+                for(int j = 0; j < 9; j++)
+                {
+                    Label lbl = GetChildren(tokenGrid, i, j) as Label;
+                    lbl.MouseDown -= OnClickLabel;
+                }
+            }*/
+
+            string msg;
+            if (player1.Score > player2.Score)
+            {
+                msg = "Gagnant : player 1, " + player1.Name + "\nScore : " + player1.Score + "\nVoulez-vous recommencer ?";
+                lblPlayerImgTurn.Background = player1.Token.ImgBrush;
+            }
+            else
+            {
+                msg = "Gagnant : player 2, " + player2.Name + "\nScore : " + player2.Score + "\nVoulez-vous recommencer ?";
+                lblPlayerImgTurn.Background = player2.Token.ImgBrush;
+            }
+
+            var result = MessageBox.Show(msg, "Win box", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if(result == MessageBoxResult.Yes)
+            {
+                ProperlyNewGame();
+            }
+            else
+            {
+                this.Close();
+            }
         }
 
         private static UIElement GetChildren(Grid grid, int row, int column)
@@ -612,22 +677,7 @@ namespace OthelloAlainGabriel
         // MODIFICATION ICI !!!
         private void MenuNew_Click(object sender, RoutedEventArgs e)
         {
-            for (int i = 0; i < 7; i++)
-            {
-                for (int j = 0; j < 9; j++)
-                {
-                    // TODO HERE CHANGE LBL BACKGROUND COLOR + RESET a ZERO LES CASES ET REMETTRES LES 4 TOKENS DU DEBUT
-                    // 1 Fonction
-                    Label lbl = GetChildren(tokenGrid, i, j) as Label;
-                    tokenGrid.Children.Remove(lbl);
-                }
-            }
-
-            //tabBoard = null;
-            board = null;
-
-            InitializeGame();
-            InitializeBoard();
+            ProperlyNewGame();
         }
         private void MenuSave_Click(object sender, RoutedEventArgs e)
         {
@@ -655,6 +705,25 @@ namespace OthelloAlainGabriel
         protected override void OnClosing(CancelEventArgs e)
         {
             Environment.Exit(0);
+        }
+        public void ProperlyNewGame()
+        {
+            for (int i = 0; i < 7; i++)
+            {
+                for (int j = 0; j < 9; j++)
+                {
+                    // TODO HERE CHANGE LBL BACKGROUND COLOR + RESET a ZERO LES CASES ET REMETTRES LES 4 TOKENS DU DEBUT
+                    // 1 Fonction
+                    Label lbl = GetChildren(tokenGrid, i, j) as Label;
+                    tokenGrid.Children.Remove(lbl);
+                }
+            }
+
+            //tabBoard = null;
+            board = null;
+
+            InitializeGame();
+            InitializeBoard();
         }
         #endregion
     }

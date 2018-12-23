@@ -1,13 +1,13 @@
-- Score //DONE
-- Représenter joueur par leur TOKEN et pas par leur nom //DONE
-- Refactorisation ([row, col], classe board) //DONE
+- Score 								//DONE
+- Représenter joueur par leur TOKEN et pas par leur nom 			//DONE
+- Refactorisation ([row, col], classe board) 					//DONE
 - Sauvegarde
 - Charger sauvegarde
 - Fin de partie
 	- Plus de possibilité pour 1 joueur --> Passe à l'autre
 	- Plus de possibilité pour les 2 joueurs --> Calcul du meilleur score --> Fin
-	- Si le board est rempli --> Calcul du meilleur score --> fin
-	- Affichage de fin de jeu
+	- Si le board est rempli --> Calcul du meilleur score --> fin 		//DONE
+	- Affichage de fin de jeu					//A MOITIE DONE
 - Commentaires XML
 
 - Améliorations (si le temps)

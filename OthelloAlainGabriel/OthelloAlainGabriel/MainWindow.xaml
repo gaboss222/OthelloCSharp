@@ -33,7 +33,7 @@
                 </Grid>
             </Viewbox>
             <StackPanel
-                Grid.Column="1" Margin="45,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" Width="160" Height="511">
+                Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" Width="195" Height="511">
                 <Label x:Name="lblPlayer1" Content="Player 1 :" FontSize="22"/>
                 <Label x:Name="lblPlayer1Score" Content=". . ." FontSize="22"/>
                 <Label x:Name="lblPlayer1Time" Content=". . ." FontSize="22"/>
