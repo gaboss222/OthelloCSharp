@@ -28,19 +28,23 @@
                 <ColumnDefinition Width="3*" />
             </Grid.ColumnDefinitions>
             <Viewbox Stretch="Uniform">
-                <Grid Name="tokenGrid" >
+                <Grid Name="tokenGrid">
 
                 </Grid>
             </Viewbox>
-            <StackPanel Grid.Column="2" Margin="10">
-                <Label x:Name="lblPlayer1" Content="Player 1 :" FontSize="18"/>
-                <Label x:Name="lblPlayer1Score" Content=". . ." FontSize="18"/>
-                <Label x:Name="lblPlayer1Time" Content=". . ." FontSize="18"/>
-                <Label x:Name="lblPlayerTurn" Content="Player's turn :" FontSize="18" Margin="0,60,0,0"/>
-                <Label x:Name="lblImgPlayerTurn" Content=". . ." FontSize="18" Margin="0,0,0,60"/>
-                <Label x:Name="lblPlayer2" Content="Player 2" FontSize="18" Padding="5,5,5,7" Margin="0"/>
-                <Label x:Name="lblPlayer2Score" Content=". . ." FontSize="18" Padding="5,5,5,7" Margin="0"/>
-                <Label x:Name="lblPlayer2Time" Content=". . ." FontSize="18" Margin="0" Padding="5,5,5,7"/>
+            <StackPanel
+                Grid.Column="1" Margin="45,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" Width="160" Height="511">
+                <Label x:Name="lblPlayer1" Content="Player 1 :" FontSize="22"/>
+                <Label x:Name="lblPlayer1Score" Content=". . ." FontSize="22"/>
+                <Label x:Name="lblPlayer1Time" Content=". . ." FontSize="22"/>
+                <Label x:Name="lblPlayerTurn" Content="Player's turn :" FontSize="22" Margin="0,60,0,0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <Grid  x:Name="gridPlayerTurn" Height="80" Width="80" Margin="0" HorizontalAlignment="Left">
+                    <Label x:Name="lblPlayerImgTurn"/>
+                </Grid>
+                <Label x:Name="lblPlayer2" Content="Player 2" FontSize="22"  Margin="0,80,0,0"/>
+                <Label x:Name="lblPlayer2Score" Content=". . ." FontSize="22"  Margin="0"/>
+                <Label x:Name="lblPlayer2Time" Content=". . ." FontSize="22" Margin="0"/>
+
             </StackPanel>
         </Grid>
 

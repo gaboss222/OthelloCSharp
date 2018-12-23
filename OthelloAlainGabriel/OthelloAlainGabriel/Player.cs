@@ -2,21 +2,17 @@
 {
     public class Player
     {
-        string Name { get; }
+        public string Name { get;}
+        public int Number { get; }
         public Token Token { get; set; }
-        int NbTokenRestant { get; set; }
         public int Score { get; set; }
 
-        public Player(Token t, string name)
+        public Player(Token t, string name, int number)
         {
             Token = t;
-            NbTokenRestant = 30;
             Name = name;
-        }
-
-        public void LeftToken(int nbToken)
-        {
-            NbTokenRestant -= nbToken;
+            Number = number;
+            Score = 0;
         }
 
         public override string ToString()

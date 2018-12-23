@@ -8,15 +8,16 @@ using System.Windows.Media;
 
 namespace OthelloAlainGabriel
 {
-    //Classe définissant un token
+    /// <summary>
+    /// Token class
+    /// Token = path = imgBrushes
+    /// </summary>
     public class Token
     {
-        //public string PathToToken { get; }
         public ImageBrush ImgBrush { get; }
         
         public Token(string path)
         {
-            //PathToToken = path;
             Console.WriteLine(path);
             Image img = Image.FromFile(path);
             Bitmap bmp = new Bitmap(img);

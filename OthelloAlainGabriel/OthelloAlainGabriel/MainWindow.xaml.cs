@@ -21,28 +21,31 @@ namespace OthelloAlainGabriel
             InitializeComponent();
             InitializeGame();
             InitializeBoard();
-            
+
         }
         #region Property
         Player player1, player2;
         Token token1, token2;
+        Board board;
         #endregion
 
         #region Attribute
-        bool isPlayer1;
-        int[,] tabBoard;
-        int scoreP1, scoreP2;
-        Stopwatch timerP1, timerP2;
-        Timer timerUpdate;
+        private bool isPlayer1;
+        private int scoreP1, scoreP2;
+        private Stopwatch timerP1, timerP2;
+        private Timer timerUpdate;
         #endregion
 
         private void InitializeGame()
         {
-            token1 = new Token(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"..\..\Assets\Tokens\token_black.png"));
+            token1 = new Token(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"..\..\Assets\Tokens\token1.png"));
             token2 = new Token(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"..\..\Assets\Tokens\token2.png"));
 
-            player1 = new Player(token1, "Gabriel");
-            player2 = new Player(token2, "Alain");
+            player1 = new Player(token1, "Gabriel", 1);
+            player2 = new Player(token2, "Alain", 2);
+
+            //Tableau de 7 lignes (row) et 9 colonnes (col)
+            board = new Board(7, 9);
 
             isPlayer1 = true;
 
@@ -55,12 +58,11 @@ namespace OthelloAlainGabriel
             timerUpdate.Elapsed += Timer_tick;
             timerUpdate.Start();
 
-            lblPlayer1Score.Content = lblPlayer2Score.Content =  "Score : 2";
+            lblPlayer1Score.Content = lblPlayer2Score.Content = "Score : 2";
         }
 
         private void InitializeBoard()
         {
-            tabBoard = new int[7, 9];
             tokenGrid.Background = Brushes.LightGreen;
             for (int i = 0; i < 7; i++)
             {
@@ -72,8 +74,8 @@ namespace OthelloAlainGabriel
                         ToolTip = ((Char)(j + 65)) + "" + (i + 1)
                     };
 
-                    lbl.Name = "j" + j + "i" + i;
-                    lbl.MouseDown += Btn_Click;
+                    lbl.Name = "i" + i + "j" + j;
+                    lbl.MouseDown += OnClickLabel;
                     lbl.BorderThickness = new Thickness(0.1, 0.1, 0.1, 0.1);
                     lbl.BorderBrush = Brushes.Black;
 
@@ -86,60 +88,75 @@ namespace OthelloAlainGabriel
                     if ((i == 3 && j == 3) || (i == 4 && j == 4))
                     {
                         lbl.Background = player2.Token.ImgBrush;
-                        lbl.MouseDown -= Btn_Click;
-                        tabBoard[i, j] = 2;
+                        lbl.MouseDown -= OnClickLabel;
+                        board.SetTokenOnBoard(i, j, player2);
                     }
                     if ((i == 3 && j == 4) || (i == 4 && j == 3))
                     {
                         lbl.Background = player1.Token.ImgBrush;
-                        lbl.MouseDown -= Btn_Click;
-                        tabBoard[i, j] = 1;
+                        lbl.MouseDown -= OnClickLabel;
+                        board.SetTokenOnBoard(i, j, player1);
                     }
-                    lblImgPlayerTurn.Content = player1.ToString();
-
                 }
             }
+
+            gridPlayerTurn.Background = Brushes.LightGreen;
+            lblPlayerImgTurn.Background = player1.Token.ImgBrush;
             CheckCases();
             timerP1.Start();
         }
 
         #region FormsFunction
-        private void Btn_Click(object sender, RoutedEventArgs e)
+        private void OnClickLabel(object sender, RoutedEventArgs e)
         {
-            
+
             Label lbl = sender as Label;
 
-            int col = (int)Char.GetNumericValue(lbl.Name[1]);
-            int row = (int)Char.GetNumericValue(lbl.Name[3]);
+            int row = (int)Char.GetNumericValue(lbl.Name[1]);
+            int col = (int)Char.GetNumericValue(lbl.Name[3]);
 
-            if (CheckCase(col, row, false))
+            if (CheckCase(row, col, false))
             {
-                CheckCase(col, row, true);
+                CheckCase(row, col, true);
                 if (isPlayer1)
-                {
-                    lbl.Background = player1.Token.ImgBrush;
-                    isPlayer1 = false;
-                    lblImgPlayerTurn.Content = player2.ToString();
-                    tabBoard[row, col] = 1;
-                    timerP1.Stop();
-                    timerP2.Start();
-                }
+                    ChangeBoardPlayer(row, col, lbl, player1);
                 else
-                {
-                    lbl.Background = player2.Token.ImgBrush;
-                    isPlayer1 = true;
-                    lblImgPlayerTurn.Content = player1.ToString();
-                    tabBoard[row, col] = 2;
-                    timerP2.Stop();
-                    timerP1.Start();
-                }
-                lbl.MouseDown -= Btn_Click;
-
+                    ChangeBoardPlayer(row, col, lbl, player2);
+                lbl.MouseDown -= OnClickLabel;
             }
-
             CheckScore();
             CheckCases();
-            
+        }
+
+        /// <summary>
+        /// Called each time a label is clicked
+        /// Update board (Change color, change label player, change token)
+        /// </summary>
+        /// <param name="row"></param>
+        /// <param name="col"></param>
+        /// <param name="lbl"></param>
+        /// <param name="p"></param>
+        private void ChangeBoardPlayer(int row, int col, Label lbl, Player p)
+        {
+
+            lbl.Background = p.Token.ImgBrush;
+            board.SetTokenOnBoard(row, col, p);
+
+            switch(p.Number)
+            {
+                case 1:
+                    isPlayer1 = false;
+                    timerP1.Stop();
+                    timerP2.Start();
+                    lblPlayerImgTurn.Background = player2.Token.ImgBrush;
+                    break;
+                case 2:
+                    isPlayer1 = true;
+                    timerP2.Stop();
+                    timerP1.Start();
+                    lblPlayerImgTurn.Background = player1.Token.ImgBrush;
+                    break;
+            }
         }
 
         /// <summary>
@@ -166,21 +183,24 @@ namespace OthelloAlainGabriel
 
         #region gameAlgo
 
-        private void SwitchToken(int col, int row)
+        private void SwitchToken(int row, int col)
         {
             Label lbl = GetChildren(tokenGrid, row, col) as Label;
-            if (tabBoard[row, col] == 1)
+            //if (tabBoard[row, col] == 1)
+            if (board.GetTokenOnBoard(row, col) == 1)
             {
-                tabBoard[row, col] = 2;
+                //tabBoard[row, col] = 2;
+                board.SetTokenOnBoard(row, col, player2);
                 lbl.Background = player2.Token.ImgBrush;
             }
             else
             {
-                tabBoard[row, col] = 1;
+                //tabBoard[row, col] = 1;
+                board.SetTokenOnBoard(row, col, player1);
                 lbl.Background = player1.Token.ImgBrush;
             }
         }
-        
+
         private void CheckCases()
         {
             for (int i = 0; i < 7; i++)
@@ -188,45 +208,61 @@ namespace OthelloAlainGabriel
                 for (int j = 0; j < 9; j++)
                 {
                     Label myLabel = GetChildren(tokenGrid, i, j) as Label;
-                    if (CheckCase(j, i, false))
+                    //if (CheckCase(j, i, false))
+                    if (CheckCase(i, j, false))
                     {
                         myLabel.Background = Brushes.Green;
                     }
-                    else if (tabBoard[i, j] == 0)
+                    //else if (tabBoard[i, j] == 0)
+                    else if (board.CheckTokenEquals(i, j, 0))
                     {
                         myLabel.Background = Brushes.Transparent;
                     }
                 }
             }
         }
-        private bool CheckCase(int col, int row, bool switchTokens)
+        private bool CheckCase(int row, int col, bool switchTokens)
         {
-            if (tabBoard[row, col] != 0)
+            //if (tabBoard[row, col] != 0)
+            if (!board.CheckTokenEquals(row, col, 0))
                 return false;
+
             if (switchTokens)
             {
-                CheckLeft(col, row, switchTokens); CheckRight(col, row, switchTokens); CheckTop(col, row, switchTokens); CheckBottom(col, row, switchTokens); CheckTopLeft(col, row, switchTokens); CheckBottomRight(col, row, switchTokens); CheckTopRight(col, row, switchTokens); CheckBottomLeft(col, row, switchTokens);
+                //CheckLeft(col, row, switchTokens); CheckRight(col, row, switchTokens); CheckTop(col, row, switchTokens); CheckBottom(col, row, switchTokens); CheckTopLeft(col, row, switchTokens); CheckBottomRight(col, row, switchTokens); CheckTopRight(col, row, switchTokens); CheckBottomLeft(col, row, switchTokens);
+                CheckLeft(row, col, switchTokens);
+                CheckRight(row, col, switchTokens);
+                CheckTop(row, col, switchTokens);
+                CheckBottom(row, col, switchTokens);
+                CheckTopLeft(row, col, switchTokens);
+                CheckBottomRight(row, col, switchTokens);
+                CheckTopRight(row, col, switchTokens);
+                CheckBottomLeft(row, col, switchTokens);
                 return true;
             }
-            return CheckLeft(col, row, switchTokens) || CheckRight(col, row, switchTokens) || CheckTop(col, row, switchTokens) || CheckBottom(col, row, switchTokens) || CheckTopLeft(col, row, switchTokens) || CheckBottomRight(col, row, switchTokens) || CheckTopRight(col, row, switchTokens) || CheckBottomLeft(col, row, switchTokens);
+            return CheckLeft(row, col, switchTokens) || CheckRight(row, col, switchTokens) || CheckTop(row, col, switchTokens) || CheckBottom(row, col, switchTokens) || CheckTopLeft(row, col, switchTokens) || CheckBottomRight(row, col, switchTokens) || CheckTopRight(row, col, switchTokens) || CheckBottomLeft(row, col, switchTokens);
         }
-        private bool CheckLeft(int col, int row, bool switchTokens)
+        private bool CheckLeft(int row, int col, bool switchTokens)
         {
-            int playerToken = 1;
-            if (!isPlayer1)
-                playerToken = 2;
-            if (col == 0 || tabBoard[row, col - 1] == playerToken || tabBoard[row, col - 1] == 0)
+            int playerToken = GetNumberPlayer();
+
+            //if (col == 0 || tabBoard[row, col - 1] == playerToken || tabBoard[row, col - 1] == 0)
+            if (col == 0 || board.GetTokenOnBoard(row, col - 1) == playerToken || board.GetTokenOnBoard(row, col - 1) == 0)
                 return false;
             int i;
+
             bool canPlay = false;
+
             for (i = col - 2; i >= 0; i--)
             {
-                if (tabBoard[row, i] == playerToken)
+                //if (tabBoard[row, i] == playerToken)
+                if (board.CheckTokenEquals(row, i, playerToken))
                 {
                     canPlay = true;
                     break;
                 }
-                if (tabBoard[row, i] == 0)
+                //if (tabBoard[row, i] == 0)
+                if (board.CheckTokenEquals(row, i, 0))
                 {
                     canPlay = false;
                     break;
@@ -236,29 +272,33 @@ namespace OthelloAlainGabriel
             {
                 for (int j = i + 1; j < col; j++)
                 {
-                    SwitchToken(j, row);
+                    //SwitchToken(j, row);
+                    SwitchToken(row, j);
                 }
                 Console.WriteLine(i + " " + col);
             }
             return canPlay;
         }
-        private bool CheckRight(int col, int row, bool switchTokens)
+        private bool CheckRight(int row, int col, bool switchTokens)
         {
-            int playerToken = 1;
-            if (!isPlayer1)
-                playerToken = 2;
-            if (col == 8 || tabBoard[row, col + 1] == playerToken || tabBoard[row, col + 1] == 0)
+            int playerToken = GetNumberPlayer();
+
+            //if (col == 8 || tabBoard[row, col + 1] == playerToken || tabBoard[row, col + 1] == 0)
+            if (col == 8 || board.GetTokenOnBoard(row, col + 1) == playerToken || board.GetTokenOnBoard(row, col + 1) == 0)
                 return false;
             int i;
             bool canPlay = false;
+
             for (i = col + 2; i < 9; i++)
             {
-                if (tabBoard[row, i] == playerToken)
+                //if (tabBoard[row, i] == playerToken)
+                if (board.CheckTokenEquals(row, i, playerToken))
                 {
                     canPlay = true;
                     break;
                 }
-                if (tabBoard[row, i] == 0)
+                //if (tabBoard[row, i] == 0)
+                if (board.CheckTokenEquals(row, i, 0))
                 {
                     canPlay = false;
                     break;
@@ -268,29 +308,32 @@ namespace OthelloAlainGabriel
             {
                 for (int j = i - 1; j > col; j--)
                 {
-                    SwitchToken(j, row);
+                    //SwitchToken(j, row);
+                    SwitchToken(row, j);
                 }
                 Console.WriteLine(i + " " + col);
             }
             return canPlay;
         }
-        private bool CheckTop(int col, int row, bool switchTokens)
+        private bool CheckTop(int row, int col, bool switchTokens)
         {
-            int playerToken = 1;
-            if (!isPlayer1)
-                playerToken = 2;
-            if (row == 0 || tabBoard[row - 1, col] == playerToken || tabBoard[row - 1, col] == 0)
+            int playerToken = GetNumberPlayer();
+
+            //if (row == 0 || tabBoard[row - 1, col] == playerToken || tabBoard[row - 1, col] == 0)
+            if (row == 0 || board.GetTokenOnBoard(row - 1, col) == playerToken || board.GetTokenOnBoard(row - 1, col) == 0)
                 return false;
             int i;
             bool canPlay = false;
             for (i = row - 2; i >= 0; i--)
             {
-                if (tabBoard[i, col] == playerToken)
+                //if (tabBoard[i, col] == playerToken)
+                if (board.CheckTokenEquals(i, col, playerToken))
                 {
                     canPlay = true;
                     break;
                 }
-                if (tabBoard[i, col] == 0)
+                //if (tabBoard[i, col] == 0)
+                if (board.CheckTokenEquals(i, col, 0))
                 {
                     canPlay = false;
                     break;
@@ -298,31 +341,35 @@ namespace OthelloAlainGabriel
             }
             if (switchTokens && canPlay)
             {
-                for (int j = i +1; j < row; j++)
+                for (int j = i + 1; j < row; j++)
                 {
-                    SwitchToken(col, j);
+                    //SwitchToken(col, j);
+                    SwitchToken(j, col);
                 }
                 Console.WriteLine(i + " " + row);
             }
             return canPlay;
         }
-        private bool CheckBottom(int col, int row, bool switchTokens)
+        private bool CheckBottom(int row, int col, bool switchTokens)
         {
-            int playerToken = 1;
-            if (!isPlayer1)
-                playerToken = 2;
-            if (row == 6 || tabBoard[row + 1, col] == playerToken || tabBoard[row + 1, col] == 0)
+            int playerToken = GetNumberPlayer();
+
+            //if (row == 6 || tabBoard[row + 1, col] == playerToken || tabBoard[row + 1, col] == 0)
+            if (row == 6 || board.GetTokenOnBoard(row + 1, col) == playerToken || board.GetTokenOnBoard(row+1, col) == 0)
                 return false;
             int i;
             bool canPlay = false;
+
             for (i = row + 2; i < 7; i++)
             {
-                if (tabBoard[i, col] == playerToken)
+                //if (tabBoard[i, col] == playerToken)
+                if(board.CheckTokenEquals(i, col, playerToken))
                 {
                     canPlay = true;
                     break;
                 }
-                if (tabBoard[i, col] == 0)
+                //if (tabBoard[i, col] == 0)
+                if (board.CheckTokenEquals(i, col, 0))
                 {
                     canPlay = false;
                     break;
@@ -332,32 +379,37 @@ namespace OthelloAlainGabriel
             {
                 for (int j = i - 1; j > row; j--)
                 {
-                    SwitchToken(col, j);
+                    //SwitchToken(col, j);
+                    SwitchToken(j, col);
                 }
                 Console.WriteLine(i + " " + row);
             }
             return canPlay;
         }
-        private bool CheckTopLeft(int col, int row, bool switchTokens)
+        private bool CheckTopLeft(int row, int col, bool switchTokens)
         {
-            int playerToken = 1;
-            if (!isPlayer1)
-                playerToken = 2;
-            if (row == 0 || col == 0 || tabBoard[row - 1, col - 1] == playerToken || tabBoard[row - 1, col - 1] == 0)
+            int playerToken = GetNumberPlayer();
+
+            //if (row == 0 || col == 0 || tabBoard[row - 1, col - 1] == playerToken || tabBoard[row - 1, col - 1] == 0)
+            if (row == 0 || col == 0 || board.GetTokenOnBoard(row - 1, col - 1) == playerToken || board.GetTokenOnBoard(row - 1, col - 1) == 0)
                 return false;
+
             int rowBase = row;
             int colBase = col;
             bool canPlay = false;
+
             while (row > 0 && col > 0)
             {
                 row--;
                 col--;
-                if (tabBoard[row, col] == playerToken)
+                //if (tabBoard[row, col] == playerToken)
+                if (board.CheckTokenEquals(row, col, playerToken))
                 {
                     canPlay = true;
                     break;
                 }
-                if (tabBoard[row, col] == 0)
+                //if (tabBoard[row, col] == 0)
+                if (board.CheckTokenEquals(row, col, 0))
                 {
                     canPlay = false;
                     break;
@@ -368,19 +420,20 @@ namespace OthelloAlainGabriel
                 Console.WriteLine(colBase + ";" + rowBase + " " + col + ";" + row);
                 while (rowBase > row && colBase > col)
                 {
-                    SwitchToken(colBase, rowBase);
+                    //SwitchToken(colBase, rowBase);
+                    SwitchToken(rowBase, colBase);
                     rowBase--;
                     colBase--;
                 }
             }
             return canPlay;
         }
-        private bool CheckBottomRight(int col, int row, bool switchTokens)
+        private bool CheckBottomRight(int row, int col, bool switchTokens)
         {
-            int playerToken = 1;
-            if (!isPlayer1)
-                playerToken = 2;
-            if (row == 6 || col == 8 || tabBoard[row + 1, col + 1] == playerToken || tabBoard[row + 1, col + 1] == 0)
+            int playerToken = GetNumberPlayer();
+
+            //if (row == 6 || col == 8 || tabBoard[row + 1, col + 1] == playerToken || tabBoard[row + 1, col + 1] == 0)
+            if (row == 6 || col == 8 || board.GetTokenOnBoard(row + 1, col + 1) == playerToken || board.GetTokenOnBoard(row + 1, col + 1) == 0)
                 return false;
             int rowBase = row;
             int colBase = col;
@@ -389,12 +442,14 @@ namespace OthelloAlainGabriel
             {
                 row++;
                 col++;
-                if (tabBoard[row, col] == playerToken)
+                //if (tabBoard[row, col] == playerToken)
+                if (board.CheckTokenEquals(row, col, playerToken))
                 {
                     canPlay = true;
                     break;
                 }
-                if (tabBoard[row, col] == 0)
+                //if (tabBoard[row, col] == 0)
+                if (board.CheckTokenEquals(row, col, 0))
                 {
                     canPlay = false;
                     break;
@@ -405,33 +460,38 @@ namespace OthelloAlainGabriel
                 Console.WriteLine(colBase + ";" + rowBase + " " + col + ";" + row);
                 while (rowBase < row && colBase < col)
                 {
-                    SwitchToken(colBase, rowBase);
+                    //SwitchToken(colBase, rowBase);
+                    SwitchToken(rowBase, colBase);
                     rowBase++;
                     colBase++;
                 }
             }
             return canPlay;
         }
-        private bool CheckTopRight(int col, int row, bool switchTokens)
+        private bool CheckTopRight(int row, int col, bool switchTokens)
         {
-            int playerToken = 1;
-            if (!isPlayer1)
-                playerToken = 2;
-            if (row == 0 || col == 8 || tabBoard[row - 1, col + 1] == playerToken || tabBoard[row - 1, col + 1] == 0)
+            int playerToken = GetNumberPlayer();
+
+            //if (row == 0 || col == 8 || tabBoard[row - 1, col + 1] == playerToken || tabBoard[row - 1, col + 1] == 0)
+            if (row == 0 || col == 8 || board.GetTokenOnBoard(row - 1, col + 1) == playerToken || board.GetTokenOnBoard(row - 1, col + 1) == 0)
                 return false;
+
             int rowBase = row;
             int colBase = col;
             bool canPlay = false;
+
             while (row > 0 && col < 8)
             {
                 row--;
                 col++;
-                if (tabBoard[row, col] == playerToken)
+                //if (tabBoard[row, col] == playerToken)
+                if (board.CheckTokenEquals(row, col, playerToken))
                 {
                     canPlay = true;
                     break;
                 }
-                if (tabBoard[row, col] == 0)
+                //if (tabBoard[row, col] == 0)
+                if (board.CheckTokenEquals(row, col, 0))
                 {
                     canPlay = false;
                     break;
@@ -442,33 +502,38 @@ namespace OthelloAlainGabriel
                 Console.WriteLine(colBase + ";" + rowBase + " " + col + ";" + row);
                 while (rowBase > row && colBase < col)
                 {
-                    SwitchToken(colBase, rowBase);
+                    //SwitchToken(colBase, rowBase);
+                    SwitchToken(rowBase, colBase);
                     rowBase--;
                     colBase++;
                 }
             }
             return canPlay;
         }
-        private bool CheckBottomLeft(int col, int row, bool switchTokens)
+        private bool CheckBottomLeft(int row, int col, bool switchTokens)
         {
-            int playerToken = 1;
-            if (!isPlayer1)
-                playerToken = 2;
-            if (row == 6 || col == 0 || tabBoard[row + 1, col - 1] == playerToken || tabBoard[row + 1, col - 1] == 0)
+            int playerToken = GetNumberPlayer();
+
+            //if (row == 6 || col == 0 || tabBoard[row + 1, col - 1] == playerToken || tabBoard[row + 1, col - 1] == 0)
+            if (row == 6 || col == 0 || board.GetTokenOnBoard(row + 1, col - 1) == playerToken || board.GetTokenOnBoard(row + 1, col - 1) == 0)
                 return false;
+
             int rowBase = row;
             int colBase = col;
             bool canPlay = false;
+
             while (row < 6 && col > 0)
             {
                 row++;
                 col--;
-                if (tabBoard[row, col] == playerToken)
+                //if (tabBoard[row, col] == playerToken)
+                if (board.CheckTokenEquals(row, col, playerToken))
                 {
                     canPlay = true;
                     break;
                 }
-                if (tabBoard[row, col] == 0)
+                //if (tabBoard[row, col] == 0)
+                if (board.CheckTokenEquals(row, col, 0))
                 {
                     canPlay = false;
                     break;
@@ -479,7 +544,8 @@ namespace OthelloAlainGabriel
                 Console.WriteLine(colBase + ";" + rowBase + " " + col + ";" + row);
                 while (rowBase < row && colBase > col)
                 {
-                    SwitchToken(colBase, rowBase);
+                    //SwitchToken(colBase, rowBase);
+                    SwitchToken(rowBase, colBase);
                     rowBase++;
                     colBase--;
                 }
@@ -494,9 +560,13 @@ namespace OthelloAlainGabriel
             {
                 for (int j = 0; j < 9; j++)
                 {
-                    if (tabBoard[i, j] == 1)
+                    /*if (tabBoard[i, j] == 1)
                         scoreP1++;
                     else if (tabBoard[i, j] == 2)
+                        scoreP2++;*/
+                    if (board.CheckTokenEquals(i, j, player1.Number))
+                        scoreP1++;
+                    else if (board.CheckTokenEquals(i, j, player2.Number))
                         scoreP2++;
                 }
             }
@@ -506,6 +576,15 @@ namespace OthelloAlainGabriel
 
             lblPlayer1Score.Content = "Score : " + player1.Score;
             lblPlayer2Score.Content = "Score : " + player2.Score;
+        }
+
+        /// <summary>
+        /// return number (1 or 2) of the actual player
+        /// </summary>
+        /// <returns>Player.number</returns>
+        private int GetNumberPlayer()
+        {
+            return (isPlayer1 ? player1.Number : player2.Number);
         }
 
         private static UIElement GetChildren(Grid grid, int row, int column)
@@ -544,7 +623,8 @@ namespace OthelloAlainGabriel
                 }
             }
 
-            tabBoard = null;
+            //tabBoard = null;
+            board = null;
 
             InitializeGame();
             InitializeBoard();
