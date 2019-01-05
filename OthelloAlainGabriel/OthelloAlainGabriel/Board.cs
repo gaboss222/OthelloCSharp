@@ -32,5 +32,10 @@ namespace OthelloAlainGabriel
         {
             return (tabBoard[row, col] == value);
         }
+
+        public int[,] GetBoard()
+        {
+            return tabBoard;
+        }
     }
 }

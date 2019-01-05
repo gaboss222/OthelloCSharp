@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Timers;
 using System.Windows.Threading;
 using System.ComponentModel;
+using System.Xml;
 
 namespace OthelloAlainGabriel
 {
@@ -34,6 +35,7 @@ namespace OthelloAlainGabriel
         private Stopwatch timerP1, timerP2;
         private Timer timerUpdate;
         private int nbFreeCells;
+        private int turn;
         #endregion
 
         private void InitializeGame()
@@ -62,6 +64,7 @@ namespace OthelloAlainGabriel
 
             nbFreeCells = (7 * 9) - 4;
 
+            turn = 1;
         }
 
         private void InitializeBoard()
@@ -135,7 +138,7 @@ namespace OthelloAlainGabriel
             }
 
             CheckScore();
-            if(CheckIfFinish())
+            if (CheckIfFinish())
             {
                 FinishFunction();
                 return;
@@ -157,13 +160,14 @@ namespace OthelloAlainGabriel
             lbl.Background = p.Token.ImgBrush;
             board.SetTokenOnBoard(row, col, p);
 
-            switch(p.Number)
+            switch (p.Number)
             {
                 case 1:
                     isPlayer1 = false;
                     timerP1.Stop();
                     timerP2.Start();
                     lblPlayerImgTurn.Background = player2.Token.ImgBrush;
+                    turn++;
                     break;
                 case 2:
                     isPlayer1 = true;
@@ -287,7 +291,7 @@ namespace OthelloAlainGabriel
                     //SwitchToken(j, row);
                     SwitchToken(row, j);
                 }
-               // Console.WriteLine(i + " " + col);
+                // Console.WriteLine(i + " " + col);
             }
             return canPlay;
         }
@@ -367,7 +371,7 @@ namespace OthelloAlainGabriel
             int playerToken = GetNumberPlayer();
 
             //if (row == 6 || tabBoard[row + 1, col] == playerToken || tabBoard[row + 1, col] == 0)
-            if (row == 6 || board.GetTokenOnBoard(row + 1, col) == playerToken || board.GetTokenOnBoard(row+1, col) == 0)
+            if (row == 6 || board.GetTokenOnBoard(row + 1, col) == playerToken || board.GetTokenOnBoard(row + 1, col) == 0)
                 return false;
             int i;
             bool canPlay = false;
@@ -375,7 +379,7 @@ namespace OthelloAlainGabriel
             for (i = row + 2; i < 7; i++)
             {
                 //if (tabBoard[i, col] == playerToken)
-                if(board.CheckTokenEquals(i, col, playerToken))
+                if (board.CheckTokenEquals(i, col, playerToken))
                 {
                     canPlay = true;
                     break;
@@ -606,7 +610,7 @@ namespace OthelloAlainGabriel
 
             // Ou si aucun des 2 joueurs ne peut jouer
             //else if (nbFreeCells)
-                //return false;
+            //return false;
             return false;
         }
 
@@ -642,7 +646,7 @@ namespace OthelloAlainGabriel
 
             var result = MessageBox.Show(msg, "Win box", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
-            if(result == MessageBoxResult.Yes)
+            if (result == MessageBoxResult.Yes)
             {
                 ProperlyNewGame();
             }
@@ -674,13 +678,59 @@ namespace OthelloAlainGabriel
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        // MODIFICATION ICI !!!
         private void MenuNew_Click(object sender, RoutedEventArgs e)
         {
             ProperlyNewGame();
         }
         private void MenuSave_Click(object sender, RoutedEventArgs e)
         {
+
+            XmlWriterSettings settings = new XmlWriterSettings
+            {
+                Indent = true,
+                IndentChars = ("\t"),
+            };
+
+            using (XmlWriter writer = XmlWriter.Create("save.xml", settings))
+            {
+
+                writer.WriteProcessingInstruction("xml", "version='1.0' encoding='UTF-16'");
+
+                writer.WriteStartElement("Game");
+
+                writer.WriteStartElement("Player1");
+                writer.WriteElementString("Name", player1.Name);
+                writer.WriteElementString("Time", timerP1.Elapsed.ToString("mm\\:ss\\.ff"));
+                writer.WriteElementString("Score", player1.Score.ToString());
+                writer.WriteEndElement();
+
+
+                writer.WriteStartElement("Player2");
+                writer.WriteElementString("Name", player2.Name);
+                writer.WriteElementString("Time", timerP2.Elapsed.ToString("mm\\:ss\\.ff"));
+                writer.WriteElementString("Score", player2.Score.ToString());
+                writer.WriteEndElement();
+
+                writer.WriteElementString("Turn", turn.ToString());
+                //TODO !!!
+                // Write properly board on XML file !!!
+                writer.WriteElementString("Board", board.GetBoard().ToString());
+                
+                /*for (int i = 0; i < 7; i++)
+                {
+                    for (int j = 0; j < 9; j++)
+                    {
+                        board.GetTokenOnBoard(i, j);
+                    }
+
+                };*/
+
+                writer.WriteEndElement();
+                writer.WriteEndDocument();
+
+                writer.Flush();
+                writer.Close();
+            }
 
         }
 
@@ -719,7 +769,6 @@ namespace OthelloAlainGabriel
                 }
             }
 
-            //tabBoard = null;
             board = null;
 
             InitializeGame();
