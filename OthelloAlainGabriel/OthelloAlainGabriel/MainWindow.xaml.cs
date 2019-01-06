@@ -22,7 +22,6 @@ namespace OthelloAlainGabriel
             InitializeComponent();
             InitializeGame();
             InitializeBoard();
-
         }
         #region Property
         Player player1, player2;
@@ -38,8 +37,40 @@ namespace OthelloAlainGabriel
         private int turn;
         #endregion
 
+        public struct GameParameter
+        {
+            public string p1Name, p2Name, p1Time, p2Time;
+            public int p1Score, p2Score, turn;
+            public int[,] tabBoard;
+            Board board;
+            Stopwatch p1Stopwatch, p2Stopwatch;
+
+            public GameParameter(string p1Name, string p1Time, int p1Score, string p2Name, string p2Time, int p2Score, int[,] tabBoard, int turn)
+            {
+                this.p1Name = p1Name;
+                this.p1Time = p1Time;
+                this.p1Score = p1Score;
+                this.p2Name = p2Name;
+                this.p2Time = p2Time;
+                this.p2Score = p2Score;
+                this.turn = turn;
+                this.tabBoard = tabBoard;
+                board = new Board(7, 9);
+                board.SetBoard(tabBoard);
+                p1Stopwatch = null;
+                p2Stopwatch = null;
+            }
+
+            public Stopwatch StrToStopWatch(string time)
+            {
+                return null;
+            }
+        }
+
         private void InitializeGame()
         {
+
+
             token1 = new Token(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"..\..\Assets\Tokens\token1.png"));
             token2 = new Token(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"..\..\Assets\Tokens\token2.png"));
 
@@ -656,6 +687,11 @@ namespace OthelloAlainGabriel
             }
         }
 
+        private void LoadGame(GameParameter g)
+        {
+            Console.WriteLine("LOAD GAME");
+        }
+
         private static UIElement GetChildren(Grid grid, int row, int column)
         {
             foreach (UIElement child in grid.Children)
@@ -684,6 +720,19 @@ namespace OthelloAlainGabriel
         }
         private void MenuSave_Click(object sender, RoutedEventArgs e)
         {
+            string filename = "save_" + player1.Name + "_" + player2.Name + ".xml";
+
+            string strBoard = "";
+
+            for (int i = 0; i < 7; i++)
+            {
+                for (int j = 0; j < 9; j++)
+                {
+                    strBoard += board.GetTokenOnBoard(i, j);
+                }
+                //strBoard += "\n";
+
+            };
 
             XmlWriterSettings settings = new XmlWriterSettings
             {
@@ -691,10 +740,10 @@ namespace OthelloAlainGabriel
                 IndentChars = ("\t"),
             };
 
-            using (XmlWriter writer = XmlWriter.Create("save.xml", settings))
+            using (XmlWriter writer = XmlWriter.Create(filename, settings))
             {
 
-                writer.WriteProcessingInstruction("xml", "version='1.0' encoding='UTF-16'");
+                writer.WriteProcessingInstruction("xml", "version='1.0' encoding='UTF-8'");
 
                 writer.WriteStartElement("Game");
 
@@ -712,18 +761,8 @@ namespace OthelloAlainGabriel
                 writer.WriteEndElement();
 
                 writer.WriteElementString("Turn", turn.ToString());
-                //TODO !!!
-                // Write properly board on XML file !!!
-                writer.WriteElementString("Board", board.GetBoard().ToString());
-                
-                /*for (int i = 0; i < 7; i++)
-                {
-                    for (int j = 0; j < 9; j++)
-                    {
-                        board.GetTokenOnBoard(i, j);
-                    }
 
-                };*/
+                writer.WriteElementString("Board", strBoard);
 
                 writer.WriteEndElement();
                 writer.WriteEndDocument();
@@ -733,6 +772,108 @@ namespace OthelloAlainGabriel
             }
 
         }
+        private void MenuLoad_Click(object sender, RoutedEventArgs e)
+        {
+            string p1Name, p2Name, p1Time, p2Time, strBoard, tmp;
+            int p1Score, p2Score, turn;
+            bool readPlayer1;
+            int[,] tabBoard;
+
+            p1Name = p2Name = p1Time = p2Time = strBoard = tmp = null;
+            p1Score = p2Score = turn = 0;
+            readPlayer1 = false;
+            tabBoard = null;
+
+            System.Windows.Forms.OpenFileDialog ofd = new System.Windows.Forms.OpenFileDialog
+            {
+                Filter = "XML Files (*.xml)|*.xml",
+                FilterIndex = 0,
+                DefaultExt = "xml"
+            };
+            if (ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                if (!String.Equals(Path.GetExtension(ofd.FileName),
+                                   ".xml",
+                                   StringComparison.OrdinalIgnoreCase))
+                {
+                    // Invalid file type selected; display an error.
+                    MessageBox.Show("You must select an XML file.",
+                                    "Invalid File Type",
+                                    MessageBoxButton.OK,
+                                    MessageBoxImage.Error);
+
+                }
+                else
+                {
+                    XmlReaderSettings settings = new XmlReaderSettings();
+                    settings.Async = true;
+
+                    using (XmlReader reader = XmlReader.Create(ofd.FileName, settings))
+                    {
+                        while (reader.Read())
+                        {
+                            if (reader.IsStartElement())
+                            {
+                                switch (reader.Name)
+                                {
+                                    case "Player1":
+                                        Console.WriteLine("Start <Player1> element.");
+                                        readPlayer1 = true;
+                                        break;
+
+                                    case "Player2":
+                                        Console.WriteLine("Start <Player2> element.");
+                                        readPlayer1 = false;
+                                        break;
+
+                                    case "Name":
+                                        if (reader.Read())
+                                            tmp = reader.Value.Trim();
+                                        if (readPlayer1)
+                                            p1Name = tmp;
+                                        else
+                                            p2Name = tmp;
+                                        break;
+                                    case "Time":
+                                        if (reader.Read())
+                                            tmp = reader.Value.Trim();
+                                        if (readPlayer1)
+                                            p1Time = tmp;
+                                        else
+                                            p2Time = tmp;
+                                        break;
+                                    case "Score":
+                                        if (reader.Read())
+                                            tmp = reader.Value.Trim();
+                                        if (readPlayer1)
+                                            int.TryParse(tmp, out p1Score);
+                                        else
+                                            int.TryParse(tmp, out p2Score);
+                                        break;
+
+                                    case "Board":
+                                        if (reader.Read())
+                                            strBoard = reader.Value.Trim();
+                                        break;
+
+                                    case "Turn":
+                                        if (reader.Read())
+                                            int.TryParse(reader.Value.Trim(), out turn);
+                                        break;
+                                }
+                            }
+                        }
+                    }
+
+                    tabBoard = Board.StrToInt(strBoard);
+                    GameParameter gameParameter = new GameParameter(p1Name, p1Time, p1Score, p2Name, p2Time, p2Score, tabBoard, turn);
+
+                    //Console.WriteLine(p1Name + " " + p1Time + " " + p1Score + "\n" + p2Name + " " + p2Time + " " + p2Score + "\n" + turn + "\n" + board);
+                    LoadGame(gameParameter);
+                }
+            }
+        }
+
 
         /// <summary>
         /// Close the app

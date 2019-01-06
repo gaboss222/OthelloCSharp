@@ -12,7 +12,7 @@ namespace OthelloAlainGabriel
     class Board
     {
         static private int[,] tabBoard;
-        
+
         public Board(int row, int col)
         {
             tabBoard = new int[row, col];
@@ -36,6 +36,28 @@ namespace OthelloAlainGabriel
         public int[,] GetBoard()
         {
             return tabBoard;
+        }
+
+        public void SetBoard(int[,] board)
+        {
+            tabBoard = board;
+        }
+
+        public static int[,] StrToInt(string strBoard)
+        {
+            int [,] board = new int[7, 9];
+            int j = 0;
+            // TODO HERE TRANSFORMER STR TO INT[,]
+            for (int i = 0; i < strBoard.Length; i++)
+            {
+                board[i, j] = strBoard[i];
+                if (i % 9 == 0)
+                {
+                    j++;
+                }
+            }
+
+            return board;
         }
     }
 }
