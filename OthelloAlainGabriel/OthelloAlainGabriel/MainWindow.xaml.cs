@@ -174,7 +174,15 @@ namespace OthelloAlainGabriel
                 FinishFunction();
                 return;
             }
-            CheckCases();
+
+            if (!CheckCases())
+            {
+                // Fonction pour changer de tour
+                if (!CheckCases())
+                {
+                    FinishFunction();
+                }
+            }
         }
 
         /// <summary>
@@ -251,8 +259,9 @@ namespace OthelloAlainGabriel
             }
         }
 
-        private void CheckCases()
+        private bool CheckCases()
         {
+            bool canPlay = false;
             for (int i = 0; i < 7; i++)
             {
                 for (int j = 0; j < 9; j++)
@@ -262,6 +271,7 @@ namespace OthelloAlainGabriel
                     if (CheckCase(i, j, false))
                     {
                         myLabel.Background = Brushes.Green;
+                        canPlay = true;
                     }
                     else if (board.CheckTokenEquals(i, j, 0))
                     {
@@ -269,7 +279,15 @@ namespace OthelloAlainGabriel
                     }
                 }
             }
+            return canPlay;
         }
+        /// <summary>
+        /// Cette fonction va vérifier si c'est possible de jouer à une case donnée.
+        /// </summary>
+        /// <param name="row">ligne de la case</param>
+        /// <param name="col">colonne de la case</param>
+        /// <param name="switchTokens">s'il faut retourner les jetons</param>
+        /// <returns></returns>
         private bool CheckCase(int row, int col, bool switchTokens)
         {
             if (!board.CheckTokenEquals(row, col, 0))
@@ -289,6 +307,13 @@ namespace OthelloAlainGabriel
             }
             return CheckLeft(row, col, switchTokens) || CheckRight(row, col, switchTokens) || CheckTop(row, col, switchTokens) || CheckBottom(row, col, switchTokens) || CheckTopLeft(row, col, switchTokens) || CheckBottomRight(row, col, switchTokens) || CheckTopRight(row, col, switchTokens) || CheckBottomLeft(row, col, switchTokens);
         }
+        /// <summary>
+        /// Cette fonction va regarder à gauche d'une case pour vérifier s'il est possible de jouer
+        /// </summary>
+        /// <param name="row">ligne de la case</param>
+        /// <param name="col">colonne de la case</param>
+        /// <param name="switchTokens">S'il faut retourner les jetons</param>
+        /// <returns></returns>
         private bool CheckLeft(int row, int col, bool switchTokens)
         {
             int playerToken = GetNumberPlayer();
@@ -326,6 +351,14 @@ namespace OthelloAlainGabriel
             }
             return canPlay;
         }
+
+        /// <summary>
+        /// Cette fonction va regarder à droite d'une case pour vérifier s'il est possible de jouer
+        /// </summary>
+        /// <param name="row">ligne de la case</param>
+        /// <param name="col">colonne de la case</param>
+        /// <param name="switchTokens">S'il faut retourner les jetons</param>
+        /// <returns></returns>
         private bool CheckRight(int row, int col, bool switchTokens)
         {
             int playerToken = GetNumberPlayer();
@@ -362,6 +395,14 @@ namespace OthelloAlainGabriel
             }
             return canPlay;
         }
+
+        /// <summary>
+        /// Cette fonction va regarder en haut d'une case pour vérifier s'il est possible de jouer
+        /// </summary>
+        /// <param name="row">ligne de la case</param>
+        /// <param name="col">colonne de la case</param>
+        /// <param name="switchTokens">S'il faut retourner les jetons</param>
+        /// <returns></returns>
         private bool CheckTop(int row, int col, bool switchTokens)
         {
             int playerToken = GetNumberPlayer();
@@ -397,6 +438,14 @@ namespace OthelloAlainGabriel
             }
             return canPlay;
         }
+
+        /// <summary>
+        /// Cette fonction va regarder en bas d'une case pour vérifier s'il est possible de jouer
+        /// </summary>
+        /// <param name="row">ligne de la case</param>
+        /// <param name="col">colonne de la case</param>
+        /// <param name="switchTokens">S'il faut retourner les jetons</param>
+        /// <returns></returns>
         private bool CheckBottom(int row, int col, bool switchTokens)
         {
             int playerToken = GetNumberPlayer();
@@ -433,6 +482,14 @@ namespace OthelloAlainGabriel
             }
             return canPlay;
         }
+
+        /// <summary>
+        /// Cette fonction va regarder en haut à gauche (diagonal) d'une case pour vérifier s'il est possible de jouer
+        /// </summary>
+        /// <param name="row">ligne de la case</param>
+        /// <param name="col">colonne de la case</param>
+        /// <param name="switchTokens">S'il faut retourner les jetons</param>
+        /// <returns></returns>
         private bool CheckTopLeft(int row, int col, bool switchTokens)
         {
             int playerToken = GetNumberPlayer();
@@ -475,6 +532,14 @@ namespace OthelloAlainGabriel
             }
             return canPlay;
         }
+
+        /// <summary>
+        /// Cette fonction va regarder en bas à droite (diagonal) d'une case pour vérifier s'il est possible de jouer
+        /// </summary>
+        /// <param name="row">ligne de la case</param>
+        /// <param name="col">colonne de la case</param>
+        /// <param name="switchTokens">S'il faut retourner les jetons</param>
+        /// <returns></returns>
         private bool CheckBottomRight(int row, int col, bool switchTokens)
         {
             int playerToken = GetNumberPlayer();
@@ -515,6 +580,14 @@ namespace OthelloAlainGabriel
             }
             return canPlay;
         }
+
+        /// <summary>
+        /// Cette fonction va regarder en haut à droite (diagonal) d'une case pour vérifier s'il est possible de jouer
+        /// </summary>
+        /// <param name="row">ligne de la case</param>
+        /// <param name="col">colonne de la case</param>
+        /// <param name="switchTokens">S'il faut retourner les jetons</param>
+        /// <returns></returns>
         private bool CheckTopRight(int row, int col, bool switchTokens)
         {
             int playerToken = GetNumberPlayer();
@@ -557,6 +630,14 @@ namespace OthelloAlainGabriel
             }
             return canPlay;
         }
+
+        /// <summary>
+        /// Cette fonction va regarder en bas à gauche (diagonal) d'une case pour vérifier s'il est possible de jouer
+        /// </summary>
+        /// <param name="row">ligne de la case</param>
+        /// <param name="col">colonne de la case</param>
+        /// <param name="switchTokens">S'il faut retourner les jetons</param>
+        /// <returns></returns>
         private bool CheckBottomLeft(int row, int col, bool switchTokens)
         {
             int playerToken = GetNumberPlayer();
