@@ -18,7 +18,7 @@ namespace OthelloAlainGabriel
         
         public Token(string path)
         {
-            Console.WriteLine(path);
+            //Console.WriteLine(path);
             Image img = Image.FromFile(path);
             Bitmap bmp = new Bitmap(img);
             var bitmapSource = Imaging.CreateBitmapSourceFromHBitmap(bmp.GetHbitmap(),

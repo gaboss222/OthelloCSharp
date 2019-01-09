@@ -62,7 +62,9 @@
     </ApplicationDefinition>
     <Compile Include="Board.cs" />
     <Compile Include="Menu.cs" />
+    <Compile Include="MyStopwatch.cs" />
     <Compile Include="Player.cs" />
+    <Compile Include="StringExt.cs" />
     <Compile Include="Token.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

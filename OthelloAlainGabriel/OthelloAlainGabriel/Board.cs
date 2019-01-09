@@ -9,9 +9,9 @@ namespace OthelloAlainGabriel
     /// <summary>
     /// Class for the board [7, 9]
     /// </summary>
-    class Board
+    public class Board
     {
-        static private int[,] tabBoard;
+        private static int[,] tabBoard;
 
         public Board(int row, int col)
         {
@@ -21,6 +21,11 @@ namespace OthelloAlainGabriel
         public void SetTokenOnBoard(int row, int col, Player player)
         {
             tabBoard[row, col] = player.Number;
+        }
+
+        public void SetTokenOnBoard(int row, int col, int i)
+        {
+            tabBoard[row, col] = i;
         }
 
         public int GetTokenOnBoard(int row, int col)
@@ -40,23 +45,40 @@ namespace OthelloAlainGabriel
 
         public void SetBoard(int[,] board)
         {
-            tabBoard = board;
+            tabBoard = board.Clone() as int[,];
+        }
+
+        public int GetFreeCells()
+        {
+            int n = 0;
+            for (int i = 0; i < 7; i++)
+            {
+                for (int j = 0; j < 9; j++)
+                {
+                    if (tabBoard[i, j] == 0)
+                        n++;
+                }
+            }
+            return n;
         }
 
         public static int[,] StrToInt(string strBoard)
         {
-            int [,] board = new int[7, 9];
+            int[,] board = new int[7, 9];
+            int i = 0;
             int j = 0;
-            // TODO HERE TRANSFORMER STR TO INT[,]
-            for (int i = 0; i < strBoard.Length; i++)
+
+            for(int k = 0; k < strBoard.Length; k++)
             {
-                board[i, j] = strBoard[i];
-                if (i % 9 == 0)
+                board[i, j] = (int)Char.GetNumericValue(strBoard[k]);
+
+                j++;
+                if(j % 9 == 0)
                 {
-                    j++;
+                    i++;
+                    j = 0;
                 }
             }
-
             return board;
         }
     }
