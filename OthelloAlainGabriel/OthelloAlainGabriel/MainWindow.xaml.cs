@@ -19,9 +19,22 @@ namespace OthelloAlainGabriel
     {
         public MainWindow()
         {
-            InitializeComponent();
-            InitializeGame();
-            InitializeBoard(false);
+            //HERE TODO : GERER LE NEW GAME AVEC LE MAINBOX
+            // + TODO : AU LANCEMENT D'UNE NOUVELLE PARTIE, INSTANCIER UN GAMEPARAMETER
+            mainBox = new MainBox();
+            if(mainBox.CustomShow() == System.Windows.Forms.DialogResult.Yes)
+            {
+                Console.WriteLine(mainBox.GetPlayerName(1));
+                InitializeComponent();
+                InitializeGame();
+                InitializeBoard(false);
+                
+            }
+            else
+            {
+                Close();
+            }
+
         }
         #region Property
         Player player1, player2;
@@ -30,6 +43,7 @@ namespace OthelloAlainGabriel
         #endregion
 
         #region Attribute
+        MainBox mainBox;
         private bool isPlayer1;
         private MyStopwatch timerP1, timerP2;
         private Timer timerUpdate;
@@ -70,18 +84,22 @@ namespace OthelloAlainGabriel
             }
         }
 
-
         private void InitializeGame(GameParameter g = default(GameParameter))
         {
             token1 = new Token(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"..\..\Assets\Tokens\token1.png"));
             token2 = new Token(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"..\..\Assets\Tokens\token2.png"));
 
+            
+
             board = new Board(7, 9);
 
             if (g.Equals(default(GameParameter)))
             {
-                player1 = new Player(token1, "Gabriel", 1);
-                player2 = new Player(token2, "Alain", 2);      
+                player1 = new Player(token1, mainBox.GetPlayerName(1), 1);
+                player2 = new Player(token2, mainBox.GetPlayerName(2), 2);
+
+                lblPlayer1.Content = player1.Name;
+                lblPlayer2.Content = player2.Name;
 
                 //Timer pour chaque joueurs
                 timerP1 = new MyStopwatch();
@@ -888,40 +906,45 @@ namespace OthelloAlainGabriel
                 Indent = true,
                 IndentChars = ("\t"),
             };
-
-            using (XmlWriter writer = XmlWriter.Create(filename, settings))
+            try
             {
+                using (XmlWriter writer = XmlWriter.Create(filename, settings))
+                {
 
-                writer.WriteProcessingInstruction("xml", "version='1.0' encoding='UTF-8'");
+                    writer.WriteProcessingInstruction("xml", "version='1.0' encoding='UTF-8'");
 
-                writer.WriteStartElement("Game");
+                    writer.WriteStartElement("Game");
 
-                writer.WriteStartElement("Player1");
-                writer.WriteElementString("Name", player1.Name);
-                writer.WriteElementString("Time", timerP1.Elapsed.ToString("dd\\:hh\\:mm\\:ss\\:ff"));
-                writer.WriteElementString("Score", player1.Score.ToString());
-                writer.WriteEndElement();
+                    writer.WriteStartElement("Player1");
+                    writer.WriteElementString("Name", player1.Name);
+                    writer.WriteElementString("Time", timerP1.Elapsed.ToString("dd\\:hh\\:mm\\:ss\\:ff"));
+                    writer.WriteElementString("Score", player1.Score.ToString());
+                    writer.WriteEndElement();
 
 
-                writer.WriteStartElement("Player2");
-                writer.WriteElementString("Name", player2.Name);
-                writer.WriteElementString("Time", timerP2.Elapsed.ToString("dd\\:hh\\:mm\\:ss\\:ff"));
-                writer.WriteElementString("Score", player2.Score.ToString());
-                writer.WriteEndElement();
+                    writer.WriteStartElement("Player2");
+                    writer.WriteElementString("Name", player2.Name);
+                    writer.WriteElementString("Time", timerP2.Elapsed.ToString("dd\\:hh\\:mm\\:ss\\:ff"));
+                    writer.WriteElementString("Score", player2.Score.ToString());
+                    writer.WriteEndElement();
 
-                writer.WriteElementString("Turn", turn.ToString());
+                    writer.WriteElementString("Turn", turn.ToString());
 
-                writer.WriteElementString("PlayerTurn", isPlayer1 == true ? "1" : "2");
+                    writer.WriteElementString("PlayerTurn", isPlayer1 == true ? "1" : "2");
 
-                writer.WriteElementString("Board", strBoard);
+                    writer.WriteElementString("Board", strBoard);
 
-                writer.WriteEndElement();
-                writer.WriteEndDocument();
+                    writer.WriteEndElement();
+                    writer.WriteEndDocument();
 
-                writer.Flush();
-                writer.Close();
+                    writer.Flush();
+                    writer.Close();
+                }
             }
-
+            catch (System.ArgumentException)
+            {
+                
+            }
         }
         /// <summary>
         /// Load method who reads the XML file to To fill the struct with the read data
