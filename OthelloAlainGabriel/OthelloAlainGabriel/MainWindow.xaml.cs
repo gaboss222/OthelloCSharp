@@ -877,9 +877,10 @@ namespace OthelloAlainGabriel
             saveFileDialog.CheckPathExists = true;
             saveFileDialog.Filter = "XML files (*.xml)|*xml|All files (*.*)|*.*";
 
-            if(saveFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            if (saveFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 filename = saveFileDialog.FileName;
-
+            else
+                return;
             for (int i = 0; i < 7; i++)
             {
                 for (int j = 0; j < 9; j++)
