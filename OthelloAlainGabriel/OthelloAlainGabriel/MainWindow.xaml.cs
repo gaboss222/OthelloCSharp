@@ -41,6 +41,9 @@ namespace OthelloAlainGabriel
         {
             public string p1Name, p2Name;
             public int p1Score, p2Score, turn;
+
+            public string p1ScoreText { get; set; }
+
             public int[,] newBoard;
             TimeSpan p1Time, p2Time;
             public MyStopwatch p1Stopwatch, p2Stopwatch;
@@ -54,6 +57,7 @@ namespace OthelloAlainGabriel
                 this.p2Time = p2Time;
                 this.p2Score = p2Score;
                 this.turn = turn;
+                this.p1ScoreText = p1Score.ToString();
                 newBoard = new int[7, 9];
                 this.p1Time = p1Time;
                 this.p2Time = p2Time;

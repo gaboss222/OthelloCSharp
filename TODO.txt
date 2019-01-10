@@ -9,7 +9,8 @@
 	- Si le board est rempli --> Calcul du meilleur score --> fin 		//DONE
 	- Affichage de fin de jeu					//DONE
 - Commentaires XML
-- Interface IPlayable
+- Rules class
+- Binding score
 
 - Améliorations (si le temps)
 	- New game (voir le TODO pour new game)
