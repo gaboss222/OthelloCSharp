@@ -23,11 +23,6 @@ namespace OthelloAlainGabriel
             tabBoard[row, col] = player.Number;
         }
 
-        public void SetTokenOnBoard(int row, int col, int i)
-        {
-            tabBoard[row, col] = i;
-        }
-
         public int GetTokenOnBoard(int row, int col)
         {
             return tabBoard[row, col];

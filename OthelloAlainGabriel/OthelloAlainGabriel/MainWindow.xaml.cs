@@ -40,15 +40,12 @@ namespace OthelloAlainGabriel
         public struct GameParameter
         {
             public string p1Name, p2Name;
-            public int p1Score, p2Score, turn;
-
-            public string p1ScoreText { get; set; }
-
+            public int p1Score, p2Score, turn, playerTurn;
             public int[,] newBoard;
             TimeSpan p1Time, p2Time;
             public MyStopwatch p1Stopwatch, p2Stopwatch;
 
-            public GameParameter(string p1Name, TimeSpan p1Time, int p1Score, string p2Name, TimeSpan p2Time, int p2Score, int[,] tabBoard, int turn)
+            public GameParameter(string p1Name, TimeSpan p1Time, int p1Score, string p2Name, TimeSpan p2Time, int p2Score, int[,] tabBoard, int turn, int playerTurn)
             {
                 this.p1Name = p1Name;
                 this.p1Time = p1Time;
@@ -57,10 +54,10 @@ namespace OthelloAlainGabriel
                 this.p2Time = p2Time;
                 this.p2Score = p2Score;
                 this.turn = turn;
-                this.p1ScoreText = p1Score.ToString();
                 newBoard = new int[7, 9];
                 this.p1Time = p1Time;
                 this.p2Time = p2Time;
+                this.playerTurn = playerTurn;
                 p1Stopwatch = new MyStopwatch(p1Time);
                 p2Stopwatch = new MyStopwatch(p2Time);
                 CopyBoard(tabBoard);
@@ -103,9 +100,7 @@ namespace OthelloAlainGabriel
 
                 board.SetBoard(g.newBoard);
 
-                if (g.turn % 2 == 0)
-                    isPlayer1 = true;
-                else
+                if (g.playerTurn == 2)
                     isPlayer1 = false;
 
                 //Timer pour chaque joueurs
@@ -870,17 +865,17 @@ namespace OthelloAlainGabriel
         {
             string filename = "", strBoard = "";
 
-            System.Windows.Forms.SaveFileDialog saveFileDialog = new System.Windows.Forms.SaveFileDialog();
-            saveFileDialog.Title = "Save the game";
-            saveFileDialog.DefaultExt = "xml";
-            saveFileDialog.CheckFileExists = true;
-            saveFileDialog.CheckPathExists = true;
-            saveFileDialog.Filter = "XML files (*.xml)|*xml|All files (*.*)|*.*";
+            System.Windows.Forms.SaveFileDialog saveFileDialog = new System.Windows.Forms.SaveFileDialog
+            {
+                Title = "Save the game",
+                DefaultExt = "xml",
+                CheckPathExists = true,
+                Filter = "XML files (*.xml)|*.xml|All files (*.*)|*.*"
+            };
 
             if (saveFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 filename = saveFileDialog.FileName;
-            else
-                return;
+
             for (int i = 0; i < 7; i++)
             {
                 for (int j = 0; j < 9; j++)
@@ -916,6 +911,8 @@ namespace OthelloAlainGabriel
 
                 writer.WriteElementString("Turn", turn.ToString());
 
+                writer.WriteElementString("PlayerTurn", isPlayer1 == true ? "1" : "2");
+
                 writer.WriteElementString("Board", strBoard);
 
                 writer.WriteEndElement();
@@ -934,13 +931,13 @@ namespace OthelloAlainGabriel
         private void MenuLoad_Click(object sender, RoutedEventArgs e)
         {
             string p1Name, p2Name, p1Time, p2Time, strBoard, tmp;
-            int p1Score, p2Score, turn;
+            int p1Score, p2Score, turn, playerTurn;
             bool readPlayer1;
             int[,] tabBoard;
 
             p1Name = p2Name = p1Time = p2Time = tmp = null;
             strBoard = "";
-            p1Score = p2Score = turn = 0;
+            p1Score = p2Score = turn = playerTurn = 0;
             readPlayer1 = false;
             tabBoard = new int[7, 9];
 
@@ -973,72 +970,90 @@ namespace OthelloAlainGabriel
 
                     using (XmlReader reader = XmlReader.Create(ofd.FileName, settings))
                     {
-                        while (reader.Read())
+                        try
                         {
-                            if (reader.IsStartElement())
+                            while (reader.Read())
                             {
-                                switch (reader.Name)
+                                if (reader.IsStartElement())
                                 {
-                                    case "Player1":
-                                        Console.WriteLine("Start <Player1> element.");
-                                        readPlayer1 = true;
-                                        break;
+                                    switch (reader.Name)
+                                    {
+                                        case "Player1":
+                                            Console.WriteLine("Start <Player1> element.");
+                                            readPlayer1 = true;
+                                            break;
 
-                                    case "Player2":
-                                        Console.WriteLine("Start <Player2> element.");
-                                        readPlayer1 = false;
-                                        break;
+                                        case "Player2":
+                                            Console.WriteLine("Start <Player2> element.");
+                                            readPlayer1 = false;
+                                            break;
 
-                                    case "Name":
-                                        if (reader.Read())
-                                            tmp = reader.Value.Trim();
-                                        if (readPlayer1)
-                                            p1Name = tmp;
-                                        else
-                                            p2Name = tmp;
-                                        break;
-                                    case "Time":
-                                        if (reader.Read())
-                                            tmp = reader.Value.Trim();
-                                        if (readPlayer1)
-                                            p1Time = tmp;
-                                        else
-                                            p2Time = tmp;
-                                        break;
-                                    case "Score":
-                                        if (reader.Read())
-                                            tmp = reader.Value.Trim();
-                                        if (readPlayer1)
-                                            int.TryParse(tmp, out p1Score);
-                                        else
-                                            int.TryParse(tmp, out p2Score);
-                                        break;
+                                        case "Name":
+                                            if (reader.Read())
+                                                tmp = reader.Value.Trim();
+                                            if (readPlayer1)
+                                                p1Name = tmp;
+                                            else
+                                                p2Name = tmp;
+                                            break;
+                                        case "Time":
+                                            if (reader.Read())
+                                                tmp = reader.Value.Trim();
+                                            if (readPlayer1)
+                                                p1Time = tmp;
+                                            else
+                                                p2Time = tmp;
+                                            break;
+                                        case "Score":
+                                            if (reader.Read())
+                                                tmp = reader.Value.Trim();
+                                            if (readPlayer1)
+                                                int.TryParse(tmp, out p1Score);
+                                            else
+                                                int.TryParse(tmp, out p2Score);
+                                            break;
 
-                                    case "Board":
-                                        if (reader.Read())
-                                        {
-                                            strBoard = reader.Value.Trim();
-                                        }
-                                        break;
+                                        case "Board":
+                                            if (reader.Read())
+                                            {
+                                                strBoard = reader.Value.Trim();
+                                            }
+                                            break;
 
-                                    case "Turn":
-                                        if (reader.Read())
-                                            int.TryParse(reader.Value.Trim(), out turn);
-                                        break;
+                                        case "Turn":
+                                            if (reader.Read())
+                                                int.TryParse(reader.Value.Trim(), out turn);
+                                            break;
+
+                                        case "PlayerTurn":
+                                            if (reader.Read())
+                                                playerTurn = (reader.Value.Trim() == "1" ? 1 : 2);
+                                            break;
+
+                                    }
                                 }
                             }
                         }
+                        catch (XmlException)
+                        {
+                            MessageBox.Show("Error while reading XML file, please chose another one");
+                            Debug.WriteLine("Error while reading XML file");
+                        }
+
+                        try
+                        {
+                            tabBoard = Board.StrToInt(strBoard);
+
+                            TimeSpan t1 = new TimeSpan(int.Parse(p1Time.Split(':')[0]), int.Parse(p1Time.Split(':')[1]), int.Parse(p1Time.Split(':')[2]), int.Parse(p1Time.Split(':')[3]), int.Parse(p1Time.Split(':')[4]));
+                            TimeSpan t2 = new TimeSpan(int.Parse(p1Time.Split(':')[0]), int.Parse(p1Time.Split(':')[1]), int.Parse(p2Time.Split(':')[2]), int.Parse(p2Time.Split(':')[3]), int.Parse(p2Time.Split(':')[4]));
+                            GameParameter gameParameter = new GameParameter(p1Name, t1, p1Score, p2Name, t2, p2Score, tabBoard, turn, playerTurn);
+                            ProperlyNewGame(gameParameter);
+                        }
+                        catch (NullReferenceException)
+                        {
+                            Debug.WriteLine("Error e");
+                        }
                     }
-
-
-                    tabBoard = Board.StrToInt(strBoard);
-                    
-                    TimeSpan t1 = new TimeSpan(int.Parse(p1Time.Split(':')[0]), int.Parse(p1Time.Split(':')[1]), int.Parse(p1Time.Split(':')[2]), int.Parse(p1Time.Split(':')[3]), int.Parse(p1Time.Split(':')[4]));
-                    TimeSpan t2 = new TimeSpan(int.Parse(p1Time.Split(':')[0]), int.Parse(p1Time.Split(':')[1]), int.Parse(p2Time.Split(':')[2]), int.Parse(p2Time.Split(':')[3]), int.Parse(p2Time.Split(':')[4]));
-
-                    GameParameter gameParameter = new GameParameter(p1Name, t1, p1Score, p2Name, t2, p2Score, tabBoard, turn);
-
-                    ProperlyNewGame(gameParameter);
                 }
             }
         }
