@@ -1,11 +1,11 @@
 - Score 								//DONE
 - Représenter joueur par leur TOKEN et pas par leur nom 			//DONE
 - Refactorisation ([row, col], classe board) 					//DONE
-- Sauvegarde -- boite de dialog
-- Charger sauvegarde //DONE
+- Sauvegarde -- boite de dialog 						//DONE
+- Charger sauvegarde 						//DONE
 - Fin de partie
 	- Plus de possibilité pour 1 joueur --> Passe à l'autre
-	- Plus de possibilité pour les 2 joueurs --> Calcul du meilleur score --> Fin //DONE
+	- Plus de possibilité pour les 2 joueurs --> Calcul du meilleur score --> Fin 	//DONE
 	- Si le board est rempli --> Calcul du meilleur score --> fin 		//DONE
 	- Affichage de fin de jeu					//DONE
 - Commentaires XML

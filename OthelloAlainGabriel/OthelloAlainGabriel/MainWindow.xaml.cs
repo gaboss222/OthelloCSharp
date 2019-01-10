@@ -868,8 +868,17 @@ namespace OthelloAlainGabriel
         /// <param name="e"></param>
         private void MenuSave_Click(object sender, RoutedEventArgs e)
         {
-            string filename = "save_" + player1.Name + "_" + player2.Name + ".xml";
-            string strBoard = "";
+            string filename = "", strBoard = "";
+
+            System.Windows.Forms.SaveFileDialog saveFileDialog = new System.Windows.Forms.SaveFileDialog();
+            saveFileDialog.Title = "Save the game";
+            saveFileDialog.DefaultExt = "xml";
+            saveFileDialog.CheckFileExists = true;
+            saveFileDialog.CheckPathExists = true;
+            saveFileDialog.Filter = "XML files (*.xml)|*xml|All files (*.*)|*.*";
+
+            if(saveFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                filename = saveFileDialog.FileName;
 
             for (int i = 0; i < 7; i++)
             {
