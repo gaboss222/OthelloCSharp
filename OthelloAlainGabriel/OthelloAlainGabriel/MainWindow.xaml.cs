@@ -139,6 +139,8 @@ namespace OthelloAlainGabriel
 
                     lbl.Name = "i" + i + "j" + j;
                     lbl.MouseDown += OnClickLabel;
+                    lbl.MouseEnter += OnEnterLabel;
+                    lbl.MouseLeave += OnLeaveLabel;
                     lbl.BorderThickness = new Thickness(0.1, 0.1, 0.1, 0.1);
                     lbl.BorderBrush = Brushes.Black;
 
@@ -226,6 +228,26 @@ namespace OthelloAlainGabriel
                 {
                     FinishFunction();
                 }
+            }
+        }
+        private void OnEnterLabel(object sender, RoutedEventArgs e)
+        {
+            Label lbl = sender as Label;
+            int row = (int)Char.GetNumericValue(lbl.Name[1]);
+            int col = (int)Char.GetNumericValue(lbl.Name[3]);
+            if (CheckCase(row, col, false))
+            {
+                lbl.Background = isPlayer1 ? player1.Token.ImgBrush : player2.Token.ImgBrush;
+            }
+        }
+        private void OnLeaveLabel(object sender, RoutedEventArgs e)
+        {
+            Label lbl = sender as Label;
+            int row = (int)Char.GetNumericValue(lbl.Name[1]);
+            int col = (int)Char.GetNumericValue(lbl.Name[3]);
+            if (CheckCase(row, col, false))
+            {
+                lbl.Background = Brushes.Green;
             }
         }
 
