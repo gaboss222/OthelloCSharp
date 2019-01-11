@@ -151,10 +151,7 @@ namespace OthelloAlainGabriel
                 tokenGrid.RowDefinitions.Add(new RowDefinition());
                 for (int j = 0; j < 9; j++)
                 {
-                    Label lbl = new Label
-                    {
-                        ToolTip = ((Char)(j + 65)) + "" + (i + 1)
-                    };
+                    Label lbl = new Label();
 
                     lbl.Name = "i" + i + "j" + j;
                     lbl.MouseDown += OnClickLabel;
@@ -214,9 +211,9 @@ namespace OthelloAlainGabriel
         {
 
             Label lbl = sender as Label;
-
-            int row = (int)Char.GetNumericValue(lbl.Name[1]);
-            int col = (int)Char.GetNumericValue(lbl.Name[3]);
+            
+            int row = Grid.GetRow(lbl);
+            int col = Grid.GetColumn(lbl);
 
             if (CheckCase(row, col, false))
             {
