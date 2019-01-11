@@ -67,7 +67,6 @@
     <Compile Include="MainBox.Designer.cs">
       <DependentUpon>MainBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="Menu.cs" />
     <Compile Include="MyStopwatch.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Token.cs" />

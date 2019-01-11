@@ -7,34 +7,57 @@ using System.Threading.Tasks;
 
 namespace OthelloAlainGabriel
 {
+    /// <summary>
+    /// redefined class for StopWatch. 
+    /// Stopwatch is the timer used for each player's turn
+    /// </summary>
     public class MyStopwatch
-
     {
 
-        TimeSpan offsetTS;
+        private TimeSpan offsetTS;
+        private Stopwatch sw;
 
-        Stopwatch sw;
-
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public MyStopwatch()
         {
             sw = new Stopwatch();
         }
-        public MyStopwatch(TimeSpan offsetElapsedTimeSpan)
+
+        /// <summary>
+        /// Constructor with an offset as parameter. Used to set Start time for the stopwatch !
+        /// Constructor used when a game is loaded. 2 timer need to be created.
+        /// Their starttime correspond to the values ​​of the xml document
+        /// </summary>
+        /// <param name="startTime">Start time</param>
+        public MyStopwatch(TimeSpan startTime)
         {
-            offsetTS = offsetElapsedTimeSpan;
+            offsetTS = startTime;
 
             sw = new Stopwatch();
-
         }
+
+        /// <summary>
+        /// Start function
+        /// </summary>
         public void Start()
         {
             sw.Start();
         }
 
+        /// <summary>
+        /// Stop function
+        /// </summary>
         public void Stop()
         {
             sw.Stop();
         }
+
+        /// <summary>
+        /// Elapsed function.
+        /// Return the value of stopwatch (from 0) + their startTime (as timeSpan)
+        /// </summary>
         public TimeSpan Elapsed
         {
             get
