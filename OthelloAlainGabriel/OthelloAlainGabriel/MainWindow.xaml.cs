@@ -40,6 +40,7 @@ namespace OthelloAlainGabriel
         Board board;
         #endregion
         #region Attribute
+
         MainBox mainBox;
         private bool isPlayer1;
         private MyStopwatch timerP1, timerP2;
@@ -156,7 +157,9 @@ namespace OthelloAlainGabriel
                 timerP1 = new MyStopwatch();
                 timerP2 = new MyStopwatch();
 
-                lblPlayer1Score.Content = lblPlayer2Score.Content = "Score : 2";
+                lblPlayer1Score.DataContext = new Player { Score = player1.Score };
+                lblPlayer2Score.DataContext = new Player { Score = player2.Score };
+
                 lblPlayerTurn.Content = player1.Name + "'s turn :";
 
                 isPlayer1 = true;
@@ -192,15 +195,13 @@ namespace OthelloAlainGabriel
                 else
                     timerP2.Start();
 
-                lblPlayer1Score.Content = "Score : " + g.p1Score.ToString();
-                lblPlayer2Score.Content = "Score : " + g.p2Score.ToString();
-
                 nbFreeCells = board.GetFreeCells();
                 turn = g.turn;
             }
 
             lblPlayer1.Content = player1.Name;
             lblPlayer2.Content = player2.Name;
+            CheckScore();
 
             //Timer used to update lblPlayer1/2Time
             timerUpdate = new Timer(10);
@@ -419,7 +420,7 @@ namespace OthelloAlainGabriel
 
         /// <summary>
         /// Count number of tokenPlayer1 (1) and tokenPlayer2 (2).
-        /// Update score and lblScore
+        /// Update score. Update lblScore via dataBinding (DataContext)
         /// </summary>
         private void CheckScore()
         {
@@ -435,8 +436,9 @@ namespace OthelloAlainGabriel
                 }
             }
 
-            lblPlayer1Score.Content = "Score : " + player1.Score;
-            lblPlayer2Score.Content = "Score : " + player2.Score;
+            //DataBinding
+            lblPlayer1Score.DataContext = new Player { Score = player1.Score };
+            lblPlayer2Score.DataContext = new Player { Score = player2.Score };
         }
         #endregion
 

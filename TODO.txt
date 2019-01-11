@@ -8,9 +8,10 @@
 	- Plus de possibilité pour les 2 joueurs --> Calcul du meilleur score --> Fin 	//DONE
 	- Si le board est rempli --> Calcul du meilleur score --> fin 		//DONE
 	- Affichage de fin de jeu					//DONE
-- Commentaires XML
+- Commentaires XML							//DONE FOR GAB
+- Binding score							//DONE
 - Rules class
-- Binding score
+- Elements de l'application s'agrandissent (lbl, time, score, etc.)			
 
 - Améliorations (si le temps)
 	- New game (voir le TODO pour new game)

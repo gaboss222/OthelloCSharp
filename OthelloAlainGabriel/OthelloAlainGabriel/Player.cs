@@ -1,10 +1,12 @@
-﻿namespace OthelloAlainGabriel
+﻿using System.ComponentModel;
+
+namespace OthelloAlainGabriel
 {
     /// <summary>
     /// Class who represents a player
     /// Player has a name, number and token (black/white)
     /// </summary>
-    public class Player
+    public class Player : INotifyPropertyChanged
     {
         public string Name { get;}
         public int Number { get; }
@@ -24,6 +26,25 @@
             Name = name;
             Number = number;
             Score = 0;
+            OnPropertyChanged(Score.ToString());
+        }
+
+        public Player()
+        {
+
+        }
+
+        #region INotifyPropertyChanged Members
+        public event PropertyChangedEventHandler PropertyChanged;
+        #endregion
+
+        protected virtual void OnPropertyChanged(string property)
+        {
+            var propertyChanged = PropertyChanged;
+            if(propertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(property));
+            }
         }
 
         /// <summary>
