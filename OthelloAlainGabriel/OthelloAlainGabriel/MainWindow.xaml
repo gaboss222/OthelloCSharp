@@ -35,14 +35,14 @@
             </Viewbox>
             <StackPanel
                 Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" Width="195" Height="511">
-                <Label x:Name="lblPlayer1" Content="Player 1 :" FontSize="22"/>
+                <Label x:Name="lblPlayer1" Content="Player 1 :" FontSize="20" FontFamily="Arial Black"/>
                 <Label x:Name="lblPlayer1Score" Content=". . ." FontSize="22"/>
                 <Label x:Name="lblPlayer1Time" Content=". . ." FontSize="22"/>
                 <Label x:Name="lblPlayerTurn" Content="Player's turn :" FontSize="22" Margin="0,60,0,0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                 <Grid  x:Name="gridPlayerTurn" Height="80" Width="80" Margin="0" HorizontalAlignment="Left">
                     <Label x:Name="lblPlayerImgTurn"/>
                 </Grid>
-                <Label x:Name="lblPlayer2" Content="Player 2" FontSize="22"  Margin="0,80,0,0"/>
+                <Label x:Name="lblPlayer2" Content="Player 2" FontSize="20"  Margin="0,80,0,0" FontFamily="Arial Black"/>
                 <Label x:Name="lblPlayer2Score" Content=". . ." FontSize="22"  Margin="0"/>
                 <Label x:Name="lblPlayer2Time" Content=". . ." FontSize="22" Margin="0"/>
 
