@@ -35,6 +35,8 @@ namespace OthelloAlainGabriel
         private Timer timerUpdate;
         private int nbFreeCells;
         private int turn;
+        private Brush backgroundBrush = new SolidColorBrush(Color.FromArgb(255, 87, 237, 112));
+        private Brush hoverBrush = new SolidColorBrush(Color.FromArgb(255, 27, 145, 47));
         #endregion
 
         public struct GameParameter
@@ -130,7 +132,7 @@ namespace OthelloAlainGabriel
         private void InitializeBoard(bool loadedGame)
         {
 
-            tokenGrid.Background = Brushes.LightGreen;
+            tokenGrid.Background = backgroundBrush;
             for (int i = 0; i < 7; i++)
             {
                 tokenGrid.RowDefinitions.Add(new RowDefinition());
@@ -146,7 +148,7 @@ namespace OthelloAlainGabriel
                     lbl.MouseEnter += OnEnterLabel;
                     lbl.MouseLeave += OnLeaveLabel;
                     lbl.BorderThickness = new Thickness(0.1, 0.1, 0.1, 0.1);
-                    lbl.BorderBrush = Brushes.Black;
+                    lbl.BorderBrush = Brushes.White;
 
                     if (tokenGrid.ColumnDefinitions.Count < 9)
                         tokenGrid.ColumnDefinitions.Add(new ColumnDefinition());
@@ -188,7 +190,7 @@ namespace OthelloAlainGabriel
                 }
             }
 
-            gridPlayerTurn.Background = Brushes.LightGreen;
+            gridPlayerTurn.Background = backgroundBrush;
             lblPlayerImgTurn.Background = player1.Token.ImgBrush;
             CheckCases();
             timerP1.Start();
@@ -228,6 +230,7 @@ namespace OthelloAlainGabriel
             if (!CheckCases())
             {
                 // Fonction pour changer de tour
+                changeTurn();
                 if (!CheckCases())
                 {
                     FinishFunction();
@@ -251,7 +254,7 @@ namespace OthelloAlainGabriel
             int col = (int)Char.GetNumericValue(lbl.Name[3]);
             if (CheckCase(row, col, false))
             {
-                lbl.Background = Brushes.Green;
+                lbl.Background = hoverBrush;
             }
         }
 
@@ -269,6 +272,7 @@ namespace OthelloAlainGabriel
             lbl.Background = p.Token.ImgBrush;
             board.SetTokenOnBoard(row, col, p);
 
+            /*
             switch (p.Number)
             {
                 case 1:
@@ -284,6 +288,27 @@ namespace OthelloAlainGabriel
                     timerP1.Start();
                     lblPlayerImgTurn.Background = player1.Token.ImgBrush;
                     break;
+            }
+            */
+            changeTurn();
+        }
+
+        private void changeTurn()
+        {
+            if (isPlayer1)
+            {
+                isPlayer1 = false;
+                timerP1.Stop();
+                timerP2.Start();
+                lblPlayerImgTurn.Background = player2.Token.ImgBrush;
+                turn++;
+            }
+            else
+            {
+                isPlayer1 = true;
+                timerP2.Stop();
+                timerP1.Start();
+                lblPlayerImgTurn.Background = player1.Token.ImgBrush;
             }
         }
 
@@ -340,7 +365,7 @@ namespace OthelloAlainGabriel
 
                     if (CheckCase(i, j, false))
                     {
-                        myLabel.Background = Brushes.Green;
+                        myLabel.Background = hoverBrush;
                         canPlay = true;
                     }
                     else if (board.CheckTokenEquals(i, j, 0))
