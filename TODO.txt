@@ -4,7 +4,7 @@
 - Sauvegarde -- boite de dialog 						//DONE
 - Charger sauvegarde 						//DONE
 - Fin de partie
-	- Plus de possibilité pour 1 joueur --> Passe à l'autre
+	- Plus de possibilité pour 1 joueur --> Passe à l'autre			//DONE
 	- Plus de possibilité pour les 2 joueurs --> Calcul du meilleur score --> Fin 	//DONE
 	- Si le board est rempli --> Calcul du meilleur score --> fin 		//DONE
 	- Affichage de fin de jeu					//DONE
