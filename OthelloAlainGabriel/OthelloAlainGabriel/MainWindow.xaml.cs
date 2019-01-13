@@ -20,6 +20,7 @@ namespace OthelloAlainGabriel
         public MainWindow()
         {
             mainBox = new MainBox();
+            WindowStartupLocation = WindowStartupLocation.CenterScreen;
             if (mainBox.CustomShow() == System.Windows.Forms.DialogResult.Yes)
             {
                 Console.WriteLine(mainBox.GetPlayerName(1));
@@ -38,6 +39,7 @@ namespace OthelloAlainGabriel
         Player player1, player2;
         Token token1, token2;
         Board board;
+        Rules rules;
         #endregion
         #region Attribute
 
@@ -47,8 +49,8 @@ namespace OthelloAlainGabriel
         private Timer timerUpdate;
         private int nbFreeCells;
         private int turn;
-        private Brush backgroundBrush = new SolidColorBrush(Color.FromArgb(255, 87, 237, 112));
-        private Brush hoverBrush = new SolidColorBrush(Color.FromArgb(255, 27, 145, 47));
+        public const int NB_COL = 9;
+        public const int NB_ROW = 7;
         #endregion
 
         #region Game
@@ -73,7 +75,7 @@ namespace OthelloAlainGabriel
                 this.p2Time = p2Time;
                 this.p2Score = p2Score;
                 this.turn = turn;
-                newBoard = new int[7, 9];
+                newBoard = new int[NB_ROW, NB_COL];
                 this.p1Time = p1Time;
                 this.p2Time = p2Time;
                 this.playerTurn = playerTurn;
@@ -97,13 +99,13 @@ namespace OthelloAlainGabriel
         /// <param name="g">g = default if "new game" button is clicked</param>
         public void ProperlyNewGame(GameParameter g = default(GameParameter))
         {
-            for (int i = 0; i < 7; i++)
+            for (int i = 0; i < NB_ROW; i++)
             {
-                for (int j = 0; j < 9; j++)
+                for (int j = 0; j < NB_COL; j++)
                 {
                     // TODO HERE CHANGE LBL BACKGROUND COLOR + RESET a ZERO LES CASES ET REMETTRES LES 4 TOKENS DU DEBUT
                     // 1 Fonction
-                    Label lbl = GetChildren(tokenGrid, i, j) as Label;
+                    Label lbl = rules.GetLabel(tokenGrid, i, j);
                     tokenGrid.Children.Remove(lbl);
                 }
             }
@@ -143,7 +145,7 @@ namespace OthelloAlainGabriel
         /// <param name="g">g = default if "new game" button is clicked</param>
         private void InitializeGame(GameParameter g = default(GameParameter))
         {
-            board = new Board(7, 9);
+            board = new Board(NB_ROW, NB_COL);
 
             token1 = new Token(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"..\..\Assets\Tokens\token1.png"));
             token2 = new Token(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"..\..\Assets\Tokens\token2.png"));
@@ -163,7 +165,7 @@ namespace OthelloAlainGabriel
                 lblPlayerTurn.Content = player1.Name + "'s turn :";
 
                 isPlayer1 = true;
-                nbFreeCells = (7 * 9) - 4;
+                nbFreeCells = (NB_ROW * NB_COL) - 4;
                 turn = 1;
             }
             //Loaded game. Attributes/Properties will be charged by data in GameParameter struct
@@ -207,6 +209,9 @@ namespace OthelloAlainGabriel
             timerUpdate = new Timer(10);
             timerUpdate.Elapsed += Timer_tick;
             timerUpdate.Start();
+
+            // Initialize Rules
+            rules = new Rules(board, player1, player2, tokenGrid, NB_ROW, NB_COL);
         }
 
         /// <summary>
@@ -215,11 +220,11 @@ namespace OthelloAlainGabriel
         /// <param name="loadedGame">If loadedGame, create board from data</param>
         private void InitializeBoard(bool loadedGame)
         {
-            tokenGrid.Background = backgroundBrush;
-            for (int i = 0; i < 7; i++)
+            tokenGrid.Background = board.backgroundBrush;
+            for (int i = 0; i < NB_ROW; i++)
             {
                 tokenGrid.RowDefinitions.Add(new RowDefinition());
-                for (int j = 0; j < 9; j++)
+                for (int j = 0; j < NB_COL; j++)
                 {
                     Label lbl = new Label
                     {
@@ -231,7 +236,7 @@ namespace OthelloAlainGabriel
                     lbl.BorderThickness = new Thickness(0.1, 0.1, 0.1, 0.1);
                     lbl.BorderBrush = Brushes.White;
 
-                    if (tokenGrid.ColumnDefinitions.Count < 9)
+                    if (tokenGrid.ColumnDefinitions.Count < NB_COL)
                         tokenGrid.ColumnDefinitions.Add(new ColumnDefinition());
 
                     Grid.SetColumn(lbl, j);
@@ -276,8 +281,8 @@ namespace OthelloAlainGabriel
 
                 }
             }
-            gridPlayerTurn.Background = backgroundBrush;
-            CheckCases();
+            gridPlayerTurn.Background = board.backgroundBrush;
+            rules.CheckCases();
         }
 
         #endregion
@@ -296,9 +301,9 @@ namespace OthelloAlainGabriel
             int col = Grid.GetColumn(lbl);
 
             //If free case
-            if (CheckCase(row, col, false))
+            if (rules.CheckCase(row, col, false))
             {
-                CheckCase(row, col, true);
+                rules.CheckCase(row, col, true);
                 if (isPlayer1)
                     UpdateBoard(row, col, lbl, player1);
                 else
@@ -315,10 +320,10 @@ namespace OthelloAlainGabriel
                 return;
             }
 
-            if (!CheckCases())
+            if (!rules.CheckCases())
             {
                 ChangeTurn();
-                if (!CheckCases())
+                if (!rules.CheckCases())
                 {
                     FinishFunction();
                 }
@@ -335,7 +340,7 @@ namespace OthelloAlainGabriel
             Label lbl = sender as Label;
             int row = (int)Char.GetNumericValue(lbl.Name[1]);
             int col = (int)Char.GetNumericValue(lbl.Name[3]);
-            if (CheckCase(row, col, false))
+            if (rules.CheckCase(row, col, false))
             {
                 lbl.Background = isPlayer1 ? player1.Token.ImgBrush : player2.Token.ImgBrush;
             }
@@ -351,9 +356,9 @@ namespace OthelloAlainGabriel
             Label lbl = sender as Label;
             int row = (int)Char.GetNumericValue(lbl.Name[1]);
             int col = (int)Char.GetNumericValue(lbl.Name[3]);
-            if (CheckCase(row, col, false))
+            if (rules.CheckCase(row, col, false))
             {
-                lbl.Background = hoverBrush;
+                lbl.Background = board.hoverBrush;
             }
         }
 
@@ -394,6 +399,7 @@ namespace OthelloAlainGabriel
                 lblPlayerImgTurn.Background = player1.Token.ImgBrush;
                 lblPlayerTurn.Content = player1.Name + "'s turn :";
             }
+            rules.ChangeTurn();
         }
 
         /// <summary>
@@ -425,9 +431,9 @@ namespace OthelloAlainGabriel
         private void CheckScore()
         {
             player1.Score = player2.Score = 0;
-            for (int i = 0; i < 7; i++)
+            for (int i = 0; i < NB_ROW; i++)
             {
-                for (int j = 0; j < 9; j++)
+                for (int j = 0; j < NB_COL; j++)
                 {
                     if (board.CheckTokenEquals(i, j, player1.Number))
                         player1.Score++;
@@ -441,415 +447,6 @@ namespace OthelloAlainGabriel
             lblPlayer2Score.DataContext = new Player { Score = player2.Score };
         }
         #endregion
-
-        //TODO ALAIN:
-        //REFACTORISATION DE CETTE REGION (Placer dans une classe externe + Commentaires XML en francais)
-        #region gameAlgo
-
-        /// <summary>
-        /// Function used to switch token when the current player locks tokens with his own
-        /// </summary>
-        /// <param name="row">Row</param>
-        /// <param name="col">Column</param>
-        private void SwitchToken(int row, int col)
-        {
-            Label lbl = GetChildren(tokenGrid, row, col) as Label;
-            if (board.GetNumberOnBoard(row, col) == 1)
-            {
-                board.SetNumberOnBoard(row, col, player2);
-                lbl.Background = player2.Token.ImgBrush;
-            }
-            else
-            {
-                board.SetNumberOnBoard(row, col, player1);
-                lbl.Background = player1.Token.ImgBrush;
-            }
-        }
-
-        private bool CheckCases()
-        {
-            bool canPlay = false;
-            for (int i = 0; i < 7; i++)
-            {
-                for (int j = 0; j < 9; j++)
-                {
-                    Label myLabel = GetChildren(tokenGrid, i, j) as Label;
-
-                    if (CheckCase(i, j, false))
-                    {
-                        myLabel.Background = hoverBrush;
-                        canPlay = true;
-                    }
-                    else if (board.CheckTokenEquals(i, j, 0))
-                    {
-                        myLabel.Background = Brushes.Transparent;
-                    }
-                }
-            }
-            return canPlay;
-        }
-        /// <summary>
-        /// Cette fonction va vérifier si c'est possible de jouer à une case donnée.
-        /// </summary>
-        /// <param name="row">ligne de la case</param>
-        /// <param name="col">colonne de la case</param>
-        /// <param name="switchTokens">s'il faut retourner les jetons</param>
-        /// <returns></returns>
-        private bool CheckCase(int row, int col, bool switchTokens)
-        {
-            if (!board.CheckTokenEquals(row, col, 0))
-                return false;
-
-            if (switchTokens)
-            {
-                CheckLeft(row, col, switchTokens);
-                CheckRight(row, col, switchTokens);
-                CheckTop(row, col, switchTokens);
-                CheckBottom(row, col, switchTokens);
-                CheckTopLeft(row, col, switchTokens);
-                CheckBottomRight(row, col, switchTokens);
-                CheckTopRight(row, col, switchTokens);
-                CheckBottomLeft(row, col, switchTokens);
-                return true;
-            }
-            return CheckLeft(row, col, switchTokens) || CheckRight(row, col, switchTokens) || CheckTop(row, col, switchTokens) || CheckBottom(row, col, switchTokens) || CheckTopLeft(row, col, switchTokens) || CheckBottomRight(row, col, switchTokens) || CheckTopRight(row, col, switchTokens) || CheckBottomLeft(row, col, switchTokens);
-        }
-        /// <summary>
-        /// Cette fonction va regarder à gauche d'une case pour vérifier s'il est possible de jouer
-        /// </summary>
-        /// <param name="row">ligne de la case</param>
-        /// <param name="col">colonne de la case</param>
-        /// <param name="switchTokens">S'il faut retourner les jetons</param>
-        /// <returns></returns>
-        private bool CheckLeft(int row, int col, bool switchTokens)
-        {
-            int playerToken = GetNumberPlayer();
-
-            if (col == 0 || board.GetNumberOnBoard(row, col - 1) == playerToken || board.GetNumberOnBoard(row, col - 1) == 0)
-                return false;
-            int i;
-
-            bool canPlay = false;
-
-            for (i = col - 2; i >= 0; i--)
-            {
-                if (board.CheckTokenEquals(row, i, playerToken))
-                {
-                    canPlay = true;
-                    break;
-                }
-                if (board.CheckTokenEquals(row, i, 0))
-                {
-                    canPlay = false;
-                    break;
-                }
-            }
-            if (switchTokens && canPlay)
-            {
-                for (int j = i + 1; j < col; j++)
-                {
-                    SwitchToken(row, j);
-                }
-            }
-            return canPlay;
-        }
-
-        /// <summary>
-        /// Cette fonction va regarder à droite d'une case pour vérifier s'il est possible de jouer
-        /// </summary>
-        /// <param name="row">ligne de la case</param>
-        /// <param name="col">colonne de la case</param>
-        /// <param name="switchTokens">S'il faut retourner les jetons</param>
-        /// <returns></returns>
-        private bool CheckRight(int row, int col, bool switchTokens)
-        {
-            int playerToken = GetNumberPlayer();
-
-            if (col == 8 || board.GetNumberOnBoard(row, col + 1) == playerToken || board.GetNumberOnBoard(row, col + 1) == 0)
-                return false;
-            int i;
-            bool canPlay = false;
-
-            for (i = col + 2; i < 9; i++)
-            {
-                if (board.CheckTokenEquals(row, i, playerToken))
-                {
-                    canPlay = true;
-                    break;
-                }
-                if (board.CheckTokenEquals(row, i, 0))
-                {
-                    canPlay = false;
-                    break;
-                }
-            }
-            if (switchTokens && canPlay)
-            {
-                for (int j = i - 1; j > col; j--)
-                {
-                    SwitchToken(row, j);
-                }
-            }
-            return canPlay;
-        }
-
-        /// <summary>
-        /// Cette fonction va regarder en haut d'une case pour vérifier s'il est possible de jouer
-        /// </summary>
-        /// <param name="row">ligne de la case</param>
-        /// <param name="col">colonne de la case</param>
-        /// <param name="switchTokens">S'il faut retourner les jetons</param>
-        /// <returns></returns>
-        private bool CheckTop(int row, int col, bool switchTokens)
-        {
-            int playerToken = GetNumberPlayer();
-
-            if (row == 0 || board.GetNumberOnBoard(row - 1, col) == playerToken || board.GetNumberOnBoard(row - 1, col) == 0)
-                return false;
-            int i;
-            bool canPlay = false;
-            for (i = row - 2; i >= 0; i--)
-            {
-                if (board.CheckTokenEquals(i, col, playerToken))
-                {
-                    canPlay = true;
-                    break;
-                }
-                if (board.CheckTokenEquals(i, col, 0))
-                {
-                    canPlay = false;
-                    break;
-                }
-            }
-            if (switchTokens && canPlay)
-            {
-                for (int j = i + 1; j < row; j++)
-                {
-                    SwitchToken(j, col);
-                }
-            }
-            return canPlay;
-        }
-
-        /// <summary>
-        /// Cette fonction va regarder en bas d'une case pour vérifier s'il est possible de jouer
-        /// </summary>
-        /// <param name="row">ligne de la case</param>
-        /// <param name="col">colonne de la case</param>
-        /// <param name="switchTokens">S'il faut retourner les jetons</param>
-        /// <returns></returns>
-        private bool CheckBottom(int row, int col, bool switchTokens)
-        {
-            int playerToken = GetNumberPlayer();
-
-            if (row == 6 || board.GetNumberOnBoard(row + 1, col) == playerToken || board.GetNumberOnBoard(row + 1, col) == 0)
-                return false;
-            int i;
-            bool canPlay = false;
-
-            for (i = row + 2; i < 7; i++)
-            {
-                if (board.CheckTokenEquals(i, col, playerToken))
-                {
-                    canPlay = true;
-                    break;
-                }
-                if (board.CheckTokenEquals(i, col, 0))
-                {
-                    canPlay = false;
-                    break;
-                }
-            }
-            if (switchTokens && canPlay)
-            {
-                for (int j = i - 1; j > row; j--)
-                {
-                    SwitchToken(j, col);
-                }
-            }
-            return canPlay;
-        }
-
-        /// <summary>
-        /// Cette fonction va regarder en haut à gauche (diagonal) d'une case pour vérifier s'il est possible de jouer
-        /// </summary>
-        /// <param name="row">ligne de la case</param>
-        /// <param name="col">colonne de la case</param>
-        /// <param name="switchTokens">S'il faut retourner les jetons</param>
-        /// <returns></returns>
-        private bool CheckTopLeft(int row, int col, bool switchTokens)
-        {
-            int playerToken = GetNumberPlayer();
-
-            if (row == 0 || col == 0 || board.GetNumberOnBoard(row - 1, col - 1) == playerToken || board.GetNumberOnBoard(row - 1, col - 1) == 0)
-                return false;
-
-            int rowBase = row;
-            int colBase = col;
-            bool canPlay = false;
-
-            while (row > 0 && col > 0)
-            {
-                row--;
-                col--;
-                if (board.CheckTokenEquals(row, col, playerToken))
-                {
-                    canPlay = true;
-                    break;
-                }
-                if (board.CheckTokenEquals(row, col, 0))
-                {
-                    canPlay = false;
-                    break;
-                }
-            }
-            if (switchTokens && canPlay)
-            {
-                while (rowBase > row && colBase > col)
-                {
-                    SwitchToken(rowBase, colBase);
-                    rowBase--;
-                    colBase--;
-                }
-            }
-            return canPlay;
-        }
-
-        /// <summary>
-        /// Cette fonction va regarder en bas à droite (diagonal) d'une case pour vérifier s'il est possible de jouer
-        /// </summary>
-        /// <param name="row">ligne de la case</param>
-        /// <param name="col">colonne de la case</param>
-        /// <param name="switchTokens">S'il faut retourner les jetons</param>
-        /// <returns></returns>
-        private bool CheckBottomRight(int row, int col, bool switchTokens)
-        {
-            int playerToken = GetNumberPlayer();
-
-            if (row == 6 || col == 8 || board.GetNumberOnBoard(row + 1, col + 1) == playerToken || board.GetNumberOnBoard(row + 1, col + 1) == 0)
-                return false;
-            int rowBase = row;
-            int colBase = col;
-            bool canPlay = false;
-            while (row < 6 && col < 8)
-            {
-                row++;
-                col++;
-                if (board.CheckTokenEquals(row, col, playerToken))
-                {
-                    canPlay = true;
-                    break;
-                }
-                if (board.CheckTokenEquals(row, col, 0))
-                {
-                    canPlay = false;
-                    break;
-                }
-            }
-            if (switchTokens && canPlay)
-            {
-                while (rowBase < row && colBase < col)
-                {
-                    SwitchToken(rowBase, colBase);
-                    rowBase++;
-                    colBase++;
-                }
-            }
-            return canPlay;
-        }
-
-        /// <summary>
-        /// Cette fonction va regarder en haut à droite (diagonal) d'une case pour vérifier s'il est possible de jouer
-        /// </summary>
-        /// <param name="row">ligne de la case</param>
-        /// <param name="col">colonne de la case</param>
-        /// <param name="switchTokens">S'il faut retourner les jetons</param>
-        /// <returns></returns>
-        private bool CheckTopRight(int row, int col, bool switchTokens)
-        {
-            int playerToken = GetNumberPlayer();
-
-            if (row == 0 || col == 8 || board.GetNumberOnBoard(row - 1, col + 1) == playerToken || board.GetNumberOnBoard(row - 1, col + 1) == 0)
-                return false;
-
-            int rowBase = row;
-            int colBase = col;
-            bool canPlay = false;
-
-            while (row > 0 && col < 8)
-            {
-                row--;
-                col++;
-                if (board.CheckTokenEquals(row, col, playerToken))
-                {
-                    canPlay = true;
-                    break;
-                }
-                if (board.CheckTokenEquals(row, col, 0))
-                {
-                    canPlay = false;
-                    break;
-                }
-            }
-            if (switchTokens && canPlay)
-            {
-                while (rowBase > row && colBase < col)
-                {
-                    SwitchToken(rowBase, colBase);
-                    rowBase--;
-                    colBase++;
-                }
-            }
-            return canPlay;
-        }
-
-        /// <summary>
-        /// Cette fonction va regarder en bas à gauche (diagonal) d'une case pour vérifier s'il est possible de jouer
-        /// </summary>
-        /// <param name="row">ligne de la case</param>
-        /// <param name="col">colonne de la case</param>
-        /// <param name="switchTokens">S'il faut retourner les jetons</param>
-        /// <returns></returns>
-        private bool CheckBottomLeft(int row, int col, bool switchTokens)
-        {
-            int playerToken = GetNumberPlayer();
-
-            if (row == 6 || col == 0 || board.GetNumberOnBoard(row + 1, col - 1) == playerToken || board.GetNumberOnBoard(row + 1, col - 1) == 0)
-                return false;
-
-            int rowBase = row;
-            int colBase = col;
-            bool canPlay = false;
-
-            while (row < 6 && col > 0)
-            {
-                row++;
-                col--;
-                if (board.CheckTokenEquals(row, col, playerToken))
-                {
-                    canPlay = true;
-                    break;
-                }
-                if (board.CheckTokenEquals(row, col, 0))
-                {
-                    canPlay = false;
-                    break;
-                }
-            }
-            if (switchTokens && canPlay)
-            {
-                while (rowBase < row && colBase > col)
-                {
-                    SwitchToken(rowBase, colBase);
-                    rowBase++;
-                    colBase--;
-                }
-            }
-            return canPlay;
-        }
-
-        #endregion
-
 
         #region MenuFunction 
 
@@ -970,7 +567,7 @@ namespace OthelloAlainGabriel
             strBoard = "";
             p1Score = p2Score = turn = playerTurn = 0;
             readPlayer1 = false;
-            tabBoard = new int[7, 9];
+            tabBoard = new int[NB_ROW, NB_COL];
 
             System.Windows.Forms.OpenFileDialog ofd = new System.Windows.Forms.OpenFileDialog
             {
@@ -1071,7 +668,7 @@ namespace OthelloAlainGabriel
 
                         try
                         {
-                            tabBoard = Board.StrToInt(strBoard);
+                            tabBoard = board.StrToInt(strBoard);
 
                             TimeSpan t1 = new TimeSpan(int.Parse(p1Time.Split(':')[0]), int.Parse(p1Time.Split(':')[1]), int.Parse(p1Time.Split(':')[2]), int.Parse(p1Time.Split(':')[3]), int.Parse(p1Time.Split(':')[4]));
                             TimeSpan t2 = new TimeSpan(int.Parse(p1Time.Split(':')[0]), int.Parse(p1Time.Split(':')[1]), int.Parse(p2Time.Split(':')[2]), int.Parse(p2Time.Split(':')[3]), int.Parse(p2Time.Split(':')[4]));
@@ -1136,14 +733,6 @@ namespace OthelloAlainGabriel
 
         #region OtherFunction
 
-        /// <summary>
-        /// return number (1 or 2) of the actual player
-        /// </summary>
-        /// <returns>Player.number</returns>
-        private int GetNumberPlayer()
-        {
-            return (isPlayer1 ? player1.Number : player2.Number);
-        }
 
         /// <summary>
         /// Every time a token is put, check if the current player wins.
@@ -1189,27 +778,6 @@ namespace OthelloAlainGabriel
             {
                 this.Close();
             }
-        }
-
-        /// <summary>
-        /// Return the label at row/col
-        /// </summary>
-        /// <param name="grid">Grid containing all labels</param>
-        /// <param name="row">row</param>
-        /// <param name="column">column</param>
-        /// <returns></returns>
-        private static UIElement GetChildren(Grid grid, int row, int col)
-        {
-            foreach (UIElement child in grid.Children)
-            {
-                if (Grid.GetRow(child) == row
-                      &&
-                   Grid.GetColumn(child) == col)
-                {
-                    return child;
-                }
-            }
-            return null;
         }
         #endregion
 

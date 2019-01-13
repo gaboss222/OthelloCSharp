@@ -69,6 +69,7 @@
     </Compile>
     <Compile Include="MyStopwatch.cs" />
     <Compile Include="Player.cs" />
+    <Compile Include="Rules.cs" />
     <Compile Include="Token.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

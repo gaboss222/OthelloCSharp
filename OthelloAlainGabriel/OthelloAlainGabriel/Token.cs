@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Drawing;
+﻿using System.Drawing;
 using System;
 using System.Windows;
 using System.Windows.Media.Imaging;

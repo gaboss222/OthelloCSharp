@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace OthelloAlainGabriel
 {
@@ -12,7 +9,10 @@ namespace OthelloAlainGabriel
     public class Board
     {
         private static int[,] tabBoard;
-
+        public Brush backgroundBrush = new SolidColorBrush(Color.FromArgb(255, 87, 237, 112));
+        public Brush hoverBrush = new SolidColorBrush(Color.FromArgb(255, 27, 145, 47));
+        private int NB_ROW;
+        private int NB_COL;
         /// <summary>
         /// Constructor
         /// </summary>
@@ -21,6 +21,8 @@ namespace OthelloAlainGabriel
         public Board(int row, int col)
         {
             tabBoard = new int[row, col];
+            NB_ROW = row;
+            NB_COL = col;
         }
 
         /// <summary>
@@ -82,9 +84,9 @@ namespace OthelloAlainGabriel
         public int GetFreeCells()
         {
             int n = 0;
-            for (int i = 0; i < 7; i++)
+            for (int i = 0; i < NB_ROW; i++)
             {
-                for (int j = 0; j < 9; j++)
+                for (int j = 0; j < NB_COL; j++)
                 {
                     if (tabBoard[i, j] == 0)
                         n++;
@@ -99,9 +101,9 @@ namespace OthelloAlainGabriel
         /// </summary>
         /// <param name="strBoard">string equals to the board</param>
         /// <returns>Return the board as an int[,]</returns>
-        public static int[,] StrToInt(string strBoard)
+        public int[,] StrToInt(string strBoard)
         {
-            int[,] board = new int[7, 9];
+            int[,] board = new int[NB_ROW, NB_COL];
             int i = 0;
             int j = 0;
 
@@ -110,7 +112,7 @@ namespace OthelloAlainGabriel
                 board[i, j] = (int)Char.GetNumericValue(strBoard[k]);
 
                 j++;
-                if(j % 9 == 0)
+                if(j % NB_COL == 0)
                 {
                     i++;
                     j = 0;
@@ -128,9 +130,9 @@ namespace OthelloAlainGabriel
         {
             string strBoard = "";
             //Put the board into a string
-            for (int i = 0; i < 7; i++)
+            for (int i = 0; i < NB_ROW; i++)
             {
-                for (int j = 0; j < 9; j++)
+                for (int j = 0; j < NB_COL; j++)
                 {
                     strBoard += this.GetNumberOnBoard(i, j);
                 }
