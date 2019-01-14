@@ -18,8 +18,8 @@
                 <MenuItem Header="_Exit" Click="MenuQuit_Click"/>
             </MenuItem>
             <MenuItem Header="Edit">
-                <MenuItem Header="_Undo" Click="MenuUndo_Click"/>
-                <MenuItem Header="About" Click="MenuAbout_Click"/>
+                <MenuItem x:Name="btnUndo" Header="_Undo" Click="MenuUndo_Click" IsEnabled="False"/>
+                <MenuItem Header="_About" Click="MenuAbout_Click"/>
             </MenuItem>
         </Menu>
 
