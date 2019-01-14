@@ -9,6 +9,7 @@ using System.Timers;
 using System.Windows.Threading;
 using System.ComponentModel;
 using System.Xml;
+using System.Windows.Media.Animation;
 
 namespace OthelloAlainGabriel
 {
@@ -304,6 +305,7 @@ namespace OthelloAlainGabriel
             //If free case
             if (rules.CheckCase(row, col, false))
             {
+                rules.AnimeLabel(lbl);
                 rules.CheckCase(row, col, true);
                 if (isPlayer1)
                     UpdateBoard(row, col, lbl, player1);
@@ -793,5 +795,6 @@ namespace OthelloAlainGabriel
             }
         }
         #endregion
+        
     }
 }

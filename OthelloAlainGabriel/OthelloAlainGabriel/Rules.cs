@@ -1,6 +1,9 @@
 ﻿using OthelloAlainGabriel;
+using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 
 public class Rules
 {
@@ -31,7 +34,9 @@ public class Rules
     /// <param name="col">Column</param>
     public void SwitchToken(int row, int col)
     {
+        
         Label lbl = GetLabel(tokenGrid, row, col);
+        AnimeLabel(lbl);
         if (board.GetNumberOnBoard(row, col) == 1)
         {
             board.SetNumberOnBoard(row, col, player2);
@@ -468,5 +473,24 @@ public class Rules
     public void ChangeTurn()
     {
         isPlayer1 = !isPlayer1;
+    }
+
+    public void AnimeLabel(Label lbl)
+    {
+        DoubleAnimation a = new DoubleAnimation
+        {
+            From = 0,
+            To = 1,
+            FillBehavior = FillBehavior.Stop,
+            BeginTime = TimeSpan.FromSeconds(0),
+            Duration = new Duration(TimeSpan.FromSeconds(0.5))
+        };
+        Storyboard storyboard = new Storyboard();
+
+        storyboard.Children.Add(a);
+        Storyboard.SetTarget(a, lbl);
+        Storyboard.SetTargetProperty(a, new PropertyPath(MainWindow.OpacityProperty));
+        //storyboard.Completed += delegate { lbl.Visibility = System.Windows.Visibility.Visible; };
+        storyboard.Begin();
     }
 }

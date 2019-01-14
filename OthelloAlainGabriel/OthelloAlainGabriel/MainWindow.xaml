@@ -29,6 +29,7 @@
                 <ColumnDefinition Width="3*" />
             </Grid.ColumnDefinitions>
             <Viewbox Stretch="Uniform">
+
                 <Grid Name="tokenGrid">
 
                 </Grid>
