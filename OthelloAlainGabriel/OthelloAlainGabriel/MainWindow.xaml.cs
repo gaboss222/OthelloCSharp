@@ -245,6 +245,7 @@ namespace OthelloAlainGabriel
                     {
                         Name = "i" + i + "j" + j
                     };
+                    lbl.ToolTip = (Char)((65) + (j)) + (i+1).ToString();
                     lbl.MouseDown += OnClickLabel;
                     lbl.MouseEnter += OnEnterLabel;
                     lbl.MouseLeave += OnLeaveLabel;

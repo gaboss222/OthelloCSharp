@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainBox));
             this.lblName1 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.lblPlayer2Name = new System.Windows.Forms.Label();
@@ -155,7 +156,7 @@
             this.AcceptButton = this.btnValidate;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(179)))), ((int)(((byte)(211)))), ((int)(((byte)(179)))));
             this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(393, 384);
             this.Controls.Add(this.btnToken2);
@@ -170,6 +171,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lblName1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "MainBox";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

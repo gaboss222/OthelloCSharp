@@ -1,16 +1,16 @@
 ﻿<?xml version='1.0' encoding='UTF-8'?>
 <Game>
 	<Player1>
-		<Name>gab</Name>
-		<Time>00:00:00:03:59</Time>
-		<Score>4</Score>
+		<Name>fb</Name>
+		<Time>00:00:00:17:67</Time>
+		<Score>6</Score>
 	</Player1>
 	<Player2>
 		<Name>ok</Name>
-		<Time>00:00:00:01:82</Time>
-		<Score>4</Score>
+		<Time>00:00:00:06:31</Time>
+		<Score>6</Score>
 	</Player2>
-	<Turn>3</Turn>
+	<Turn>7</Turn>
 	<PlayerTurn>1</PlayerTurn>
-	<Board>000000000000001000002110000000220000000120000000000000000000000</Board>
+	<Board>000000000000200000002020100020112200000111000000000000000000000</Board>
 </Game>

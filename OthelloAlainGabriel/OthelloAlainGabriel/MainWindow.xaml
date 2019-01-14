@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OthelloAlainGabriel"
         mc:Ignorable="d"
-        Title="Othello de BG" Height="600" Width="800" MinWidth="800" MinHeight="600">
+        Title="Othello de BOGOSS" Height="600" Width="800" MinWidth="800" MinHeight="600">
 
 
     <DockPanel>
@@ -44,7 +44,7 @@
             </Viewbox>
             </Border>
             <StackPanel
-                Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" Width="195" Height="511">
+                Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" Width="Auto" Height="Auto" Orientation="Vertical">
                 <Label x:Name="lblPlayer1" Content="Player 1 :" FontSize="20" FontFamily="Arial Black"/>
                 <Label x:Name="lblScore1" Content="Score :" Margin="0,0,68,0" FontSize="22" FontWeight="Bold"/>
                 <Label x:Name="lblPlayer1Score" Content="{Binding Path=Score}"  FontSize="22" Margin="0" Height="35" FontWeight="Bold"/>
