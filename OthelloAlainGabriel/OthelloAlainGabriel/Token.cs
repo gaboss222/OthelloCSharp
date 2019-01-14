@@ -15,9 +15,12 @@ namespace OthelloAlainGabriel
     {
         public ImageBrush ImgBrush { get; }
         
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="path">Path to token</param>
         public Token(string path)
         {
-            //Console.WriteLine(path);
             Image img = Image.FromFile(path);
             Bitmap bmp = new Bitmap(img);
             var bitmapSource = Imaging.CreateBitmapSourceFromHBitmap(bmp.GetHbitmap(),

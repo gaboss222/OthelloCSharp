@@ -17,4 +17,4 @@
 	- Color background changed					//DONE
 	- New game (voir le TODO pour new game)
 	- UNDO 							//DONE
-- Menu de jeu
+	- Choose Token						//DONE

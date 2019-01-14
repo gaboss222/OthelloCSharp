@@ -110,7 +110,6 @@ namespace OthelloAlainGabriel
                 for (int j = 0; j < NB_COL; j++)
                 {
                     // TODO HERE CHANGE LBL BACKGROUND COLOR + RESET a ZERO LES CASES ET REMETTRES LES 4 TOKENS DU DEBUT
-                    // 1 Fonction
                     Label lbl = rules.GetLabel(tokenGrid, i, j);
                     tokenGrid.Children.Remove(lbl);
                 }
@@ -125,6 +124,7 @@ namespace OthelloAlainGabriel
             if (g.Equals(default(GameParameter)))
             {
                 mainBox = new MainBox();
+                mainBox.ResetPlayerTokenPath();
                 if (mainBox.CustomShow() == System.Windows.Forms.DialogResult.Yes)
                 {
                     Console.WriteLine(mainBox.GetPlayerName(1));
@@ -155,8 +155,15 @@ namespace OthelloAlainGabriel
         {
             board = new Board(NB_ROW, NB_COL);
 
-            token1 = new Token(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"..\..\Assets\Tokens\token1.png"));
-            token2 = new Token(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"..\..\Assets\Tokens\token2.png"));
+            if(mainBox.GetPlayerTokenPath(1) != "")
+                token1 = new Token(mainBox.GetPlayerTokenPath(1));
+            else
+                token1 = new Token(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"..\..\Assets\Tokens\token1.png"));
+
+            if (mainBox.GetPlayerTokenPath(2) != "")
+                token2 = new Token(mainBox.GetPlayerTokenPath(2));
+            else
+                token2 = new Token(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"..\..\Assets\Tokens\token2.png"));
 
             //New game
             if (g.Equals(default(GameParameter)))

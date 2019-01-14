@@ -1,0 +1,16 @@
+﻿<?xml version='1.0' encoding='UTF-8'?>
+<Game>
+	<Player1>
+		<Name>gab</Name>
+		<Time>00:00:00:03:59</Time>
+		<Score>4</Score>
+	</Player1>
+	<Player2>
+		<Name>ok</Name>
+		<Time>00:00:00:01:82</Time>
+		<Score>4</Score>
+	</Player2>
+	<Turn>3</Turn>
+	<PlayerTurn>1</PlayerTurn>
+	<Board>000000000000001000002110000000220000000120000000000000000000000</Board>
+</Game>

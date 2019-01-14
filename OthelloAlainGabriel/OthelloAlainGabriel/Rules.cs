@@ -17,6 +17,15 @@ public class Rules
     private int NB_COL;
     #endregion
 
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="board">Current board</param>
+    /// <param name="player1">Player 1</param>
+    /// <param name="player2">Player 2</param>
+    /// <param name="tokenGrid">Current grid</param>
+    /// <param name="NB_ROW">Nb row (7)</param>
+    /// <param name="NB_COL">Nb Column (9)</param>
     public Rules(Board board, Player player1, Player player2, Grid tokenGrid, int NB_ROW, int NB_COL)
 	{
         this.board = board;
@@ -320,7 +329,7 @@ public class Rules
         int rowBase = row;
         int colBase = col;
         bool canPlay = false;
-        while (row < NB_ROW-1 && col < NB_ROW-1)
+        while (row < NB_ROW-1 && col < NB_COL-1)
         {
             row++;
             col++;
