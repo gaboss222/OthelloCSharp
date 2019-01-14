@@ -4,6 +4,7 @@ using System.Windows.Media;
 
 public class Rules
 {
+    #region attributes
     private Board board;
     private Player player1;
     private Player player2;
@@ -11,6 +12,7 @@ public class Rules
     private bool isPlayer1 = true;
     private int NB_ROW;
     private int NB_COL;
+    #endregion
 
     public Rules(Board board, Player player1, Player player2, Grid tokenGrid, int NB_ROW, int NB_COL)
 	{

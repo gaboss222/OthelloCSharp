@@ -11,8 +11,11 @@ namespace OthelloAlainGabriel
         private static int[,] tabBoard;
         public Brush backgroundBrush = new SolidColorBrush(Color.FromArgb(255, 87, 237, 112));
         public Brush hoverBrush = new SolidColorBrush(Color.FromArgb(255, 27, 145, 47));
+        public Brush blackAdvantageBrush = new SolidColorBrush(Color.FromArgb(255, 128, 128, 128));
+        public Brush whiteAdvantageBrush = new SolidColorBrush(Color.FromArgb(255, 192, 192, 192));
         private int NB_ROW;
         private int NB_COL;
+
         /// <summary>
         /// Constructor
         /// </summary>

@@ -168,6 +168,7 @@ namespace OthelloAlainGabriel
                 nbFreeCells = (NB_ROW * NB_COL) - 4;
                 turn = 1;
             }
+
             //Loaded game. Attributes/Properties will be charged by data in GameParameter struct
             else
             {
@@ -441,6 +442,12 @@ namespace OthelloAlainGabriel
                         player2.Score++;
                 }
             }
+            if (player1.Score > player2.Score)
+                tokenGrid.Background = board.blackAdvantageBrush;
+            else if (player1.Score < player2.Score)
+                tokenGrid.Background = board.whiteAdvantageBrush;
+            else
+                tokenGrid.Background = board.backgroundBrush;
 
             //DataBinding
             lblPlayer1Score.DataContext = new Player { Score = player1.Score };
@@ -540,6 +547,13 @@ namespace OthelloAlainGabriel
                     MessageBox.Show("Error while writing XML file");
                 }
                 
+            }
+            else
+            {
+                if (isPlayer1)
+                    timerP1.Start();
+                else
+                    timerP2.Start();
             }
 
            
@@ -733,7 +747,6 @@ namespace OthelloAlainGabriel
 
         #region OtherFunction
 
-
         /// <summary>
         /// Every time a token is put, check if the current player wins.
         /// Called each time a token is put
@@ -758,12 +771,12 @@ namespace OthelloAlainGabriel
             string msg;
             if (player1.Score > player2.Score)
             {
-                msg = "Gagnant : player 1, " + player1.Name + "\nScore : " + player1.Score + "\nVoulez-vous recommencer ?";
+                msg = "WINNER : player 1, " + player1.Name + "\nScore : " + player1.Score + "\nDo you want to start again ?";
                 lblPlayerImgTurn.Background = player1.Token.ImgBrush;
             }
             else
             {
-                msg = "Gagnant : player 2, " + player2.Name + "\nScore : " + player2.Score + "\nVoulez-vous recommencer ?";
+                msg = "WINNER : player 2, " + player2.Name + "\nScore : " + player2.Score + "\nDo you want to start again ?";
                 lblPlayerImgTurn.Background = player2.Token.ImgBrush;
             }
 
@@ -780,7 +793,5 @@ namespace OthelloAlainGabriel
             }
         }
         #endregion
-
-
     }
 }
