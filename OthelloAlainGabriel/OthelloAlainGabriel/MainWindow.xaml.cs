@@ -37,11 +37,14 @@ namespace OthelloAlainGabriel
         }
 
         #region Property
+
         Player player1, player2;
         Token token1, token2;
         Board board;
         Rules rules;
+
         #endregion
+
         #region Attribute
 
         MainBox mainBox;
@@ -52,9 +55,11 @@ namespace OthelloAlainGabriel
         private int turn;
         public const int NB_COL = 9;
         public const int NB_ROW = 7;
+
         #endregion
 
         #region Game
+
         /// <summary>
         /// Struct defined each time a game is loaded
         /// We will put all the data read in this struct
@@ -110,11 +115,13 @@ namespace OthelloAlainGabriel
                     tokenGrid.Children.Remove(lbl);
                 }
             }
+
+            btnUndo.IsEnabled = false;
             timerP1.Stop();
             timerP2.Stop();
             board = null;
 
-            //New game = default GameParameter struc (no data loaded)
+            //New game = default GameParameter struct (no data loaded)
             if (g.Equals(default(GameParameter)))
             {
                 mainBox = new MainBox();
@@ -220,7 +227,7 @@ namespace OthelloAlainGabriel
         /// Function used to initialize the board. Create label, define parameters and row/column
         /// </summary>
         /// <param name="loadedGame">If loadedGame, create board from data</param>
-        private void InitializeBoard(bool loadedGame)
+        private void InitializeBoard(bool loadedGame, int[,] undoBoard = null)
         {
             tokenGrid.Background = board.backgroundBrush;
             for (int i = 0; i < NB_ROW; i++)
@@ -266,21 +273,23 @@ namespace OthelloAlainGabriel
                     //In this case, board already exists. We need to check each case to put tokens
                     else
                     {
+                        //if undoButton clicked, replace current board with undoBoard (copy of board at precedent turn)
+                        if(undoBoard != null)
+                        {
+                            board.SetBoard(undoBoard);
+                        }
+
                         if (board.GetNumberOnBoard(i, j) == 1)
                         {
-                            Console.WriteLine("TOKEN1");
                             lbl.Background = player1.Token.ImgBrush;
                             lbl.MouseDown -= OnClickLabel;
                         }
                         else if (board.GetNumberOnBoard(i, j) == 2)
                         {
-                            Console.WriteLine("TOKEN2");
-
                             lbl.Background = player2.Token.ImgBrush;
                             lbl.MouseDown -= OnClickLabel;
                         }
                     }
-
                 }
             }
             gridPlayerTurn.Background = board.backgroundBrush;
@@ -297,10 +306,14 @@ namespace OthelloAlainGabriel
         /// <param name="e"></param>
         private void OnClickLabel(object sender, RoutedEventArgs e)
         {
+            if(btnUndo.IsEnabled == false)
+                btnUndo.IsEnabled = true;
+
             Label lbl = sender as Label;
 
             int row = Grid.GetRow(lbl);
             int col = Grid.GetColumn(lbl);
+            board.SetUndoBoard(board.GetBoard());
 
             //If free case
             if (rules.CheckCase(row, col, false))
@@ -548,7 +561,7 @@ namespace OthelloAlainGabriel
                 {
                     MessageBox.Show("Error while writing XML file");
                 }
-                
+
             }
             else
             {
@@ -558,7 +571,7 @@ namespace OthelloAlainGabriel
                     timerP2.Start();
             }
 
-           
+
         }
 
         /// <summary>
@@ -719,12 +732,29 @@ namespace OthelloAlainGabriel
 
         /// <summary>
         /// Function to cancel a move
+        /// Delete label, re-initialize board with copy of board at precedent turn (undoBoard)
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void MenuUndo_Click(object sender, RoutedEventArgs e)
         {
+            //Disable undobutton
+            btnUndo.IsEnabled = false;
 
+            //Delete label
+            for (int i = 0; i < NB_ROW; i++)
+            {
+                for (int j = 0; j < NB_COL; j++)
+                {
+                    Label lbl = rules.GetLabel(tokenGrid, i, j);
+                    tokenGrid.Children.Remove(lbl);
+                }
+            }
+
+            //And re-initialize board with copy of board (undoBoard)
+            ChangeTurn();
+            InitializeBoard(true, board.GetUndoBoard());
+            CheckScore();
         }
 
         /// <summary>

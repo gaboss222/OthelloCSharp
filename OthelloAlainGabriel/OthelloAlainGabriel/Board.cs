@@ -8,11 +8,11 @@ namespace OthelloAlainGabriel
     /// </summary>
     public class Board
     {
-        private static int[,] tabBoard;
+        private int[,] tabBoard, undoBoard;
         public Brush backgroundBrush = new SolidColorBrush(Color.FromArgb(255, 87, 237, 112));
         public Brush hoverBrush = new SolidColorBrush(Color.FromArgb(255, 27, 145, 47));
-        public Brush blackAdvantageBrush = new SolidColorBrush(Color.FromArgb(255, 128, 128, 128));
-        public Brush whiteAdvantageBrush = new SolidColorBrush(Color.FromArgb(255, 192, 192, 192));
+        public Brush blackAdvantageBrush = new SolidColorBrush(Color.FromArgb(255, 100, 100, 100));
+        public Brush whiteAdvantageBrush = new SolidColorBrush(Color.FromArgb(255, 200, 200, 200));
         private int NB_ROW;
         private int NB_COL;
 
@@ -24,6 +24,7 @@ namespace OthelloAlainGabriel
         public Board(int row, int col)
         {
             tabBoard = new int[row, col];
+            undoBoard = new int[row, col];
             NB_ROW = row;
             NB_COL = col;
         }
@@ -63,6 +64,15 @@ namespace OthelloAlainGabriel
         }
 
         /// <summary>
+        /// Set a new board a board, used for loaded game.
+        /// </summary>
+        /// <param name="board">new board</param>
+        public void SetBoard(int[,] board)
+        {
+            tabBoard = board.Clone() as int[,];
+        }
+
+        /// <summary>
         /// Return the board
         /// </summary>
         /// <returns>board as int[,]</returns>
@@ -72,12 +82,21 @@ namespace OthelloAlainGabriel
         }
 
         /// <summary>
-        /// Set a new board a board, used for loaded game.
+        /// Save board to undoBoard
         /// </summary>
-        /// <param name="board">new board</param>
-        public void SetBoard(int[,] board)
+        /// <param name="board">actual board</param>
+        public void SetUndoBoard(int[,] board)
         {
-            tabBoard = board.Clone() as int[,];
+            undoBoard = board.Clone() as int[,];
+        }
+
+        /// <summary>
+        /// Return the undoBoard
+        /// </summary>
+        /// <returns>undoBoard as int[,]</returns>
+        public int[,] GetUndoBoard()
+        {
+            return undoBoard;
         }
 
         /// <summary>

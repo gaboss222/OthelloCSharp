@@ -16,5 +16,5 @@
 - Améliorations (si le temps)
 	- Color background changed					//DONE
 	- New game (voir le TODO pour new game)
-	- UNDO 
+	- UNDO 							//DONE
 - Menu de jeu
