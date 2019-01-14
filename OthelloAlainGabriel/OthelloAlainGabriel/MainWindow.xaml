@@ -9,15 +9,21 @@
 
 
     <DockPanel>
-        <Menu DockPanel.Dock="Top">
-            <MenuItem Header="_File">
+        <DockPanel.Background>
+            <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                <GradientStop Color="#FF526352" Offset="1"/>
+                <GradientStop Color="#FFB3D3B3" Offset="0.531"/>
+            </LinearGradientBrush>
+        </DockPanel.Background>
+        <Menu DockPanel.Dock="Top" Background="#FFB3D3B3" FontSize="15px">
+            <MenuItem Header="_File" FontWeight="Bold" Height="30">
                 <MenuItem Header="_New" Click="MenuNew_Click"/>
                 <MenuItem Header="_Save" Click="MenuSave_Click"/>
                 <MenuItem Header="_Load" Click="MenuLoad_Click"/>
                 <Separator />
                 <MenuItem Header="_Exit" Click="MenuQuit_Click"/>
             </MenuItem>
-            <MenuItem Header="Edit">
+            <MenuItem Header="Edit" FontWeight="Bold">
                 <MenuItem x:Name="btnUndo" Header="_Undo" Click="MenuUndo_Click" IsEnabled="False"/>
                 <MenuItem Header="_About" Click="MenuAbout_Click"/>
             </MenuItem>
@@ -28,29 +34,30 @@
                 <ColumnDefinition Width="8*" />
                 <ColumnDefinition Width="3*" />
             </Grid.ColumnDefinitions>
+
+            <Border BorderBrush="Black" BorderThickness="2" Margin="20" HorizontalAlignment="Left" VerticalAlignment="Top">
             <Viewbox Stretch="Uniform">
 
                 <Grid Name="tokenGrid">
 
                 </Grid>
             </Viewbox>
+            </Border>
             <StackPanel
                 Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" Width="195" Height="511">
                 <Label x:Name="lblPlayer1" Content="Player 1 :" FontSize="20" FontFamily="Arial Black"/>
-                <Label x:Name="lblScore1" Content="Score :" Margin="0,0,68,0" FontSize="22"/>
-                <Label x:Name="lblPlayer1Score" Content="{Binding Path=Score}"  FontSize="22" Margin="0" Height="35"/>
-                <Label x:Name="lblPlayer1Time" Content="" FontSize="22"/>
-                <Label x:Name="lblPlayerTurn" Content="Player's turn :" FontSize="22" Margin="0,60,0,0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                <Grid  x:Name="gridPlayerTurn" Height="80" Width="80" Margin="0" HorizontalAlignment="Left">
+                <Label x:Name="lblScore1" Content="Score :" Margin="0,0,68,0" FontSize="22" FontWeight="Bold"/>
+                <Label x:Name="lblPlayer1Score" Content="{Binding Path=Score}"  FontSize="22" Margin="0" Height="35" FontWeight="Bold"/>
+                <Label x:Name="lblPlayer1Time" Content="" FontSize="22" FontWeight="Bold"/>
+                <Label x:Name="lblPlayerTurn" Content="Player's turn :" FontSize="22" Margin="0,45,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold"/>
+                <Grid  x:Name="gridPlayerTurn" Height="80" Width="80" Margin="5,0,0,0" HorizontalAlignment="Left">
                     <Label x:Name="lblPlayerImgTurn"/>
                 </Grid>
-                <Label x:Name="lblPlayer2" Content="Player 2" FontSize="20"  Margin="0,30,0,0" FontFamily="Arial Black"/>
-                <Label x:Name="lblScore2" Content="Score :" Margin="0,0,68,0" FontSize="22"/>
-                <Label x:Name="lblPlayer2Score"  Content="{Binding Path=Score}" FontSize="22"  Margin="0" Height="35"/>
-                <Label x:Name="lblPlayer2Time" Content="" FontSize="22" Margin="0"/>
-
+                <Label x:Name="lblPlayer2" Content="Player 2" FontSize="20"  Margin="0,45,0,0" FontFamily="Arial Black"/>
+                <Label x:Name="lblScore2" Content="Score :" Margin="0,0,68,0" FontSize="22" FontWeight="Bold"/>
+                <Label x:Name="lblPlayer2Score"  Content="{Binding Path=Score}" FontSize="22"  Margin="0" Height="35" FontWeight="Bold"/>
+                <Label x:Name="lblPlayer2Time" Content="" FontSize="22" Margin="0" FontWeight="Bold"/>
             </StackPanel>
         </Grid>
-
     </DockPanel>
 </Window>

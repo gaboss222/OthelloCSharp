@@ -9,7 +9,6 @@ using System.Timers;
 using System.Windows.Threading;
 using System.ComponentModel;
 using System.Xml;
-using System.Windows.Media.Animation;
 
 namespace OthelloAlainGabriel
 {
@@ -299,7 +298,6 @@ namespace OthelloAlainGabriel
                     }
                 }
             }
-            gridPlayerTurn.Background = board.backgroundBrush;
             rules.CheckCases();
         }
 
