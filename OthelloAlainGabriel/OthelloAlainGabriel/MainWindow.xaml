@@ -4,7 +4,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OthelloAlainGabriel"
-        Icon="C:\Users\gabriel.griesser\Documents\HE-ARC\3eme_Annee\3257_Langages_Frameworks\3257 DOTNET\Projet\OthelloAlainGabriel\OthelloAlainGabriel\Assets\icon.ico"
         mc:Ignorable="d"
         Title="Othello de BOGOSS" Height="600" Width="800" MinWidth="800" MinHeight="600">
 
